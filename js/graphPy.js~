@@ -37,6 +37,9 @@ function load(data) {
 	var options = {configurePhysics:false, physics: {barnesHut: {springConstant: 0.018}}};
 	network = new vis.Network(container, data, options);
 
+	network.on('select', genericAddNode);
+	//network.on('doubleClick', genericAddLink);
+
 };
 
 function addNode(id){
