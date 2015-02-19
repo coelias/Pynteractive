@@ -1,0 +1,118 @@
+#containerNetwork { 
+	position: relative;
+	z-index:1;
+	height: 15%;
+	top: 0%;
+	left: 0%;
+	border: 1px;
+	border-color: black;
+	background: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	visibility: visible;
+}
+
+#optionsNetwork { 
+	position:absolute;
+	z-index:1;
+	top: 10%;
+	left: 5%;
+	width: 85%;
+	height: 90%;
+	border-color: black;
+}
+
+#labelBarnesHut{
+	position:absolute;
+	left: 0%;
+	top: 5%;
+	color: #404040;
+	font-weight: bold;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#labelBarnesHutRadio {
+	position:absolute;
+	left: 20%;
+	top: 5%;
+	color: #404040;
+	font-weight: bold;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#labelRepulsion {
+	position:absolute;
+	left: 35%;
+	top: 5%;
+	color: #404040;
+	font-weight: bold;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#labelRepulsionRadio {
+	position:absolute;
+	left: 53%;
+	top: 5%;
+	color: #404040;
+	font-weight: bold;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#labelHierarchicalRepulsion {
+	position:absolute;
+	left: 70%;
+	top: 5%;
+	color: #404040;
+	font-weight: bold;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#labelHierarchicalRepulsionRadio {
+	position:absolute;
+	left: 90%;
+	top: 5%;
+	color: #404040;
+	font-weight: bold;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#labelCentralGravity {
+	position:absolute;
+	color: #404040;
+	font-weight: bold;
+	top: 35%;
+	left: 0%;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#sliderCentralGravity {
+	position:absolute;
+	top: 38%;
+	left: 35%;
+	color: #404040;
+	font-weight: bold;
+	height: 5px;
+    	width: 55%;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#labelNodeDistance {
+	position:absolute;
+	top: 70%;
+	left: 0%;
+	color: #404040;
+	font-weight: bold;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#sliderNodeDistance {
+	position:absolute;
+	top: 74%;
+	left: 35%;
+	color: #404040;
+	font-weight: bold;
+	height: 5px;
+    	width: 55%;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
