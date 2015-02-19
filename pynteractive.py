@@ -5,6 +5,8 @@ import mimetypes
 import threading
 import sys
 import urllib
+import webbrowser
+
 mimetypes.init()
 mimetypes.types_map['.dwg']='image/x-dwg'
 mimetypes.types_map['.ico']='image/x-icon'
@@ -265,9 +267,9 @@ class Network:
 		self.vertices[name]=kwargs
 
 		with MUTEX:
-			self.updates.append(["addNode",name])
+			self.updates.append(["addNode",str(name)])
 
-		return ["addNode",name]
+		return ["addNode",str(name)]
 
 	def addEdge(self,n1,n2):
 		assert n1 in self.vertices and n2 in self.vertices
@@ -309,6 +311,8 @@ def startServer():
 	srvr.serve_forever()
 
 threading.Thread(target=startServer).start()
+
+webbrowser.open_new_tab("http://localhost:{0}/".format(globals.PORT))
 
 print ">>>dfw=DataFrameWork()"
 print ">>>nw=dfw.createNetwork()"
