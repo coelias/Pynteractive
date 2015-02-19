@@ -1,2 +1,6 @@
 # Pynteractive
-Pilot to work with dynamic visualization by using python
+Pilot to handle dynamic visualizations in python.
+
+Authors:
+ - Carlos del Ojo
+ - Oriol Mazariegos
