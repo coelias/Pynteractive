@@ -257,13 +257,14 @@ class Network:
 		return res
 
 	def addNode(self,name=None,**kwargs):
-		if not name:
+		if name==None:
 			i=1
 			while True:
 				if str(i) not in self.vertices:
-					name=str(i)
+					name=i
 					break
 				i+=1
+		name=str(name)
 		self.vertices[name]=kwargs
 
 		with MUTEX:
@@ -272,6 +273,7 @@ class Network:
 		return ["addNode",str(name)]
 
 	def addEdge(self,n1,n2):
+		n1,n2=str(n1),str(n2)
 		assert n1 in self.vertices and n2 in self.vertices
 		self.edges.add((n1,n2))
 
