@@ -25,6 +25,17 @@ setInterval(
 
 function paintUpdates(obj)
 {
+	for (index = 0; index < obj.length; index++)
+	{
+		if (obj[index][0]=='addNode')
+			{
+				addNode(obj[index][1]);
+			}
+		else if (obj[index][0]=='addEdge')
+		{
+			addLink(obj[index][1],obj[index][2]);
+		}
+	}
 }
 
 function load(data) {

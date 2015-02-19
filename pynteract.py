@@ -2,11 +2,16 @@ import globals
 import base64
 import tarfile
 import mimetypes
+import threading
+import sys
+import urllib
 mimetypes.init()
 mimetypes.types_map['.dwg']='image/x-dwg'
 mimetypes.types_map['.ico']='image/x-icon'
 mimetypes.types_map['.bz2']='application/x-bzip2'
 mimetypes.types_map['.gz']='application/x-gzip'
+
+MUTEX=threading.Lock()
 
 if globals.VERSION<30:
 	from BaseHTTPServer import HTTPServer
@@ -20,7 +25,19 @@ else:
 	from urllib.parse import urlparse,urlunparse,unquote
 
 class ThreadingServer(ThreadingMixIn, HTTPServer):
-	pass
+	stopped = False
+	server=None
+
+	def serve_forever(self):
+		ThreadingServer.server=self
+		while not self.stopped:
+			self.handle_request()
+
+	@staticmethod
+	def force_stop():
+		ThreadingServer.stopped = True
+#		ThreadingServer.server.server_close()
+		urllib.urlopen("http://localhost:{0}/".format(globals.PORT)).read()
 
 class FileMgr:
 	def __init__(self,path=None,tar=None):
@@ -95,13 +112,14 @@ import imp
 
 class Wfcom:
 	'''FWCLASS'''
-	def __init__(self):
+	def __init__(self,dataFramework):
 		funcs=[i for i in dir(self) if inspect.ismethod(getattr(self,i)) and getattr(self,i).__doc__!="FWCLASS"]
 		self.dicFuncs={}
 		self.dicArgs={}
 		for i in funcs:
 			self.dicFuncs[i]=getattr(self,i)
 			self.dicArgs[i]=inspect.getargspec(self.dicFuncs[i])
+		self.dataFramework=dataFramework
 
 	def POST(self,fname,data):
 
@@ -173,15 +191,14 @@ class Wfcom:
 
 	############## METHODS ####################
 
-	def getGraphUpdate(self):
-		pass
-		
+	def getGraphUpdates(self):
+		return self.dataFramework.getUpdates()
 
 	# EMPTY
 	# EMPTY
 	# EMPTY
 
-class FSServer(SimpleHTTPRequestHandler):
+class SimpleWS(SimpleHTTPRequestHandler):
 	def do_GET(self):
 		if self.path=="/": self.path="/index.html"
 		path=os.path.join(*(["webfiles"]+self.path.split("/")))
@@ -218,13 +235,86 @@ class FSServer(SimpleHTTPRequestHandler):
 		self.end_headers()
 		res=wfcomO.POST(query["fname"],query["data"]).encode()
 		self.wfile.write(res)
-		print res
 		self.wfile.close()
+
+	def log_message(self, format, *args):
+		return
+
+class Network:
+	def __init__(self,directed=False):
+		self.vertices={}
+		self.edges=set()
+		self.directed=directed
+
+		self.updates=[]
+
+	def getUpdates(self):
+		with MUTEX:
+			res=self.updates[:]
+			self.updates=[]
+		return res
+
+	def addNode(self,name=None,**kwargs):
+		if not name:
+			i=1
+			while True:
+				if str(i) not in self.vertices:
+					name=str(i)
+					break
+				i+=1
+		self.vertices[name]=kwargs
+
+		with MUTEX:
+			self.updates.append(["addNode",name])
+
+		return ["addNode",name]
+
+	def addEdge(self,n1,n2):
+		assert n1 in self.vertices and n2 in self.vertices
+		self.edges.add((n1,n2))
+
+		with MUTEX:
+			self.updates.append(["addEdge",n1,n2])
+
+		return ["addEdge",n1,n2]
+
+
+
+
+class DataFrameWork:
+	def __init__(self):
+		self.dataObjects=[]
+
+	def createNetwork(self):
+		nw=Network()
+		self.dataObjects.append(nw)
+		return nw
+
+	def getUpdates(self):
+		res=[]
+		for i in self.dataObjects:
+			res+=i.getUpdates()
+
+		return res
+
 		
+dfw=DataFrameWork()
+nw=dfw.createNetwork()
 
+wfcomO=Wfcom(dfw)
 
-wfcomO=Wfcom()
-serveraddr = ('', 8765)
-srvr = ThreadingServer(serveraddr, FSServer)
-srvr.serve_forever()
+def startServer():
+	serveraddr = ('', globals.PORT)
+	srvr = ThreadingServer(serveraddr, SimpleWS)
+	srvr.serve_forever()
 
+threading.Thread(target=startServer).start()
+
+print ">>>dfw=DataFrameWork()"
+print ">>>nw=dfw.createNetwork()"
+
+import code
+code.interact(local=locals())
+
+ThreadingServer.force_stop()
+sys.exit(0)

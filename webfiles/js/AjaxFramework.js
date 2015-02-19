@@ -17,41 +17,6 @@ ErrorHandler= new function ErrHandler()
 }
 
 
-//SC= new function ServerConnector()
-//{
-//	this.send = function(funcname,objOrig,ReqCallBack)
-//	{
-//		obj=MyClone(objOrig);
-//		B64_Object_encoder(obj);
-//
-//		Ext.Ajax.request({
-//			url: 'wfcom',
-//			params: { fname:funcname,data:Ext.JSON.encode(obj) },
-//			callback: function (opts, succ,response){
-//				objstr="{";
-//				for (var i in obj)
-//				{objstr+=i+": "+obj[i]+", ";}
-//				objstr+="}";
-//
-//				if (response.statusText!="OK") { ErrorHandler.report("Communication error",response.statusText+"-"+funcname+"-"+objstr); }
-//				else
-//				{
-//					obj=Ext.JSON.decode(response.responseText);
-//					B64_Object_decoder(obj);
-//					if (!("success" in obj)) { ErrorHandler.report("Core error",response.responseText);  }
-//					else 
-//					{
-//						if (obj.success)
-//						{
-//							ReqCallBack(obj.result);
-//						}
-//						else { ErrorHandler.report("Application error",obj.error);}
-//					}
-//				}
-//			}
-//		});
-//	};
-//}
 
 SC= new function ServerConnector()
 {
@@ -76,8 +41,6 @@ SC= new function ServerConnector()
 				for (var i in obj)
 				{objstr+=i+": "+obj[i]+", ";}
 				objstr+="}";
-
-				alert(succ);
 
 				if (succ!=200) { ErrorHandler.report("Communication error",response.statusText+"-"+funcname+"-"+objstr); }
 				else
