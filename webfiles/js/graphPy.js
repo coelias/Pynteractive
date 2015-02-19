@@ -18,6 +18,15 @@ $(function () {
 	load(data);
 });
 
+setInterval(
+	function(){
+		SC.send("getGraphUpdates",{},paintUpdates)
+  	},2000);
+
+function paintUpdates(obj)
+{
+}
+
 function load(data) {
 
 	//load node
