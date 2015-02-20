@@ -29,40 +29,29 @@ setInterval(
 
 function paintUpdates(obj)
 {
-	for (index = 0; index < obj.length; index++)
+	for (i=0;i<obj.length;i++)
 	{
-		switch(obj[index][0]) {
-			case 'addNode':
-				addNode(obj[index][1]);
-				break;
-			case 'addEdge':
-				addEdge(obj[index][1],obj[index][2]);
-				break;
-			case 'removeEdge':
-				removeNode(obj[index][1]);
-				break;
-			case 'removeEdge':
-				removeEdge(obj[index][1],obj[index][2]);
-				break;
-		}
+		fname=obj[i][0];
+			args=[].slice.call(obj[i]).splice(1);
+		window["UIC"][fname].apply(this,args);
 	}
 }
 
 function loadDataTest(){
 	//nodes
-	addNode("1");
-	addNode("2");
-	addNode("3");
-	addNode("4");
+	UIC.addNode("1");
+	UIC.addNode("2");
+	UIC.addNode("3");
+	UIC.addNode("4");
 
 	//edges
-	addEdge("1","1");
-	addEdge("1","2");
-	addEdge("1","3");
-	addEdge("1","4");
-	addEdge("2","3");
-	addEdge("2","4");
-	addEdge("3","4");
+	UIC.addEdge("1","1");
+	UIC.addEdge("1","2");
+	UIC.addEdge("1","3");
+	UIC.addEdge("1","4");
+	UIC.addEdge("2","3");
+	UIC.addEdge("2","4");
+	UIC.addEdge("3","4");
 }
 
 
@@ -91,26 +80,6 @@ function load() {
 	//document.onkeyup = checkKey;
 };
 
-//NETWORK
-function addNode(id,label,title){
-	var n = {"id":id,"label":label, "title":title};
-	nodesMap.add(n);
-}
-
-function addEdge(id1,id2, label, title){
-	var e = {"id":id1+":"+id2,"from":id1,"to":id2, "label": label, "title":title};
-	edgesMap.add(e);
-}
-
-function removeNode(id){
-	var n = {"id":id};
-	nodesMap.remove(n);
-}
-
-function removeEdge(id1,id2){
-	var e = {"id":id1+":"+id2};
-	edgesMap.remove(e);
-}
 
 //EVENTS
 function selectElement(properties){
