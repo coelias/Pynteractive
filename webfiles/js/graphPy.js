@@ -92,9 +92,6 @@ function selectElement(properties){
 		console.log("selectElement");
 		console.log(idsNodes);
 		console.log(idsEdges);
-	
-		changeLayout('2');
-
 	//}
 }
 
@@ -119,13 +116,13 @@ function changeLayoutType(id){
 
 	switch(id) {
 		case "labelBarnesHutRadio":
-			enabledValue = 0;
+			enabledLayout = 0;
 			break;
 		case "labelRepulsionRadio":
-			enabledValue = 1;
+			enabledLayout = 1;
 			break;
 		case "labelHierarchicalRepulsionRadio":
-			enabledValue = 2;
+			enabledLayout = 2;
 			break;
 	}
 	reDrawLayout();
@@ -142,20 +139,16 @@ function changeLayoutNodeDistance(value){
 }
 
 function reDrawLayout(){
-	console.log(enabledValue);
-	switch(enabledValue) {
+	switch(enabledLayout) {
 		case 0:
-			console.log(enabledValue);
 			var options = {physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}}};
 			network = new vis.Network(container, data, options);
 			break;
 		case 1:
-			console.log(enabledValue+":"+nodeDistanceValue);
 			var options = {physics: {barnesHut: {enabled: false}, repulsion: {nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}}};
 			network = new vis.Network(container, data, options);
 			break;
 		case 2:
-			console.log(enabledValue+":"+nodeDistanceValue);
 			var options = {physics: {hierarchicalRepulsion: {nodeDistance: nodeDistanceValue}}};
 			network = new vis.Network(container, data, options);
 			break;
