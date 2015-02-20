@@ -1,9 +1,10 @@
 #containerNetwork { 
 	position: relative;
 	z-index:1;
-	height: 15%;
-	top: 0%;
-	left: 0%;
+	width: 96%;
+	height: 28%;
+	top: 1%;
+	left: 2%;
 	border: 1px;
 	border-color: black;
 	background: rgba(255, 255, 255, 0.5);
@@ -18,7 +19,7 @@
 	z-index:1;
 	top: 10%;
 	left: 5%;
-	width: 85%;
+	width: 90%;
 	height: 90%;
 	border-color: black;
 }
@@ -43,7 +44,7 @@
 
 #labelRepulsion {
 	position:absolute;
-	left: 35%;
+	left: 38%;
 	top: 5%;
 	color: #404040;
 	font-weight: bold;
@@ -52,7 +53,7 @@
 
 #labelRepulsionRadio {
 	position:absolute;
-	left: 52%;
+	left: 55%;
 	top: 5%;
 	color: #404040;
 	font-weight: bold;
@@ -61,7 +62,7 @@
 
 #labelHierarchicalRepulsion {
 	position:absolute;
-	left: 70%;
+	right: 8%;
 	top: 5%;
 	color: #404040;
 	font-weight: bold;
@@ -70,7 +71,7 @@
 
 #labelHierarchicalRepulsionRadio {
 	position:absolute;
-	left: 90%;
+	right: 0%;
 	top: 5%;
 	color: #404040;
 	font-weight: bold;
@@ -81,15 +82,15 @@
 	position:absolute;
 	color: #404040;
 	font-weight: bold;
-	top: 35%;
+	top: 20%;
 	left: 0%;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #sliderCentralGravity {
 	position:absolute;
-	top: 38%;
-	left: 35%;
+	top: 22%;
+	right: 0%;
 	color: #404040;
 	font-weight: bold;
 	height: 5px;
@@ -99,7 +100,7 @@
 
 #labelNodeDistance {
 	position:absolute;
-	top: 70%;
+	top: 35%;
 	left: 0%;
 	color: #404040;
 	font-weight: bold;
@@ -108,11 +109,29 @@
 
 #sliderNodeDistance {
 	position:absolute;
-	top: 74%;
-	left: 35%;
+	top: 37%;
+	right: 0%;
 	color: #404040;
 	font-weight: bold;
 	height: 5px;
     	width: 55%;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#GraphFocus {
+	position:absolute;
+	top: 50%;
+	left: 0%;
+	color: #404040;
+	font-weight: bold;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#FreezeLayout {
+	position:absolute;
+	top: 50%;
+	right: 0%;
+	color: #404040;
+	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }

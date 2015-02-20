@@ -160,11 +160,11 @@ function reDrawLayout(){
 	}
 }
 
-function changeGraphFocus(){
+function graphFocus(){
 
 }
 
-function changeFreezeLayout(){
-	freezeLayout = !freezeLayout;
+function freezeLayout(){
+	freezeLayout = Boolean(freezeLayout);
 	network.freezeSimulation(freezeLayout);
 }
