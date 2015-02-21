@@ -19,47 +19,27 @@
 </head>
 <body>
 
-<!tools>
-<div id="tools">
-
-<div id="containerNetwork">
-    <div id="optionsNetwork">
-        <label id="labelBarnesHut">BarnesHut</label>
-	<input id="labelBarnesHutRadio" type="radio" name="groupOptionsNetwork" value="1" checked onclick="changeLayoutType(id);">
-	<label id="labelRepulsion">Repulsion</label>
-	<input id="labelRepulsionRadio" type="radio" name="groupOptionsNetwork" value="0" onclick="changeLayoutType(id);">
-	<label id="labelHierarchicalRepulsion">Hierarchical</label>
-	<input id="labelHierarchicalRepulsionRadio" type="radio" name="groupOptionsNetwork" value="0" onclick="changeLayoutType(id);">
-
-	<label id="labelCentralGravity">Central Gravity</label> <input id="sliderCentralGravity" type="range" min="0" max="5" step="0.1" value ="1.5" onchange="changeLayoutCentralGravity(value)"/>
-	<label id="labelNodeDistance">Node Distance</label> <input id="sliderNodeDistance" type="range" min="0" max="300" step="10" value ="100" onchange="changeLayoutNodeDistance(value)"/>
-
-	<button id="GraphFocus" type="button" onclick="changeGraphFocus()">Focus</button>
-	<!-- <button id="FreezeLayout" type="button" onclick="changeFreezeLayout()">Freeze</button> -->
-
-<div id="format">
-	<input style="margin-top: 20px;"  id="FreezeLayout" type="checkbox" onclick="changeFreezeLayout()"><label id="labelFreezeLayout"  for="FreezeLayout">Freeze Animation</label>
-</div>
-
-
-    </div>
-</div>
-
-</div>
-
-<!list of networks>
-<div id="networks">
-	<div id="network"></div>
-</div>
-
-<script type="text/javascript">
-var DATAID = getUrlVars()["dataid"];
-var VTYPE = getUrlVars()["vtype"];
-</script>
-
 <script type="text/javascript" src="js/UIC.js"></script>
 <script type="text/javascript" src="js/wscom.js"></script>
 <script type="text/javascript" src="js/graphPy.js"></script>
+
+<script type="text/javascript">
+function getUrlVars()
+{
+	var vars = [], hash;
+	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	for(var i = 0; i < hashes.length; i++)
+	{
+		hash = hashes[i].split('=');
+		vars.push(hash[0]);
+		vars[hash[0]] = hash[1];
+	}
+	return vars;
+}
+
+var DATAID = getUrlVars()["dataid"];
+var VTYPE = getUrlVars()["vtype"];
+</script>
 
 </body>
 </html>

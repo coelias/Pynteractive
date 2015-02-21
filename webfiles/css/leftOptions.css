@@ -106,14 +106,12 @@
 	left: 0%;
 }
 
-#FreezeLayout {
-	top: 40%;
+#FreezeLayout, #labelFreezeLayout {
+	top: 50%;
 	right: 0%;
 }
 
 #labelFreezeLayout {
-	position:absolute;
-	top: 50%;
 	right: 8%;
 }
 
