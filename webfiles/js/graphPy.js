@@ -7,7 +7,7 @@ $(function () {
 });
 
 function loadNetworkVisualization(){
-	$.getScript('visPy.js', function() {
+	$.getScript('js/visPy.js', function() {
 		console.log("Network loaded");
 	});
 }
