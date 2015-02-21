@@ -134,10 +134,13 @@ class JSCom(WebSocket):
 #		print self.address, 'closed'
 		pass
 
+	def attach(self,name):
+		self.server.attachConnToDataId(self,name)
+
 class SimpleWS(SimpleHTTPRequestHandler):
 	def do_GET(self):
 		if self.path.startswith("/?"): resource="webfiles/index.html"
-		else: resource=os.path.join(*(["webfiles"]+self.path.split("/")))
+		else: resource=os.path.join(*(["webfiles"]+self.path.split("?")[0].split("/")))
 		if os.path.isfile(resource):
 			self.send_response(200)
 			ext=self.path.split(".")[-1].lower()

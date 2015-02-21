@@ -518,6 +518,9 @@ class SimpleWebSocketServer(object):
 				try: i.sendAction(func,*pars)
 				except: pass
 
+	def attachConnToDataId(self,conn,name):
+		print "attaching!!!",name
+		self.DataId2Connections.setdefault(name,[]).append(conn)
 
 	def decorateSocket(self, sock):
 		return sock
@@ -579,11 +582,10 @@ class SimpleWebSocketServer(object):
 
 						client.close()
 
-						import pdb
-						pdb.set_trace()
-
+						conn=self.connections[ready]
 						del self.connections[ready]
-
+						for j,k in self.DataId2Connections.items():
+							if conn in k: k.remove(conn)
 						self.listeners.remove(ready)
 		
 			for failed in xList:
