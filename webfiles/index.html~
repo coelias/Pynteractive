@@ -32,13 +32,13 @@
 	<input id="labelHierarchicalRepulsionRadio" type="radio" name="groupOptionsNetwork" value="0" onclick="changeLayoutType(id);">
 
 	<label id="labelCentralGravity">Central Gravity</label> <input id="sliderCentralGravity" type="range" min="0" max="5" step="0.1" value ="1.5" onchange="changeLayoutCentralGravity(value)"/>
-	<label id="labelNodeDistance">Node Distance</label> <input id="sliderNodeDistance" type="range" min="0" max="300" step="10" value ="100" onchange="changeLayoutNodeDistance(value)"/>
+	<label id="labelNodeDistance" class="disabled">Node Distance</label> <input id="sliderNodeDistance" type="range" min="0" max="300" step="10" value ="100" onchange="changeLayoutNodeDistance(value)"/>
 
 	<button id="GraphFocus" type="button" onclick="changeGraphFocus()">Focus</button>
 	<!-- <button id="FreezeLayout" type="button" onclick="changeFreezeLayout()">Freeze</button> -->
 
 <div id="format">
-	<input style="margin-top: 20px;"  id="FreezeLayout" type="checkbox" onclick="changeFreezeLayout()"><label for="FreezeLayout">Freeze</label>
+	<input style="margin-top: 20px;"  id="FreezeLayout" type="checkbox" onclick="changeFreezeLayout()"><label id="labelFreezeLayout"  for="FreezeLayout">Freeze Animation</label>
 </div>
 
 

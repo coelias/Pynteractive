@@ -22,7 +22,7 @@ var freezeLayout = false;
 $(function () {
 
 	//JQUERY
-	$( "#FreezeLayout" ).button();
+	//$( "#FreezeLayout" ).button();
 
 	load();
 });
@@ -179,7 +179,9 @@ function changeLayoutNodeDistance(value){
  * Re paint all the layout taking into account three physics options {barnesHut, barnesHut disabled and hierarchical}
  */
 function reDrawLayout(){
+
 	destroy();
+
 	switch(enabledLayout) {
 		case 0:
 			var options = {physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}}};
@@ -195,10 +197,38 @@ function reDrawLayout(){
 			network = new vis.Network(container, data, options);
 			break;
 	}
-	//network.freezeSimulation(true);
-	//freezeLayout = true;
+
+	reDrawToolLayout();
+
+	network.freezeSimulation(freezeLayout);
 }
 
+/**
+ * Re paint tool layout taking into account the method selected for network visualization
+ */
+function reDrawToolLayout() {
+
+	switch(enabledLayout) {
+		case 0:
+			$('#labelCentralGravity').removeClass('disabled');
+			$("#sliderCentralGravity").removeClass('disabled');
+			$("#labelNodeDistance").addClass('disabled');
+			$("#sliderNodeDistance").addClass('disabled');
+			break;
+		case 1: case 2:
+
+			$('#labelCentralGravity').addClass('disabled');
+			$("#sliderCentralGravity").addClass('disabled');
+			$("#labelNodeDistance").removeClass('disabled');
+			$("#sliderNodeDistance").removeClass('disabled');
+			break;
+	}
+
+}
+
+/**
+ * Destroy network layout
+ */
 function destroy() {
 	if (network != null) {
 	    network.destroy();

@@ -2,7 +2,7 @@
 	position: relative;
 	z-index:1;
 	width: 96%;
-	height: 28%;
+	height: 98%;
 	top: 1%;
 	left: 2%;
 	border: 1px;
@@ -17,10 +17,10 @@
 #optionsNetwork { 
 	position:absolute;
 	z-index:1;
-	top: 10%;
+	top: 0%;
 	left: 5%;
 	width: 90%;
-	height: 90%;
+	height: 20%;
 	border-color: black;
 }
 
@@ -47,7 +47,7 @@
 }
 
 #labelRepulsionRadio {
-	left: 55%;
+	left: 56%;
 	top: 5%;
 }
 
@@ -112,6 +112,12 @@
 }
 
 #labelFreezeLayout {
+	position:absolute;
 	top: 50%;
 	right: 8%;
 }
+
+.disabled {
+	opacity: 0.5;
+}
+

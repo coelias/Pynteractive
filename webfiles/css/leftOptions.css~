@@ -2,7 +2,7 @@
 	position: relative;
 	z-index:1;
 	width: 96%;
-	height: 28%;
+	height: 98%;
 	top: 1%;
 	left: 2%;
 	border: 1px;
@@ -17,14 +17,14 @@
 #optionsNetwork { 
 	position:absolute;
 	z-index:1;
-	top: 10%;
+	top: 0%;
 	left: 5%;
 	width: 90%;
-	height: 90%;
+	height: 20%;
 	border-color: black;
 }
 
-#labelBarnesHut, #labelBarnesHutRadio, #labelRepulsion, #labelRepulsionRadio, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #FreezeLayout {
+#labelBarnesHut, #labelBarnesHutRadio, #labelRepulsion, #labelRepulsionRadio, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #FreezeLayout, #labelFreezeLayout {
 	position:absolute;
 	color: #404040;
 	font-weight: bold;
@@ -47,7 +47,7 @@
 }
 
 #labelRepulsionRadio {
-	left: 55%;
+	left: 56%;
 	top: 5%;
 }
 
@@ -115,7 +115,10 @@
 	position:absolute;
 	top: 50%;
 	right: 8%;
-	color: #404040;
-	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+
+.disabled {
+	color: red;
+	opacity: 0.5;
+}
+
