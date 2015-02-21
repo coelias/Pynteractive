@@ -2,16 +2,20 @@ import globals
 import base64
 import tarfile
 import mimetypes
-import threading
 import sys
 import urllib
 import webbrowser
+import threading
 
-mimetypes.init()
-mimetypes.types_map['.dwg']='image/x-dwg'
-mimetypes.types_map['.ico']='image/x-icon'
-mimetypes.types_map['.bz2']='application/x-bzip2'
-mimetypes.types_map['.gz']='application/x-gzip'
+from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
+import signal
+import sys
+
+#metypes.init()
+#mimetypes.types_map['.dwg']='image/x-dwg'
+#mimetypes.types_map['.ico']='image/x-icon'
+#mimetypes.types_map['.bz2']='application/x-bzip2'
+#mimetypes.types_map['.gz']='application/x-gzip'
 
 MUTEX=threading.Lock()
 
@@ -108,97 +112,40 @@ import inspect
 import json
 import traceback
 import hashlib
-#from lib.ConfigManager import ConfigManager
 import imp
 
-
-class Wfcom:
-	'''FWCLASS'''
-	def __init__(self,dataFramework):
+class JSCom(WebSocket):
+	def __init__(self,*args,**kwargs):
+		WebSocket.__init__(self,*args,**kwargs)
 		funcs=[i for i in dir(self) if inspect.ismethod(getattr(self,i)) and getattr(self,i).__doc__!="FWCLASS"]
 		self.dicFuncs={}
 		self.dicArgs={}
 		for i in funcs:
 			self.dicFuncs[i]=getattr(self,i)
 			self.dicArgs[i]=inspect.getargspec(self.dicFuncs[i])
-		self.dataFramework=dataFramework
 
-	def POST(self,fname,data):
+	def sendAction(self,fname,*params):
+		data=json.dumps([fname]+list(params))
+		with MUTEX:
+			self.sendMessage(data)
 
-		if fname not in self.dicFuncs:
-			return self.encode({"success": False,"error":'Function [ %s ] not found!' % (fname)})
-	
-		variables=self.decode(str(data))
-		realargs=self.dicArgs[fname]
-
-
-		for i in variables.keys():
-			if not i in realargs[0]:
-				return self.encode({"success": False,"error":'Parameter [ %s ] does not exist in function [ %s ]!' % (i,fname)})
-
-		temp=0
-		if realargs[3]:
-			temp=len(realargs[3])
-			requiredargs=realargs[0][1:-temp]
-		else:
-			requiredargs=realargs[0][1:]
-
-		for i in requiredargs:
-			if not i in variables:
-				return self.decode({"success": False,"error":'Parameter [ %s ] REQUIRED by function [ %s ]!' % (i,fname)})
+	def handleMessage(self):
+		dat=json.loads(self.data)
+		funcname=dat[0]
+		args=dat[1]
 
 		try:
-			info=self.dicFuncs[fname](**variables)
-		except Exception as a:
-				formatted_lines = traceback.format_exc().splitlines()
-				exc="\r\n".join(formatted_lines)+"\r\n"
-				return self.encode({"success": False,"error":'%s: Exception in function execution: %s' % (fname,exc)})
+			funcs[funcname](**args)
+		except:
+			print "Error calling",funcname,args
 
-		return self.encode({"success": True, "result":info})
+	def handleConnected(self):
+#		print self.address, 'connected'
+		pass
 
-	############################ JSON MANAGEMENT #####################
-	def encode(self,obj):
-		return json.dumps(obj)
-
-	def decode(self,cad):
-		return self.safe_dict(json.loads(cad))
-		
-	def safe_dict(self,d):
-		"""Recursively clone json structure with UTF-8 dictionary keys"""
-		if isinstance(d, dict):
-			if "__b64" in d:
-				return  base64.b64decode(d["__b64"])
-			return dict([(k.encode('utf-8'), self.safe_dict(v)) for k,v in d.iteritems()])
-		elif isinstance(d, list):
-			return [self.safe_dict(x) for x in d]
-		else:
-			return d
-
-	def encodeString(self,obj):
-		return "{ __b64: '%s' }" % (base64.b64encode(obj))
-
-	def encodelist(self,l):
-		cad=[]
-		for i in l:
-			cad.append(self.encode(i))
-		return "[ "+", ".join(cad)+" ]"
-
-	def encodedict(self,d):
-		cad=[]
-		for i,j in d.items():
-			if i=="__proto__":
-				continue
-			cad.append(str(i)+": "+self.encode(j))
-		return "{ "+", ".join(cad)+" }"
-
-	############## METHODS ####################
-
-	def getGraphUpdates(self):
-		return self.dataFramework.getUpdates()
-
-	# EMPTY
-	# EMPTY
-	# EMPTY
+	def handleClose(self):
+#		print self.address, 'closed'
+		pass
 
 class SimpleWS(SimpleHTTPRequestHandler):
 	def do_GET(self):
@@ -220,41 +167,24 @@ class SimpleWS(SimpleHTTPRequestHandler):
 			self.end_headers()
 			self.wfile.write("<h1>File not found (404)</h1><br>We are so sorry :(<br><br><br>That's no so bad, we will die someday anyway<br>Have a good day :D".encode())
 
-	def do_POST(self):
-		global wfcomO
-
-		content=self.rfile.read(int(self.headers['Content-length'])).decode().split("&")
-		query=[i.split("=") for i in content]
-		query=dict([(i[0],unquote(i[1])) for i in query])
-		if "fname" not in query or "data" not in query:
-			self.send_response(500)
-			self.end_headers()
-			self.wfile.write("Incorrect call to Wfcon".encode())
-			return
-
-		self.send_response(200)
-		self.send_header("Content-Type", "application/json")
-		self.end_headers()
-		res=wfcomO.POST(query["fname"],query["data"]).encode()
-		self.wfile.write(res)
-		self.wfile.close()
-
 	def log_message(self, format, *args):
 		return
 
-class Network:
+class DataStruct:
+	JSConnector=None
+	@staticmethod
+	def connect(updateFunc):
+		DataStruct.JSConnector=updateFunc
+
+	@staticmethod
+	def update(func,*pars):
+		DataStruct.JSConnector(func,*pars)
+
+class Network(DataStruct):
 	def __init__(self,directed=False):
 		self.vertices={}
 		self.edges=set()
 		self.directed=directed
-
-		self.updates=[]
-
-	def getUpdates(self):
-		with MUTEX:
-			res=self.updates[:]
-			self.updates=[]
-		return res
 
 	def addNode(self,name=None,**kwargs):
 		if name==None:
@@ -267,60 +197,37 @@ class Network:
 		name=str(name)
 		self.vertices[name]=kwargs
 
-		with MUTEX:
-			self.updates.append(["addNode",str(name)])
-
-		return ["addNode",str(name)]
+		self.update("addNode",str(name))
 
 	def addEdge(self,n1,n2):
 		n1,n2=str(n1),str(n2)
 		assert n1 in self.vertices and n2 in self.vertices
 		self.edges.add((n1,n2))
 
-		with MUTEX:
-			self.updates.append(["addEdge",n1,n2])
-
-		return ["addEdge",n1,n2]
+		self.update("addEdge",n1,n2)
 
 
-
-
-class DataFrameWork:
-	def __init__(self):
-		self.dataObjects=[]
-
-	def createNetwork(self):
-		nw=Network()
-		self.dataObjects.append(nw)
-		return nw
-
-	def getUpdates(self):
-		res=[]
-		for i in self.dataObjects:
-			res+=i.getUpdates()
-
-		return res
-
-		
-dfw=DataFrameWork()
-nw=dfw.createNetwork()
-
-wfcomO=Wfcom(dfw)
-
+######## Webserver
 def startServer():
 	serveraddr = ('', globals.PORT)
 	srvr = ThreadingServer(serveraddr, SimpleWS)
 	srvr.serve_forever()
-
 threading.Thread(target=startServer).start()
 
-webbrowser.open_new_tab("http://localhost:{0}/".format(globals.PORT))
+########## Websocket server
+WSOCKserver = SimpleWebSocketServer("localhost", 8000, JSCom)
+DataStruct.connect(WSOCKserver.sendAction)
+def startWebSocket():
+	WSOCKserver.serveforever()
+threading.Thread(target=startWebSocket).start()
 
-print ">>>dfw=DataFrameWork()"
-print ">>>nw=dfw.createNetwork()"
+webbrowser.open_new_tab("http://localhost:{0}/".format(globals.PORT))
+print ">>> n=Network()"
+n=Network()
 
 import code
-code.interact(local=locals())
+code.interact(banner="",local=locals())
 
 ThreadingServer.force_stop()
-sys.exit(0)
+WSOCKserver.close()
+sys.exit()

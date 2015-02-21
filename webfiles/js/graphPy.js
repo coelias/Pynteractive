@@ -28,20 +28,7 @@ $(function () {
 ///////////////    NETWORK MANAGEMENT    ///////////////////
 ////////////////////////////////////////////////////////////
 
-setInterval(
-	function(){
-		SC.send("getGraphUpdates",{},paintUpdates)
-  	},2000);
-
-function paintUpdates(obj)
-{
-	for (i=0;i<obj.length;i++)
-	{
-		fname=obj[i][0];
-			args=[].slice.call(obj[i]).splice(1);
-		window["UIC"][fname].apply(this,args);
-	}
-}
+PYCON.connect("ws://localhost:8000/")
 
 /**
  * Test data
