@@ -5,12 +5,16 @@
 
   <script type='text/javascript' src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
   <script type='text/javascript' src="https://code.jquery.com/jquery-2.1.0.js"></script>  
+  <script type='text/javascript' src="https://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 
   <script type="text/javascript" src="http://visjs.org/dist/vis.js"></script>
   <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" />
  
   <link rel="stylesheet" href="../css/page.css" />
   <link rel="stylesheet" href="../css/leftOptions.css" />
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 
 </head>
 <body>
@@ -31,7 +35,12 @@
 	<label id="labelNodeDistance">Node Distance</label> <input id="sliderNodeDistance" type="range" min="0" max="300" step="10" value ="100" onchange="changeLayoutNodeDistance(value)"/>
 
 	<button id="GraphFocus" type="button" onclick="changeGraphFocus()">Focus</button>
-	<button id="FreezeLayout" type="button" onclick="changeFreezeLayout()">Freeze</button>
+	<!-- <button id="FreezeLayout" type="button" onclick="changeFreezeLayout()">Freeze</button> -->
+
+<div id="format">
+	<input style="margin-top: 20px;"  id="FreezeLayout" type="checkbox" onclick="changeFreezeLayout()"><label id="labelFreezeLayout"  for="FreezeLayout">Freeze</label>
+</div>
+
 
     </div>
 </div>

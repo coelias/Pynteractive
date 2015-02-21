@@ -19,11 +19,18 @@ var nodeDistanceValue = 100;
 //layout freeze
 var freezeLayout = false;
 
-//var ctrl = false;
-
 $(function () {
+
+	//JQUERY
+	//$( "#FreezeLayout" ).button();
+
 	load();
 });
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+///////////////    NETWORK MANAGEMENT    ///////////////////
+////////////////////////////////////////////////////////////
 
 setInterval(
 	function(){
@@ -40,7 +47,19 @@ function paintUpdates(obj)
 	}
 }
 
+/**
+ * Test data
+ */
 function loadDataTest(){
+
+/*
+from random import choice
+nodes=xrange(100,400)
+map(nw.addNode,nodes)
+for i in range(1000):
+    nw.addEdge(choice(nodes),choice(nodes))
+*/
+
 	//nodes
 	UIC.addNode("1");
 	UIC.addNode("2");
@@ -57,7 +76,9 @@ function loadDataTest(){
 	UIC.addEdge("3","4");
 }
 
-
+/**
+ * Load graph on network div html page
+ */
 function load() {
 
 	//loas data
@@ -72,33 +93,37 @@ function load() {
 	};
 
 	//var options = {physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}}};
-	var options = {stabilize: true};
-	network = new vis.Network(container, data, options);
+	//var options = {scale:0.2, stabilize: true};
+	//network = new vis.Network(container, data, options);
+
+	reDrawLayout();
 
 	//add events listener
 	network.on('select', selectElement);
 	network.on('doubleClick', doubleClickElement);
-
-	//add event keyboard listener
-	//document.onkeydown = checkKey;
-	//document.onkeyup = checkKey;
 };
 
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////    EVENS    //////////////////////////
+////////////////////////////////////////////////////////////
 
-//EVENTS
+/**
+ * Select a list of elements from the graph given an ID's [nodes and edges] with select event on graph
+ * @param {propesties} properties 
+ */
 function selectElement(properties){
 	var idsNodes = properties.nodes;
 	var idsEdges = properties.edges;
-
-
-	//get keyboard pressed
-	//if(ctrl){
-		console.log("selectElement");
-		console.log(idsNodes);
-		console.log(idsEdges);
-	//}
+	console.log("selectElement");
+	console.log(idsNodes);
+	console.log(idsEdges);
 }
 
+/**
+ * Select a list of elements from the graph given an ID's [nodes and edges] with doubleclick event on graph
+ * @param {propesties} properties 
+ */
 function doubleClickElement(properties){
 	var idsNodes = properties.nodes;
 	var idsEdges = properties.edges;
@@ -107,15 +132,15 @@ function doubleClickElement(properties){
 	console.log(idsEdges);
 }
 
-/*function checkKey(e) {
-    e = e || window.event;
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////    FUNCTIONS    ///////////////////////
+////////////////////////////////////////////////////////////
 
-    if (e.keyCode == '17') {
-        ctrl = !ctrl;
-    }
-}*/
-
-//FUNCTIONS
+/**
+ * Change layout type
+ * @param {Number} id 
+ */
 function changeLayoutType(id){
 
 	switch(id) {
@@ -132,17 +157,29 @@ function changeLayoutType(id){
 	reDrawLayout();
 }
 
+/**
+ * Change central gravity of graph
+ * @param {Number} value 
+ */
 function changeLayoutCentralGravity(value){
 	centralGravityValue  = value;
 	reDrawLayout();
 }
 
+/**
+ * Change node distance of graph
+ * @param {Number} value 
+ */
 function changeLayoutNodeDistance(value){
 	nodeDistanceValue = value;
 	reDrawLayout();
 }
 
+/**
+ * Re paint all the layout taking into account three physics options {barnesHut, barnesHut disabled and hierarchical}
+ */
 function reDrawLayout(){
+	destroy();
 	switch(enabledLayout) {
 		case 0:
 			var options = {physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}}};
@@ -158,12 +195,28 @@ function reDrawLayout(){
 			network = new vis.Network(container, data, options);
 			break;
 	}
+	//network.freezeSimulation(true);
+	//freezeLayout = true;
 }
 
+function destroy() {
+	if (network != null) {
+	    network.destroy();
+	    network = null;
+	}
+}
+
+/**
+ * Set focus on random node
+ */
 function changeGraphFocus(){
-
+	var options = {position:{x:0, y:0}, scale:0.3, animation: {duration: 1000}};
+	network.moveTo(options);
 }
 
+/**
+ * Enable/Disable animation layout
+ */
 function changeFreezeLayout(){
 	freezeLayout = !freezeLayout;
 	network.freezeSimulation(freezeLayout);

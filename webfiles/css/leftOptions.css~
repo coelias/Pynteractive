@@ -3,7 +3,7 @@
 	z-index:1;
 	width: 96%;
 	height: 28%;
-	top: 2%;
+	top: 1%;
 	left: 2%;
 	border: 1px;
 	border-color: black;
@@ -24,49 +24,36 @@
 	border-color: black;
 }
 
-#labelBarnesHut{
+#labelBarnesHut, #labelBarnesHutRadio, #labelRepulsion, #labelRepulsionRadio, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #FreezeLayout {
 	position:absolute;
-	left: 0%;
-	top: 5%;
 	color: #404040;
 	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#labelBarnesHut {
+	left: 0%;
+	top: 5%;
 }
 
 #labelBarnesHutRadio {
-	position:absolute;
 	left: 19%;
 	top: 5%;
-	color: #404040;
-	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #labelRepulsion {
-	position:absolute;
 	left: 38%;
 	top: 5%;
-	color: #404040;
-	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #labelRepulsionRadio {
-	position:absolute;
 	left: 55%;
 	top: 5%;
-	color: #404040;
-	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #labelHierarchicalRepulsion {
-	position:absolute;
 	right: 8%;
 	top: 5%;
-	color: #404040;
-	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #labelHierarchicalRepulsionRadio {
@@ -79,12 +66,8 @@
 }
 
 #labelCentralGravity {
-	position:absolute;
-	color: #404040;
-	font-weight: bold;
 	top: 20%;
 	left: 0%;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #sliderCentralGravity {
@@ -95,16 +78,11 @@
 	font-weight: bold;
 	height: 5px;
     	width: 55%;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #labelNodeDistance {
-	position:absolute;
 	top: 35%;
 	left: 0%;
-	color: #404040;
-	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #sliderNodeDistance {
@@ -115,22 +93,28 @@
 	font-weight: bold;
 	height: 5px;
     	width: 55%;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#GraphFocus, #FreezeLayout { 
+	position:absolute;
+	border-radius: 5px;
+  	border: 1px #A0A0A0 solid; 
 }
 
 #GraphFocus {
-	position:absolute;
 	top: 50%;
 	left: 0%;
-	color: #404040;
-	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #FreezeLayout {
+	top: 40%;
+	right: 0%;
+}
+
+#labelFreezeLayout {
 	position:absolute;
 	top: 50%;
-	right: 0%;
+	right: 8%;
 	color: #404040;
 	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
