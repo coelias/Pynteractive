@@ -1,21 +1,15 @@
 import globals
-import base64
-import tarfile
+import inspect
+import json
 import mimetypes
+import os
+import random
 import sys
+import tarfile
+import threading
 import urllib
 import webbrowser
-import threading
-
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
-import signal
-import sys
-
-#metypes.init()
-#mimetypes.types_map['.dwg']='image/x-dwg'
-#mimetypes.types_map['.ico']='image/x-icon'
-#mimetypes.types_map['.bz2']='application/x-bzip2'
-#mimetypes.types_map['.gz']='application/x-gzip'
 
 MUTEX=threading.Lock()
 
@@ -42,7 +36,6 @@ class ThreadingServer(ThreadingMixIn, HTTPServer):
 	@staticmethod
 	def force_stop():
 		ThreadingServer.stopped = True
-#		ThreadingServer.server.server_close()
 		urllib.urlopen("http://localhost:{0}/".format(globals.PORT)).read()
 
 class FileMgr:
@@ -107,12 +100,6 @@ class FileMgr:
 
 #FM=FileMgr(tar="sample.tar.gz")	
 
-import os
-import inspect
-import json
-import traceback
-import hashlib
-import imp
 
 class JSCom(WebSocket):
 	def __init__(self,*args,**kwargs):
@@ -149,16 +136,16 @@ class JSCom(WebSocket):
 
 class SimpleWS(SimpleHTTPRequestHandler):
 	def do_GET(self):
-		if self.path=="/": self.path="/index.html"
-		path=os.path.join(*(["webfiles"]+self.path.split("/")))
-		if os.path.isfile(path):
+		if self.path.startswith("/?"): resource="webfiles/index.html"
+		else: resource=os.path.join(*(["webfiles"]+self.path.split("/")))
+		if os.path.isfile(resource):
 			self.send_response(200)
 			ext=self.path.split(".")[-1].lower()
 			if ext in mimetypes.types_map:
 				mime=mimetypes.types_map[ext]
 				self.send_header("Content-Type", mime)
 			self.end_headers()
-			f=open(path,"rb")
+			f=open(resource,"rb")
 			self.wfile.write(f.read())
 			f.close()
 		else:
@@ -172,16 +159,38 @@ class SimpleWS(SimpleHTTPRequestHandler):
 
 class DataStruct:
 	JSConnector=None
+	OBJECTS={}
+
+	def __init__(self,name=None):
+		if not name:
+			name=self.__class__.__name__+"-"+"".join([random.choice("ABCDEF0123456789") for i in range(4)])
+		ID=(self.__class__.__name__,name)
+		if ID in DataStruct.OBJECTS:
+			raise ("Object {0} already exists!".format(ID))
+		DataStruct.OBJECTS[ID]=self
+		self._ID=name
+	
+	def view(self):
+		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}".format(globals.PORT,self._ID,self.__class__.__name__))
+
+	def update(self,func,*pars):
+		DataStruct.JSConnector(self._ID,func,*pars)
+
 	@staticmethod
 	def connect(updateFunc):
 		DataStruct.JSConnector=updateFunc
 
-	@staticmethod
-	def update(func,*pars):
-		DataStruct.JSConnector(func,*pars)
+	
+
+class Tree(DataStruct):
+	def __init__(self,name=None,directed=False):
+		DataStruct.__init__(self,name)
+	
 
 class Network(DataStruct):
-	def __init__(self,directed=False):
+	def __init__(self,name=None,directed=False):
+		DataStruct.__init__(self,name)
+
 		self.vertices={}
 		self.edges=set()
 		self.directed=directed
@@ -196,14 +205,12 @@ class Network(DataStruct):
 				i+=1
 		name=str(name)
 		self.vertices[name]=kwargs
-
 		self.update("addNode",str(name))
 
 	def addEdge(self,n1,n2):
 		n1,n2=str(n1),str(n2)
 		assert n1 in self.vertices and n2 in self.vertices
 		self.edges.add((n1,n2))
-
 		self.update("addEdge",n1,n2)
 
 
@@ -217,11 +224,11 @@ threading.Thread(target=startServer).start()
 ########## Websocket server
 WSOCKserver = SimpleWebSocketServer("localhost", 8000, JSCom)
 DataStruct.connect(WSOCKserver.sendAction)
+
 def startWebSocket():
 	WSOCKserver.serveforever()
 threading.Thread(target=startWebSocket).start()
 
-webbrowser.open_new_tab("http://localhost:{0}/".format(globals.PORT))
 print ">>> n=Network()"
 n=Network()
 
