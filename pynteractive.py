@@ -215,32 +215,37 @@ class Network(DataStruct):
 		DataStruct.__init__(self,name)
 
 		self.vertices={}
-		self.edges=set()
+		self.edges={}
 		self.directed=directed
 
 	def refresh(self):
-		for i in self.vertices:
-			self.update("addNode",str(i))
-		for i,j in self.edges:
-			self.update("addEdge",i,j)
+		for i in self.vertices.values():
+			self.update("addNode",i["_id"],i["_label"],i["_title"],i["_group"])
+		for i,j in self.edges.items():
+			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_threshold"])
 
-	def addNode(self,name=None,**kwargs):
-		if name==None:
+	def addNode(self,node_id=None,label=None,title=None,group=None):
+		if node_id==None:
 			i=1
 			while True:
 				if str(i) not in self.vertices:
-					name=i
+					node_id=i
 					break
 				i+=1
-		name=str(name)
-		self.vertices[name]=kwargs
-		self.update("addNode",str(name))
+		node_id=str(node_id)
+		if not label: label=node_id
+		else: label=str(label)
+		self.vertices[node_id]={"_id":node_id,"_label":label,"_title":title,"_group":group}
 
-	def addEdge(self,n1,n2):
+		self.update("addNode",node_id,label,title,group)
+
+	def addEdge(self,n1,n2,label=None,title=None,threshold=None):
+		if not label: label=''
 		n1,n2=str(n1),str(n2)
+		_id="~".join([n1,n2,label])
 		assert n1 in self.vertices and n2 in self.vertices
-		self.edges.add((n1,n2))
-		self.update("addEdge",n1,n2)
+		self.edges[_id]={"_n1":n1,"_n2":n2,"_label":label,"_title":title,"_threshold":threshold}
+		self.update("addEdge",_id,n1,n2,label,title,threshold)
 
 	def random(self,nn,ne):
 		map(self.addNode,xrange(nn))
@@ -267,12 +272,6 @@ class Network(DataStruct):
 				for j in range(len(rows)):
 					if csv[i][j]!='0':
 						self.addEdge(rows[i],rows[j])
-
-					
-	
-
-
-
 
 
 
