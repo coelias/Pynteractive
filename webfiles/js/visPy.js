@@ -55,20 +55,11 @@ function loadDataTest(){
  */
 function loadHtml() {
 
-	//create nerwork layout
-	jQuery('<div/>', {
-	    	id: 'network',
-	}).appendTo('body');
-
 	//create tools
 	jQuery('<div/>', {
-	    	id: 'tools',
-	}).appendTo('body');	
-
-	jQuery('<div/>', {
 	    	id: 'containerNetwork',
-	}).appendTo('#tools');	
-
+	}).appendTo('#sidebar');
+	
 	jQuery('<div/>', {
 	    	id: 'optionsNetwork',
 	}).appendTo('#containerNetwork');
@@ -87,6 +78,8 @@ function loadHtml() {
 		checked: true,
 	}).appendTo('#optionsNetwork');
 
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+
 	jQuery('<label/>', {
 		id: 'labelRepulsion',
 		text: 'Repulsion',
@@ -101,6 +94,8 @@ function loadHtml() {
 		checked: false,
 	}).appendTo('#optionsNetwork');
 
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+
 	jQuery('<label/>', {
 		id: 'labelHierarchicalRepulsion',
 		text: 'Hierarchical',
@@ -114,6 +109,9 @@ function loadHtml() {
 		onclick: 'changeLayoutType(id);',
 		checked: false,
 	}).appendTo('#optionsNetwork');
+
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	jQuery('<hr/>', {}).appendTo('#optionsNetwork');
 
 	jQuery('<label/>', {
 		id: 'labelCentralGravity',
@@ -130,6 +128,8 @@ function loadHtml() {
 		onclick: 'changeLayoutCentralGravity(value);',
 	}).appendTo('#optionsNetwork');
 
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+
 	jQuery('<label/>', {
 		id: 'labelNodeDistance',
 		text: 'Node Distance',
@@ -145,11 +145,24 @@ function loadHtml() {
 		onclick: 'changeLayoutNodeDistance(value);',
 	}).appendTo('#optionsNetwork');
 
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	jQuery('<hr/>', {}).appendTo('#optionsNetwork');
+
 	jQuery('<button/>', {
 		id: 'GraphFocus',
 		type: 'button', 
 		text: 'Focus',
 		onclick: 'changeGraphFocus();',
+	}).appendTo('#optionsNetwork');
+
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+
+	jQuery('<label/>', {
+		id: 'labelFreezeLayout',
+		type: 'checkbox', 
+		for: 'FreezeLayout',
+		text: 'Freeze Animation',
 	}).appendTo('#optionsNetwork');
 
 	jQuery('<input/>', {
@@ -158,12 +171,9 @@ function loadHtml() {
 		onclick: 'changeFreezeLayout();',
 	}).appendTo('#optionsNetwork');
 
-	jQuery('<label/>', {
-		id: 'labelFreezeLayout',
-		type: 'checkbox', 
-		for: 'FreezeLayout',
-		text: 'Freeze Animation',
-	}).appendTo('#optionsNetwork');
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	jQuery('<hr/>', {}).appendTo('#optionsNetwork');
 
 }
 

@@ -1,15 +1,8 @@
-#tools { 
-	position: absolute;
-	top: 0%;
-	left: 0%;
-	width: 18%;
+body, html {
 	height: 100%;
+	margin: 0;
+	overflow:hidden;
+	font-family: helvetica;
+	font-weight: 100;
 }
 
-#networks { 
-	position: absolute;
-	top: 0%;
-	left: 18%;
-	width: 80%;
-	height: 100%;
-}

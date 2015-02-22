@@ -12,7 +12,7 @@
   <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" />
  
   <link rel="stylesheet" href="../css/page.css" />
-  <link rel="stylesheet" href="../css/leftOptions.css" />
+  <link rel="stylesheet" href="../css/leftOptions.css" /> 
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 
@@ -41,6 +41,29 @@ var DATAID = getUrlVars()["dataid"];
 var VTYPE = getUrlVars()["vtype"];
 document.title = DATAID;
 </script>
+
+<!-- basic structure left sidebar movement -->
+<script>
+$(document).ready(function() {
+	$("[data-toggle]").click(function() {
+	var toggle_el = $(this).data("toggle");
+	$(toggle_el).toggleClass("open-sidebar");
+	});
+});
+</script>
+
+<!-- basic structure -->
+<div id="tools" class="container">
+    <div id="sidebar"></div>
+    <div id="main-content" class="main-content">
+        <a id="sidebar-toggle" href="#" data-toggle=".container">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </a>
+	<div id="network" class="content"></div>
+    </div>
+</div>
 
 </body>
 </html>
