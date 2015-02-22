@@ -22,5 +22,7 @@ removeNode: function (id){
 removeEdge: function (id1,id2){
 				var e = {"id":id1+":"+id2};
 				edgesMap.remove(e);
-			}
+			},
+
+close: function(){close();}
 }

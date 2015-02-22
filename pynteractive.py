@@ -11,6 +11,7 @@ import urllib
 import webbrowser
 import time
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
+from collections import Counter
 
 MUTEX=threading.Lock()
 
@@ -178,6 +179,9 @@ class DataStruct:
 	def view(self):
 		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}".format(globals.PORT,self._ID,self.__class__.__name__))
 
+	def closeView(self):
+		self.update("close")
+
 	def update(self,func,*pars):
 		DataStruct.JSConnector(self._ID,func,*pars)
 
@@ -190,6 +194,15 @@ class DataStruct:
 	def connect(updateFunc):
 		DataStruct.JSConnector=updateFunc
 
+	@staticmethod
+	def readCsv(csvfile):
+		with open(csvfile) as f:
+			csv=[i.strip() for i in f]
+		if csv:
+			delimiter=Counter([i for i in csv[0] if i in "\t ;,|"]).most_common(1)
+			if delimiter:
+				csv=[i.split(delimiter[0][0]) for i in csv]
+		return csv
 	
 
 class Tree(DataStruct):
@@ -233,6 +246,18 @@ class Network(DataStruct):
 		map(self.addNode,xrange(nn))
 		for i in xrange(ne):
 			self.addEdge(random.choice(xrange(nn)),random.choice(xrange(nn)))
+
+	def fromCsv(self,fil):
+		csv=self.readCsv(fil)
+		for i in csv:
+			for j in i:
+				if j not in self.vertices: self.addNode(j)
+			for j in i[1:]:
+				if not (i[0],j) in self.edges:
+					self.addEdge(i[0],j)
+
+
+
 
 
 
