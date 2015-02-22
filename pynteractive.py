@@ -229,6 +229,12 @@ class Network(DataStruct):
 		self.edges.add((n1,n2))
 		self.update("addEdge",n1,n2)
 
+	def random(self,nn,ne):
+		map(self.addNode,xrange(nn))
+		for i in xrange(ne):
+			self.addEdge(random.choice(xrange(nn)),random.choice(xrange(nn)))
+
+
 
 ######## Webserver
 def startServer():

@@ -47,28 +47,6 @@ $(function () {
  */
 function loadDataTest(){
 
-/*
-from random import choice
-nodes=xrange(100,400)
-map(nw.addNode,nodes)
-for i in range(1000):
-    nw.addEdge(choice(nodes),choice(nodes))
-*/
-
-	//nodes
-	UIC.addNode("1");
-	UIC.addNode("2");
-	UIC.addNode("3");
-	UIC.addNode("4");
-
-	//edges
-	UIC.addEdge("1","1");
-	UIC.addEdge("1","2");
-	UIC.addEdge("1","3");
-	UIC.addEdge("1","4");
-	UIC.addEdge("2","3");
-	UIC.addEdge("2","4");
-	UIC.addEdge("3","4");
 }
 
 
