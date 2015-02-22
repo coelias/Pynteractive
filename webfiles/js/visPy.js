@@ -33,6 +33,7 @@ $(function () {
 
 	//create network visualization
 	load();
+	PYCON.connect("ws://localhost:8000/")
 });
 
 ////////////////////////////////////////////////////////////
@@ -40,7 +41,6 @@ $(function () {
 ///////////////    NETWORK MANAGEMENT    ///////////////////
 ////////////////////////////////////////////////////////////
 
-PYCON.connect("ws://localhost:8000/")
 
 /**
  * Test data

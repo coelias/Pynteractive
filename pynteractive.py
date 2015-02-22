@@ -9,6 +9,7 @@ import tarfile
 import threading
 import urllib
 import webbrowser
+import time
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 
 MUTEX=threading.Lock()
@@ -117,14 +118,14 @@ class JSCom(WebSocket):
 			self.sendMessage(data)
 
 	def handleMessage(self):
-		dat=json.loads(self.data)
-		funcname=dat[0]
-		args=dat[1]
-
 		try:
-			funcs[funcname](**args)
+			print self.data
+			dat=json.loads(str(self.data))
+			funcname=dat[0]
+			args=dat[1]
+			self.dicFuncs[funcname](**args)
 		except:
-			print "Error calling",funcname,args
+			print "Error processing",str(self.data)
 
 	def handleConnected(self):
 #		print self.address, 'connected'
@@ -135,6 +136,7 @@ class JSCom(WebSocket):
 		pass
 
 	def attach(self,name):
+		print "attach!!!!"
 		self.server.attachConnToDataId(self,name)
 
 class SimpleWS(SimpleHTTPRequestHandler):
