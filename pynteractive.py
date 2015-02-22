@@ -119,7 +119,6 @@ class JSCom(WebSocket):
 
 	def handleMessage(self):
 		try:
-			print self.data
 			dat=json.loads(str(self.data))
 			funcname=dat[0]
 			args=dat[1]
@@ -132,12 +131,13 @@ class JSCom(WebSocket):
 		pass
 
 	def handleClose(self):
-#		print self.address, 'closed'
 		pass
 
 	def attach(self,name):
-		print "attach!!!!"
 		self.server.attachConnToDataId(self,name)
+
+	def refresh(self,name):
+		DataStruct.refreshData(name)
 
 class SimpleWS(SimpleHTTPRequestHandler):
 	def do_GET(self):
@@ -169,7 +169,7 @@ class DataStruct:
 	def __init__(self,name=None):
 		if not name:
 			name=self.__class__.__name__+"-"+"".join([random.choice("ABCDEF0123456789") for i in range(4)])
-		ID=(self.__class__.__name__,name)
+		ID=name
 		if ID in DataStruct.OBJECTS:
 			raise ("Object {0} already exists!".format(ID))
 		DataStruct.OBJECTS[ID]=self
@@ -180,6 +180,11 @@ class DataStruct:
 
 	def update(self,func,*pars):
 		DataStruct.JSConnector(self._ID,func,*pars)
+
+	@staticmethod
+	def refreshData(name):
+		if name in DataStruct.OBJECTS:
+			DataStruct.OBJECTS[name].refresh()
 
 	@staticmethod
 	def connect(updateFunc):
@@ -199,6 +204,12 @@ class Network(DataStruct):
 		self.vertices={}
 		self.edges=set()
 		self.directed=directed
+
+	def refresh(self):
+		for i in self.vertices:
+			self.update("addNode",str(i))
+		for i,j in self.edges:
+			self.update("addEdge",i,j)
 
 	def addNode(self,name=None,**kwargs):
 		if name==None:

@@ -519,7 +519,6 @@ class SimpleWebSocketServer(object):
 				except: pass
 
 	def attachConnToDataId(self,conn,name):
-		print "attaching!!!",name
 		self.DataId2Connections.setdefault(name,[]).append(conn)
 
 	def decorateSocket(self, sock):

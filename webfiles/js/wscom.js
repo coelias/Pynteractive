@@ -26,7 +26,10 @@ var PYCON={
 		this.websocket.onmessage = this.onMessage;
 		this.websocket.onerror = this.onError;
 	},
-	onOpen: function(evt){PYCON.send("attach",{"name": DATAID});},
+	onOpen: function(evt){
+		PYCON.send("attach" ,{"name": DATAID});
+		PYCON.send("refresh",{"name": DATAID});
+		},
 	onClose: function(evt){close();},
 	onMessage: function(evt){
 		jsonObj=JSON.parse(evt.data);
