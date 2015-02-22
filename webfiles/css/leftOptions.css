@@ -16,7 +16,7 @@
 	border-color: black;
 }
 
-#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #labelFreezeLayout {
+#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #labelFreezeLayout, #labelHideEdgesOnDragLayout {
 	color: #404040;
 	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -84,10 +84,22 @@ border: 8px solid green;
 
 #labelFreezeLayout{
 	position:absolute;
-	margin-top: 20px;
+	margin-top: 17px;
 }
 
 #FreezeLayout { 
+	position:absolute;
+	margin-top: 18px;
+	right: 0%;
+}
+
+
+#labelHideEdgesOnDragLayout{
+	position:absolute;
+	margin-top: 20px;
+}
+
+#HideEdgesOnDragLayout { 
 	position:absolute;
 	margin-top: 21px;
 	right: 0%;

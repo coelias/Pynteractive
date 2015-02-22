@@ -16,6 +16,10 @@ var nodeDistanceValue = 100;
 
 //layout freeze
 var freezeLayout = false;
+var hideEdgesOnDragLayout = false;
+
+//options layout
+var options;
 
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -160,8 +164,6 @@ function loadHtml() {
 
 	jQuery('<label/>', {
 		id: 'labelFreezeLayout',
-		type: 'checkbox', 
-		for: 'FreezeLayout',
 		text: 'Freeze Animation',
 	}).appendTo('#optionsNetwork');
 
@@ -169,6 +171,19 @@ function loadHtml() {
 		id: 'FreezeLayout',
 		type: 'checkbox', 
 		onclick: 'changeFreezeLayout();',
+	}).appendTo('#optionsNetwork');
+
+	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+
+	jQuery('<label/>', {
+		id: 'labelHideEdgesOnDragLayout',
+		text: 'Hide edges on drag',
+	}).appendTo('#optionsNetwork');
+
+	jQuery('<input/>', {
+		id: 'HideEdgesOnDragLayout',
+		type: 'checkbox', 
+		onclick: 'changeHideEdgesOnDragLayout();',
 	}).appendTo('#optionsNetwork');
 
 	jQuery('<br/>', {}).appendTo('#optionsNetwork');
@@ -192,10 +207,6 @@ function load() {
 		nodes: nodesMap,
 		edges: edgesMap
 	};
-
-	//var options = {physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}}};
-	//var options = {scale:0.2, stabilize: true};
-	//network = new vis.Network(container, data, options);
 
 	reDrawLayout();
 
@@ -281,20 +292,20 @@ function changeLayoutNodeDistance(value){
  */
 function reDrawLayout(){
 
-	destroy();
+	//destroy();
 
 	switch(enabledLayout) {
 		case 0:
-			var options = {physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}}};
+			options = {physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 		case 1:
-			var options = {physics: {barnesHut: {enabled: false}, repulsion: {nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}}};
+			options = {physics: {barnesHut: {enabled: false}, repulsion: {nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 		case 2:
 			//"hubsize","directional"
-			var options = {hierarchicalLayout: {layout: "hubsize"}, physics: {hierarchicalRepulsion: {nodeDistance: nodeDistanceValue}}};
+			options = {hierarchicalLayout: {layout: "hubsize"}, physics: {hierarchicalRepulsion: {nodeDistance: nodeDistanceValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 	}
@@ -350,4 +361,15 @@ function changeGraphFocus(){
 function changeFreezeLayout(){
 	freezeLayout = !freezeLayout;
 	network.freezeSimulation(freezeLayout);
+}
+
+
+/**
+ * Enable/Disable animation layout
+ */
+function changeHideEdgesOnDragLayout(){
+	hideEdgesOnDragLayout = !hideEdgesOnDragLayout;
+	options = {hideEdgesOnDrag: hideEdgesOnDragLayout};
+	network.setOptions(options);
+	//reDrawLayout();
 }
