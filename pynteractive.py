@@ -247,14 +247,29 @@ class Network(DataStruct):
 		for i in xrange(ne):
 			self.addEdge(random.choice(xrange(nn)),random.choice(xrange(nn)))
 
-	def fromCsv(self,fil):
+	def fromCsv(self,fil,matrix=False,distances=False):
 		csv=self.readCsv(fil)
-		for i in csv:
-			for j in i:
-				if j not in self.vertices: self.addNode(j)
-			for j in i[1:]:
-				if not (i[0],j) in self.edges:
-					self.addEdge(i[0],j)
+		if not matrix:
+			for i in csv:
+				for j in i:
+					if j not in self.vertices: self.addNode(j)
+				for j in i[1:]:
+					if not (i[0],j) in self.edges:
+						self.addEdge(i[0],j)
+		else:
+			cols=csv[0][1:]
+			rows=[i[0] for i in csv[1:]]
+			if cols!=rows: raise Exception("Rows andColumns do not match")
+			for i in rows:
+				if i not in self.vertices: self.addNode(i)
+			csv=[i[1:] for i in csv][1:]
+			for i in range(len(rows)):
+				for j in range(len(rows)):
+					if csv[i][j]!='0':
+						self.addEdge(rows[i],rows[j])
+
+					
+	
 
 
 
