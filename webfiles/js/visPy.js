@@ -125,7 +125,7 @@ function loadHtml() {
 
 	jQuery('<label/>', {
 		id: 'labelHierarchicalRepulsion',
-		text: 'Repulsion',
+		text: 'Hierarchical',
 	}).appendTo('#optionsNetwork');
 	
 	jQuery('<input/>', {
@@ -323,17 +323,16 @@ function reDrawToolLayout() {
 
 	switch(enabledLayout) {
 		case 0:
-			$('#labelCentralGravity').removeClass('disabled');
-			$("#sliderCentralGravity").removeClass('disabled');
-			$("#labelNodeDistance").addClass('disabled');
-			$("#sliderNodeDistance").addClass('disabled');
+			$('#labelCentralGravity').prop( "disabled", false ).removeClass('disabled');
+			$("#sliderCentralGravity").prop( "disabled", false ).removeClass('disabled');
+			$("#labelNodeDistance").prop( "disabled", true ).addClass('disabled');
+			$("#sliderNodeDistance").prop( "disabled", true ).addClass('disabled');
 			break;
 		case 1: case 2:
-
-			$('#labelCentralGravity').addClass('disabled');
-			$("#sliderCentralGravity").addClass('disabled');
-			$("#labelNodeDistance").removeClass('disabled');
-			$("#sliderNodeDistance").removeClass('disabled');
+			$('#labelCentralGravity').prop( "disabled", true ).addClass('disabled');
+			$("#sliderCentralGravity").prop( "disabled", true ).addClass('disabled');
+			$("#labelNodeDistance").prop( "disabled", false ).removeClass('disabled');
+			$("#sliderNodeDistance").prop( "disabled", false ).removeClass('disabled');
 			break;
 	}
 
