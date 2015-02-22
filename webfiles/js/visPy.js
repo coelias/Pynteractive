@@ -29,9 +29,6 @@ var options;
 //VTYPE
 
 $(function () {
-
-	console.log("hola");
-
 	//create own html page
 	loadHtml();
 
@@ -44,161 +41,112 @@ $(function () {
 ////////////////////////////////////////////////////////////
 ///////////////    NETWORK MANAGEMENT    ///////////////////
 ////////////////////////////////////////////////////////////
-
-
-/**
- * Test data
- */
-function loadDataTest(){
-
+function loadHtmlTag(tag) {
+	var type = tag.tag;
+	var to = tag.to;
+	delete tag.tag;
+	delete tag.to;
+	jQuery('<'+type+'/>', tag).appendTo(to);
 }
-
 
 /**
  * Load html page
  */
 function loadHtml() {
-
+	
 	//create tools
-	jQuery('<div/>', {
-	    	id: 'containerNetwork',
-	}).appendTo('#sidebar');
+	var tag = {};
+
+	tag = {tag:'div', to:'#sidebar', id:'containerNetwork'};
+	loadHtmlTag(tag);
 	
-	jQuery('<div/>', {
-	    	id: 'optionsNetwork',
-	}).appendTo('#containerNetwork');
+	tag = {tag:'div', to:'#containerNetwork', id:'optionsNetwork'};
+	loadHtmlTag(tag);
 
-	jQuery('<label/>', {
-		id: 'labelBarnesHut',
-		text: 'BarnesHut',
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'label', to:'#optionsNetwork', id:'labelBarnesHut', text:'BarnesHut'};
+	loadHtmlTag(tag);
 	
-	jQuery('<input/>', {
-		id: 'labelBarnesHutRadio',
-		name: 'groupOptionsNetworkg',
-		type: 'radio', 
-		value: '1',
-		onclick: 'changeLayoutType(id);',
-		checked: true,
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'input', to:'#optionsNetwork', id: 'labelBarnesHutRadio', name: 'groupOptionsNetwork', type: 'radio', value: '1', onclick: 'changeLayoutType(id);',	checked: true,};
+	loadHtmlTag(tag);
 
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
 
-	jQuery('<label/>', {
-		id: 'labelRepulsion',
-		text: 'Repulsion',
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelRepulsion',
+		text: 'Repulsion'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'labelRepulsionRadio', name: 'groupOptionsNetwork', type: 'radio', value: '0', onclick: 'changeLayoutType(id);', checked: false};
+	loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelHierarchicalRepulsion', text: 'Hierarchical'};
+	loadHtmlTag(tag);
 	
-	jQuery('<input/>', {
-		id: 'labelRepulsionRadio',
-		name: 'groupOptionsNetworkg',
-		type: 'radio', 
-		value: '0',
-		onclick: 'changeLayoutType(id);',
-		checked: false,
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'input', to:'#optionsNetwork', id: 'labelHierarchicalRepulsionRadio', name: 'groupOptionsNetwork', type: 'radio', value: '0', onclick: 'changeLayoutType(id);', checked: false};
+	loadHtmlTag(tag);
 
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
 
-	jQuery('<label/>', {
-		id: 'labelHierarchicalRepulsion',
-		text: 'Hierarchical',
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelCentralGravity', text: 'Central Gravity'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderCentralGravity', type: 'range', min: '0', max: '5', step: '0.1', value: '1.5', onclick: 'changeLayoutCentralGravity(value);'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelNodeDistance', text: 'Node Distance'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: '100', onclick: 'changeLayoutNodeDistance(value);'};
+	loadHtmlTag(tag);
 	
-	jQuery('<input/>', {
-		id: 'labelHierarchicalRepulsionRadio',
-		name: 'groupOptionsNetworkg',
-		type: 'radio', 
-		value: '0',
-		onclick: 'changeLayoutType(id);',
-		checked: false,
-	}).appendTo('#optionsNetwork');
-
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
 	jQuery('<hr/>', {}).appendTo('#optionsNetwork');
 
-	jQuery('<label/>', {
-		id: 'labelCentralGravity',
-		text: 'Central Gravity',
-	}).appendTo('#optionsNetwork');
-	
-	jQuery('<input/>', {
-		id: 'sliderCentralGravity',
-		type: 'range', 
-		min: '0',
-		max: '5',
-		step: '0.1',
-		value: '1.5',
-		onclick: 'changeLayoutCentralGravity(value);',
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'button', to:'#optionsNetwork', id: 'GraphFocus', type: 'button', text: 'Focus', onclick: 'changeGraphFocus();'};
+	loadHtmlTag(tag);
 
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
 
-	jQuery('<label/>', {
-		id: 'labelNodeDistance',
-		text: 'Node Distance',
-	}).appendTo('#optionsNetwork');
-	
-	jQuery('<input/>', {
-		id: 'sliderNodeDistance',
-		type: 'range', 
-		min: '0',
-		max: '300',
-		step: '10',
-		value: '100',
-		onclick: 'changeLayoutNodeDistance(value);',
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelFreezeLayout', text: 'Freeze Animation'};
+	loadHtmlTag(tag);
 
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
-	jQuery('<hr/>', {}).appendTo('#optionsNetwork');
+	tag = {tag:'input', to:'#optionsNetwork', id: 'FreezeLayout', type: 'checkbox', onclick: 'changeFreezeLayout();'};
+	loadHtmlTag(tag);
 
-	jQuery('<button/>', {
-		id: 'GraphFocus',
-		type: 'button', 
-		text: 'Focus',
-		onclick: 'changeGraphFocus();',
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
 
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelHideEdgesOnDragLayout', text: 'Hide edges on drag'};
+	loadHtmlTag(tag);
 
-	jQuery('<label/>', {
-		id: 'labelFreezeLayout',
-		text: 'Freeze Animation',
-	}).appendTo('#optionsNetwork');
+	tag = {tag:'input', to:'#optionsNetwork', id: 'HideEdgesOnDragLayout', type: 'checkbox', onclick: 'changeHideEdgesOnDragLayout();'};
+	loadHtmlTag(tag);
 
-	jQuery('<input/>', {
-		id: 'FreezeLayout',
-		type: 'checkbox', 
-		onclick: 'changeFreezeLayout();',
-	}).appendTo('#optionsNetwork');
-
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
-
-	jQuery('<label/>', {
-		id: 'labelHideEdgesOnDragLayout',
-		text: 'Hide edges on drag',
-	}).appendTo('#optionsNetwork');
-
-	jQuery('<input/>', {
-		id: 'HideEdgesOnDragLayout',
-		type: 'checkbox', 
-		onclick: 'changeHideEdgesOnDragLayout();',
-	}).appendTo('#optionsNetwork');
-
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
-	jQuery('<br/>', {}).appendTo('#optionsNetwork');
-	jQuery('<hr/>', {}).appendTo('#optionsNetwork');
-
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
 }
 
 /**
  * Load graph on network div html page
  */
 function load() {
-
-	//loas data
-	loadDataTest();
 
 	//create a network
 	container = document.getElementById('network');
@@ -292,7 +240,7 @@ function changeLayoutNodeDistance(value){
  */
 function reDrawLayout(){
 
-	//destroy();
+	destroy();
 
 	switch(enabledLayout) {
 		case 0:
@@ -319,7 +267,7 @@ function reDrawLayout(){
  * Re paint tool layout taking into account the method selected for network visualization
  */
 function reDrawToolLayout() {
-
+	
 	switch(enabledLayout) {
 		case 0:
 			$('#labelCentralGravity').prop( "disabled", false ).removeClass('disabled');
@@ -371,5 +319,4 @@ function changeHideEdgesOnDragLayout(){
 	hideEdgesOnDragLayout = !hideEdgesOnDragLayout;
 	options = {hideEdgesOnDrag: hideEdgesOnDragLayout};
 	network.setOptions(options);
-	//reDrawLayout();
 }

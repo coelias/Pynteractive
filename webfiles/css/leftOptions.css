@@ -27,12 +27,10 @@ input[type="radio"] + label {
     font-family:Arial, sans-serif;
     font-size:14px;
 }
+
 #labelBarnesHutRadio, #labelRepulsionRadio, #labelHierarchicalRepulsionRadio{
 	position:absolute;
 	right: 0%;
-
-border: 8px solid green;
-
 	background: #0E78AD;
 	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
