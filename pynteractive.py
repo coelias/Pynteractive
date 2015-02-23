@@ -210,7 +210,7 @@ class Tree(DataStruct):
 		DataStruct.__init__(self,name)
 	
 
-class Network(DataStruct):
+class Graph(DataStruct):
 	def __init__(self,name=None,directed=False):
 		DataStruct.__init__(self,name)
 
@@ -224,7 +224,11 @@ class Network(DataStruct):
 		for i,j in self.edges.items():
 			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_threshold"])
 
-	def addNode(self,node_id=None,label=None,title=None,group=None,color=None):
+	def addNode(self,node_id=None,label=None,title=None,group=None,shape=None,color=None,radius=None,image=None):
+		# ellipse, circle, box, database, image, circularImage, label, dot, star, triangle, triangleDown, square
+		assert not shape or shape in ['ellipse','circle','box','database','image','circularImage','label','dot','star','triangle','triangleDown','square']
+		if shape in ['image','circularImage']: assert image!=None
+
 		if node_id==None:
 			i=1
 			while True:
@@ -235,17 +239,26 @@ class Network(DataStruct):
 		node_id=str(node_id)
 		if not label: label=node_id
 		else: label=str(label)
-		self.vertices[node_id]={"_id":node_id,"_label":label,"_title":title,"_group":group}
+		self.vertices[node_id]={"_id":node_id,"_label":label,"_title":title,"_group":group,"_color":color,"_radius":radius,"_image":image}
 
-		self.update("addNode",node_id,label,title,group)
+		self.update("addNode",node_id,label,title,group,shape,color,radius,image)
 
-	def addEdge(self,n1,n2,label=None,title=None,threshold=None):
+	def addEdge(self,n1,n2,label=None,title=None,width=None,style=None):
+		# style: line, arrow, arrow-center, dash-line
+
 		if not label: label=''
 		n1,n2=str(n1),str(n2)
+
+		if self.directed:
+			style='arrow'
+		else:
+			style='line'
+			if n1>n2:n1,n2=n2,n1
+
 		_id="~".join([n1,n2,label])
 		assert n1 in self.vertices and n2 in self.vertices
-		self.edges[_id]={"_n1":n1,"_n2":n2,"_label":label,"_title":title,"_threshold":threshold}
-		self.update("addEdge",_id,n1,n2,label,title,threshold)
+		self.edges[_id]={"_n1":n1,"_n2":n2,"_label":label,"_title":title,"_threshold":width,"_style":style}
+		self.update("addEdge",_id,n1,n2,label,title,width,style)
 
 	def random(self,nn,ne):
 		map(self.addNode,xrange(nn))
@@ -290,8 +303,8 @@ def startWebSocket():
 	WSOCKserver.serveforever()
 threading.Thread(target=startWebSocket).start()
 
-print ">>> n=Network()"
-n=Network()
+print ">>> n=Graph()"
+n=Graph()
 
 import code
 code.interact(banner="",local=locals())
