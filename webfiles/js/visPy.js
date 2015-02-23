@@ -21,11 +21,11 @@ var hideEdgesOnDragLayout = false;
 //options layout
 var options;
 
-//nodes shapes
-//var shapes = ['dot', 'square', 'triangle', 'triangleDown', 'star','circle','ellipse','box'];
-
-//Edges Style
-//var line-style = ["line", "arrow", "arrow-center", "dash-line"];
+//smoothCurves
+var smoothCurves = {};
+smoothCurves.dynamic = false;
+smoothCurves.type = "continuous";
+smoothCurves.roundness = 0.5; //[0,1]
 
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -147,6 +147,60 @@ function loadHtml() {
 	loadHtmlTag(tag);
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelSmoothCurves', text: 'Smooth Curves'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelSmoothCurvesDynamic', text: 'Dynamic'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'SmoothCurvesDynamic', type: 'checkbox', checked: !smoothCurves.dynamic, onclick: 'changeSmoothCurvesDynamic();'};
+	loadHtmlTag(tag);
+	
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelSmoothCurvesType', text: 'Type'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'select', to:'#optionsNetwork', id: 'SmoothCurvesType', type: 'checkbox', onchange: 'changeSmoothCurvesType(value);'};
+	loadHtmlTag(tag);
+	tag = {tag:'option', to:'#SmoothCurvesType', value: "continuous", text: "continuous"};
+	loadHtmlTag(tag);
+	tag = {tag:'option', to:'#SmoothCurvesType', value: "discrete", text: "discrete"};
+	loadHtmlTag(tag);
+	tag = {tag:'option', to:'#SmoothCurvesType', value: "diagonalCross", text: "diagonalCross"};
+	loadHtmlTag(tag);
+	tag = {tag:'option', to:'#SmoothCurvesType', value: "straightCross", text: "straightCross"};
+	loadHtmlTag(tag);
+	loadHtmlTag(tag);
+	tag = {tag:'option', to:'#SmoothCurvesType', value: "horizontal", text: "horizontal"};
+	loadHtmlTag(tag);
+	loadHtmlTag(tag);
+	tag = {tag:'option', to:'#SmoothCurvesType', value: "vertical", text: "vertical", onclick: 'changeSmoothCurvesType(value);'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelSmoothCurvesRoundness', text: 'Roundness'};
+	loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderSmoothCurvesRoundness', type: 'range', min: '0', max: '1', step: '0.1', value: '0.5', onclick: 'changeSmoothCurvesRoundness(value);'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
 }
 
 /**
@@ -250,41 +304,16 @@ function reDrawLayout(){
 
 	switch(enabledLayout) {
 		case 0://smoothCurves: {dynamic:false, type: "continuous"}
-			options = {smoothCurves: false, stabilize: false,physics: {barnesHut: {gravitationalConstant: -80000, enabled: true, centralGravity:centralGravityValue, springLength:5}},hideEdgesOnDrag: hideEdgesOnDragLayout};
-/*var options = {stabilize: false,
-        nodes: {
-            shape: 'dot',
-            radiusMin: 5,
-            radiusMax: 10,
-            fontSize: 8,
-            fontFace: "Tahoma"
-            },
-        edges: {
-            width: 0.15,
-            inheritColor: "from"
-            },
-        tooltip: {
-            delay: 200,
-            fontSize: 12,
-            color: {
-                background: "#fff"
-                }
-            },
-          stabilize: false,
-        smoothCurves: {dynamic:false, type: "continuous"},
-        physics: {barnesHut: {gravitationalConstant: -80000, springConstant: 0.001, springLength: 200}},
-        hideEdgesOnDrag: true
-      };*/
-
+			options = {stabilize: false, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue, springLength:5}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 		case 1:
-			options = {stabilize: false, physics: {barnesHut: {enabled: false}, repulsion: {nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+			options = {stabilize: false, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {barnesHut: {enabled: false}, repulsion: {nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 		case 2:
 			//"hubsize","directional"
-			options = {hierarchicalLayout: {layout: "hubsize"}, physics: {hierarchicalRepulsion: {nodeDistance: nodeDistanceValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+			options = {stabilize: false, hierarchicalLayout: {layout: "hubsize"}, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {hierarchicalRepulsion: {nodeDistance: nodeDistanceValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 	}
@@ -311,6 +340,21 @@ function reDrawToolLayout() {
 			$("#sliderCentralGravity").prop( "disabled", true ).addClass('disabled');
 			$("#labelNodeDistance").prop( "disabled", false ).removeClass('disabled');
 			$("#sliderNodeDistance").prop( "disabled", false ).removeClass('disabled');
+			break;
+	}
+
+	switch(smoothCurves.dynamic) {
+		case false:
+			$('#labelSmoothCurvesType').prop( "disabled", false ).removeClass('disabled');
+			$("#SmoothCurvesType").prop( "disabled", false ).removeClass('disabled');
+			$('#labelSmoothCurvesRoundness').prop( "disabled", false ).removeClass('disabled');
+			$("#sliderSmoothCurvesRoundness").prop( "disabled", false ).removeClass('disabled');
+			break;
+		case true:
+			$('#labelSmoothCurvesType').prop( "disabled", true ).addClass('disabled');
+			$("#SmoothCurvesType").prop( "disabled", true ).addClass('disabled');
+			$('#labelSmoothCurvesRoundness').prop( "disabled", true ).addClass('disabled');
+			$("#sliderSmoothCurvesRoundness").prop( "disabled", true ).addClass('disabled');
 			break;
 	}
 
@@ -348,6 +392,35 @@ function changeFreezeLayout(){
  */
 function changeHideEdgesOnDragLayout(){
 	hideEdgesOnDragLayout = !hideEdgesOnDragLayout;
-	options = {hideEdgesOnDrag: hideEdgesOnDragLayout};
+	options.hideEdgesOnDrag = hideEdgesOnDragLayout;
+	network.setOptions(options);
+}
+
+/**
+ * Enable/Disable smooth curves
+ */
+function changeSmoothCurvesDynamic(value){
+	smoothCurves.dynamic = !smoothCurves.dynamic;
+	options.smoothCurves = {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness};
+	network.setOptions(options);
+
+	reDrawToolLayout();
+}
+
+/**
+ * change type of smooth curves
+ */
+function changeSmoothCurvesType(value){
+	smoothCurves.type = value;
+	options.smoothCurves = {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness};
+	network.setOptions(options);
+}
+
+/**
+ * change type of smooth curves roundness
+ */
+function changeSmoothCurvesRoundness(value){
+	smoothCurves.roundness = value;
+	options.smoothCurves = {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness};
 	network.setOptions(options);
 }
