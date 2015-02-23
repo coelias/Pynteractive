@@ -249,8 +249,33 @@ function reDrawLayout(){
 	destroy();
 
 	switch(enabledLayout) {
-		case 0:
-			options = {stabilize: true,physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue, springLength:5}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+		case 0://smoothCurves: {dynamic:false, type: "continuous"}
+			options = {smoothCurves: false, stabilize: false,physics: {barnesHut: {gravitationalConstant: -80000, enabled: true, centralGravity:centralGravityValue, springLength:5}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+/*var options = {stabilize: false,
+        nodes: {
+            shape: 'dot',
+            radiusMin: 5,
+            radiusMax: 10,
+            fontSize: 8,
+            fontFace: "Tahoma"
+            },
+        edges: {
+            width: 0.15,
+            inheritColor: "from"
+            },
+        tooltip: {
+            delay: 200,
+            fontSize: 12,
+            color: {
+                background: "#fff"
+                }
+            },
+          stabilize: false,
+        smoothCurves: {dynamic:false, type: "continuous"},
+        physics: {barnesHut: {gravitationalConstant: -80000, springConstant: 0.001, springLength: 200}},
+        hideEdgesOnDrag: true
+      };*/
+
 			network = new vis.Network(container, data, options);
 			break;
 		case 1:

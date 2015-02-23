@@ -4,11 +4,12 @@
 //////////    User Interface CONTROLLER (UIC)    ///////////
 ////////////////////////////////////////////////////////////
 var UIC = {
-addNode: function (id, label, title, group, shape, color){
-			var n = {"id":id, "label":label, "shape": shape};
+addNode: function (id, label, title, group, shape, color, radius){
+			var n = {"id":id, "label":label, "shape": 'dot'};
 			if (title) n.title=title;
 			if (group) n.group=group;
 			if (color) n.color=color;
+			if (radius) n.radius=radius;
 			nodesMap.add(n);
 		},
 
