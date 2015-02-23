@@ -21,6 +21,12 @@ var hideEdgesOnDragLayout = false;
 //options layout
 var options;
 
+//nodes shapes
+//var shapes = ['dot', 'square', 'triangle', 'triangleDown', 'star','circle','ellipse','box'];
+
+//Edges Style
+//var line-style = ["line", "arrow", "arrow-center", "dash-line"];
+
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 /////////////////    GLOBAL VARIABLE    ////////////////////
@@ -244,11 +250,11 @@ function reDrawLayout(){
 
 	switch(enabledLayout) {
 		case 0:
-			options = {physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+			options = {stabilize: true,physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue, springLength:5}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 		case 1:
-			options = {physics: {barnesHut: {enabled: false}, repulsion: {nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+			options = {stabilize: false, physics: {barnesHut: {enabled: false}, repulsion: {nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 		case 2:

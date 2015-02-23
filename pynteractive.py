@@ -224,7 +224,7 @@ class Network(DataStruct):
 		for i,j in self.edges.items():
 			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_threshold"])
 
-	def addNode(self,node_id=None,label=None,title=None,group=None):
+	def addNode(self,node_id=None,label=None,title=None,group=None,color=None):
 		if node_id==None:
 			i=1
 			while True:

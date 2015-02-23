@@ -16,35 +16,22 @@
 	border-color: black;
 }
 
-#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #labelFreezeLayout, #labelHideEdgesOnDragLayout {
+#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #labelFreezeLayout, #labelHideEdgesOnDragLayout, labelHierarchicalRepulsionRadio {
 	color: #404040;
 	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
-}
-
-input[type="radio"] + label {
-    color: $DarkBrown;
-    font-family:Arial, sans-serif;
-    font-size:14px;
 }
 
 #labelBarnesHutRadio, #labelRepulsionRadio, #labelHierarchicalRepulsionRadio{
 	position:absolute;
 	right: 0%;
-	background: #0E78AD;
 	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+
 }
 
 #labelNodeDistance{
 	position:absolute;
 	margin-top: 12px;
-}
-
-#labelHierarchicalRepulsionRadio {
-	color: #404040;
-	font-weight: bold;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #sliderCentralGravity {
