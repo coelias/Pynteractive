@@ -220,9 +220,9 @@ class Graph(DataStruct):
 
 	def refresh(self):
 		for i in self.vertices.values():
-			self.update("addNode",i["_id"],i["_label"],i["_title"],i["_group"])
+			self.update("addNode",i["_id"],i["_label"],i["_title"],i["_group"],i["_color"],i["_radius"],i["_image"])
 		for i,j in self.edges.items():
-			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_threshold"])
+			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_threshold"],j["_style"])
 
 	def addNode(self,node_id=None,label=None,title=None,group=None,shape=None,color=None,radius=None,image=None):
 		# ellipse, circle, box, database, image, circularImage, label, dot, star, triangle, triangleDown, square
@@ -244,10 +244,11 @@ class Graph(DataStruct):
 		self.update("addNode",node_id,label,title,group,shape,color,radius,image)
 
 	def addEdge(self,n1,n2,label=None,title=None,width=None,style=None):
-		# style: line, arrow, arrow-center, dash-line
+		assert not style or style in ['line','arrow','arrow-center','dash-line']
+		n1,n2=str(n1),str(n2)
+		assert n1 in self.vertices and n2 in self.vertices
 
 		if not label: label=''
-		n1,n2=str(n1),str(n2)
 
 		if self.directed:
 			style='arrow'
@@ -256,7 +257,6 @@ class Graph(DataStruct):
 			if n1>n2:n1,n2=n2,n1
 
 		_id="~".join([n1,n2,label])
-		assert n1 in self.vertices and n2 in self.vertices
 		self.edges[_id]={"_n1":n1,"_n2":n2,"_label":label,"_title":title,"_threshold":width,"_style":style}
 		self.update("addEdge",_id,n1,n2,label,title,width,style)
 

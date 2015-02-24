@@ -1,6 +1,6 @@
 $(function () {
 	switch(VTYPE) {
-		case "Network":
+		case "Graph":
 			loadNetworkVisualization();
 			break;
 	}
