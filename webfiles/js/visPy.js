@@ -11,7 +11,7 @@ var data = {};
 
 //layout config
 var enabledLayout = 0;
-var centralGravityValue = 1.5;
+var centralGravityValue = 0.5;
 var nodeDistanceValue = 100;
 
 //layout freeze
@@ -102,7 +102,7 @@ function loadHtml() {
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelCentralGravity', text: 'Central Gravity'};
 	loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderCentralGravity', type: 'range', min: '0', max: '5', step: '0.1', value: '1.5', onclick: 'changeLayoutCentralGravity(value);'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderCentralGravity', type: 'range', min: '0', max: '5', step: '0.1', value: centralGravityValue, onclick: 'changeLayoutCentralGravity(value);'};
 	loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -111,7 +111,7 @@ function loadHtml() {
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelNodeDistance', text: 'Node Distance'};
 	loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: '100', onclick: 'changeLayoutNodeDistance(value);'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: nodeDistanceValue, onclick: 'changeLayoutNodeDistance(value);'};
 	loadHtmlTag(tag);
 	
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -242,7 +242,6 @@ function selectElement(properties){
 
 /**
  * Select a list of elements from the graph given an ID's [nodes and edges] with doubleclick event on graph
- * @param {propesties} properties 
  */
 function doubleClickElement(properties){
 	var idsNodes = properties.nodes;
@@ -304,7 +303,7 @@ function reDrawLayout(){
 
 	switch(enabledLayout) {
 		case 0://smoothCurves: {dynamic:false, type: "continuous"}
-			options = {stabilize: false, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue, springLength:5}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+			options = {stabilize: false, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 		case 1:

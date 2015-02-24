@@ -11,4 +11,3 @@ function loadNetworkVisualization(){
 		console.log("Network loaded");
 	});
 }
-
