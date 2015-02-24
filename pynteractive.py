@@ -150,6 +150,9 @@ class SimpleWS(SimpleHTTPRequestHandler):
 			if ext in mimetypes.types_map:
 				mime=mimetypes.types_map[ext]
 				self.send_header("Content-Type", mime)
+			else:
+				self.send_header("Content-Type","text/html")
+
 			self.end_headers()
 			f=open(resource,"rb")
 			self.wfile.write(f.read())
@@ -212,6 +215,7 @@ class Tree(DataStruct):
 
 class Graph(DataStruct):
 	def __init__(self,name=None,directed=False):
+		'''Creates a graph, It can be directed or not, if a name is not given it is created randomly'''
 		DataStruct.__init__(self,name)
 
 		self.vertices={}
@@ -219,13 +223,23 @@ class Graph(DataStruct):
 		self.directed=directed
 
 	def refresh(self):
+		'''DO NOT USE, is used for graphic representation, everytime a new window is opened'''
 		for i in self.vertices.values():
 			self.update("addNode",i["_id"],i["_label"],i["_title"],i["_group"],i["_color"],i["_radius"],i["_image"])
 		for i,j in self.edges.items():
 			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_threshold"],j["_style"])
 
 	def addNode(self,node_id=None,label=None,title=None,group=None,shape=None,color=None,radius=None,image=None):
-		# ellipse, circle, box, database, image, circularImage, label, dot, star, triangle, triangleDown, square
+		'''Adds a node to the graph:
+		node_id: identification of the node, if not specified it will be randomly generated
+		label: Text that will be shown within the node
+		title: Tooltip shown when hovering the node
+		group: color group (numeric, eg: 1,2,3,4) used for clusterings
+		shape: any of ellipse,circle,box,database,image,circularImage,label,dot,star,triangle,triangleDown,square
+		color: color name or html code (eg: red, #FF0000)
+		radius: radius of the shape
+		image: Image in case the shape is image or circularImage'''
+
 		assert not shape or shape in ['ellipse','circle','box','database','image','circularImage','label','dot','star','triangle','triangleDown','square']
 		if shape in ['image','circularImage']: assert image!=None
 
@@ -244,7 +258,14 @@ class Graph(DataStruct):
 		self.update("addNode",node_id,label,title,group,shape,color,radius,image)
 
 	def addEdge(self,n1,n2,label=None,title=None,width=None,style=None):
+		'''Adds an edge to a node, if it is not directed the order does not matter
+		label: label on the edge
+		title: text shown when hovering the edge
+		width: width in pixeld of the edge
+		style: line style -> line,arrow,arrow-center,dash-line'''
+
 		assert not style or style in ['line','arrow','arrow-center','dash-line']
+		if not self.directed: assert style not in ['arrow','arrow-center']
 		n1,n2=str(n1),str(n2)
 		assert n1 in self.vertices and n2 in self.vertices
 
@@ -261,6 +282,7 @@ class Graph(DataStruct):
 		self.update("addEdge",_id,n1,n2,label,title,width,style)
 
 	def random(self,nn,ne):
+
 		map(self.addNode,xrange(nn))
 		for i in xrange(ne):
 			self.addEdge(random.choice(xrange(nn)),random.choice(xrange(nn)))
