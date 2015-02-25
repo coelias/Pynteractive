@@ -27,6 +27,7 @@ smoothCurves.dynamic = false;
 smoothCurves.type = "continuous";
 smoothCurves.roundness = 0.5; //[0,1]
 
+
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 /////////////////    GLOBAL VARIABLE    ////////////////////
@@ -364,7 +365,7 @@ function reDrawToolLayout() {
  */
 function destroy() {
 	if (network != null) {
-	    network.destroy();
+	    //network.destroy();
 	    network = null;
 	}
 }
