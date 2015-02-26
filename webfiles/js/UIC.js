@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////
 var UIC = {
 addNode: function (id, label, title, group, shape, color, radius,image){
-			var n = {"id":id, "label":label};
+			var n = {"id":id, "label":label, "shape":shape};
 			if (shape) n.shape=shape;
 			if (title) n.title=title;
 			if (group) n.group=group;
@@ -21,6 +21,11 @@ addEdge: function (id, id1, id2, label, title, threshold, style){
 			if (title) e.title=title;
 			if (threshold) e.value=threshold;
 			edgesMap.add(e);
+
+			from = nodesMap.get(id2);
+			if (from.radius == undefined) from.radius = 10;
+			from.radius = from.radius + 1;
+			nodesMap.update(from);
 		},
 
 removeNode: function (id){
