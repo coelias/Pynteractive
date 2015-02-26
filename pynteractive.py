@@ -109,6 +109,7 @@ class JSCom(WebSocket):
 		funcs=[i for i in dir(self) if inspect.ismethod(getattr(self,i)) and getattr(self,i).__doc__!="FWCLASS"]
 		self.dicFuncs={}
 		self.dicArgs={}
+		self.dataId=None
 		for i in funcs:
 			self.dicFuncs[i]=getattr(self,i)
 			self.dicArgs[i]=inspect.getargspec(self.dicFuncs[i])
@@ -135,7 +136,12 @@ class JSCom(WebSocket):
 		pass
 
 	def attach(self,name):
+		self.dataId=name
 		self.server.attachConnToDataId(self,name)
+
+	def graphDblClick(self,nodes):
+		if nodes:
+			DataStruct.OBJECTS[self.dataId].doubleClick(nodes[0].encode())
 
 	def refresh(self,name):
 		DataStruct.refreshData(name)
@@ -257,6 +263,9 @@ class Graph(DataStruct):
 
 		self.update("addNode",node_id,label,title,group,shape,color,radius,image)
 
+	def doubleClick(self,node):
+		pass
+
 	def addEdge(self,n1,n2,label=None,title=None,width=None,style=None):
 		'''Adds an edge to a node, if it is not directed the order does not matter
 		label: label on the edge
@@ -282,7 +291,6 @@ class Graph(DataStruct):
 		self.update("addEdge",_id,n1,n2,label,title,width,style)
 
 	def random(self,nn,ne):
-
 		map(self.addNode,xrange(nn))
 		for i in xrange(ne):
 			self.addEdge(random.choice(xrange(nn)),random.choice(xrange(nn)))

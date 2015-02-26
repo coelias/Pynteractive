@@ -520,7 +520,7 @@ class SimpleWebSocketServer(object):
 
 	def attachConnToDataId(self,conn,name):
 		self.DataId2Connections.setdefault(name,[]).append(conn)
-
+	
 	def decorateSocket(self, sock):
 		return sock
 
