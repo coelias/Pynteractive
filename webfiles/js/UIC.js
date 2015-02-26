@@ -4,7 +4,7 @@
 //////////    User Interface CONTROLLER (UIC)    ///////////
 ////////////////////////////////////////////////////////////
 var UIC = {
-addNode: function (id, label, title, group, shape, color, radius,image){
+addNode: function (id, label, title, group, shape, color, radius, image){
 			var n = {"id":id, "label":label, "shape":shape};
 			if (shape) n.shape=shape;
 			if (title) n.title=title;
@@ -15,11 +15,12 @@ addNode: function (id, label, title, group, shape, color, radius,image){
 			nodesMap.add(n);
 		},
 
-addEdge: function (id, id1, id2, label, title, threshold, style){
-			var e = {"id":id,"from":id1,"to":id2, "style": style};
+addEdge: function (id, id1, id2, label, title, threshold, style, length){
+			var e = {"id":id,"from":id1,"to":id2, "style": style, "length":200};
 			if (label) e.label=label;
 			if (title) e.title=title;
 			if (threshold) e.value=threshold;
+			if (length) e.length=length;
 			edgesMap.add(e);
 
 			from = nodesMap.get(id2);

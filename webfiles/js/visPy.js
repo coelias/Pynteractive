@@ -10,9 +10,9 @@ var container = document.getElementById('network');
 var data = {};
 
 //layout config
-var enabledLayout = 0;
+var enabledLayout = 1;
 var centralGravityValue = 0.5;
-var nodeDistanceValue = 100;
+var nodeDistanceValue = 200;
 
 //layout freeze
 var freezeLayout = false;
@@ -73,17 +73,17 @@ function loadHtml() {
 	tag = {tag:'label', to:'#optionsNetwork', id:'labelBarnesHut', text:'BarnesHut'};
 	loadHtmlTag(tag);
 	
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelBarnesHutRadio', name: 'groupOptionsNetwork', type: 'radio', value: '1', onclick: 'changeLayoutType(id);',	checked: true,};
+	/*tag = {tag:'input', to:'#optionsNetwork', id: 'labelBarnesHutRadio', name: 'groupOptionsNetwork', type: 'radio', value: '1', onclick: 'changeLayoutType(id);',	checked: true};
 	loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
-	loadHtmlTag(tag);
+	loadHtmlTag(tag);*/
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelRepulsion',
 		text: 'Repulsion'};
 	loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelRepulsionRadio', name: 'groupOptionsNetwork', type: 'radio', value: '0', onclick: 'changeLayoutType(id);', checked: false};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'labelRepulsionRadio', name: 'groupOptionsNetwork', type: 'radio', value: '0', onclick: 'changeLayoutType(id);', checked: true};
 	loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -100,28 +100,30 @@ function loadHtml() {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	loadHtmlTag(tag);
 
-	tag = {tag:'label', to:'#optionsNetwork', id: 'labelCentralGravity', text: 'Central Gravity'};
+	/*tag = {tag:'label', to:'#optionsNetwork', id: 'labelCentralGravity', text: 'Central Gravity'};
 	loadHtmlTag(tag);
 
 	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderCentralGravity', type: 'range', min: '0', max: '5', step: '0.1', value: centralGravityValue, onclick: 'changeLayoutCentralGravity(value);'};
-	loadHtmlTag(tag);
+	loadHtmlTag(tag);*/
 
-	tag = {tag:'br', to:'#optionsNetwork'};
-	loadHtmlTag(tag);
+	//tag = {tag:'br', to:'#optionsNetwork'};
+	//loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelNodeDistance', text: 'Node Distance'};
 	loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: nodeDistanceValue, onclick: 'changeLayoutNodeDistance(value);'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: nodeDistanceValue, onclick: 'changeLayoutNodeDistance(value)'};
 	loadHtmlTag(tag);
 	
-	tag = {tag:'br', to:'#optionsNetwork'};
-	loadHtmlTag(tag);
+	//tag = {tag:'br', to:'#optionsNetwork'};
+	//loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	loadHtmlTag(tag);
 	jQuery('<hr/>', {}).appendTo('#optionsNetwork');
 
-	tag = {tag:'button', to:'#optionsNetwork', id: 'GraphFocus', type: 'button', text: 'Focus', onclick: 'changeGraphFocus();'};
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelGraphFocus', text: 'Focus'};
+	loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'GraphFocus', type: 'button', onclick: 'changeGraphFocus();'};
 	loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -142,8 +144,8 @@ function loadHtml() {
 	tag = {tag:'input', to:'#optionsNetwork', id: 'HideEdgesOnDragLayout', type: 'checkbox', onclick: 'changeHideEdgesOnDragLayout();'};
 	loadHtmlTag(tag);
 
-	tag = {tag:'br', to:'#optionsNetwork'};
-	loadHtmlTag(tag);
+	//tag = {tag:'br', to:'#optionsNetwork'};
+	//loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	loadHtmlTag(tag);
 	tag = {tag:'hr', to:'#optionsNetwork'};
@@ -189,7 +191,7 @@ function loadHtml() {
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelSmoothCurvesRoundness', text: 'Roundness'};
 	loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderSmoothCurvesRoundness', type: 'range', min: '0', max: '1', step: '0.1', value: '0.5', onclick: 'changeSmoothCurvesRoundness(value);'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderSmoothCurvesRoundness', type: 'range', min: '0', max: '1', step: '0.1', value: '0.5', onchange: 'changeSmoothCurvesRoundness(value)'};
 	loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -197,6 +199,28 @@ function loadHtml() {
 	tag = {tag:'br', to:'#optionsNetwork'};
 	loadHtmlTag(tag);
 	tag = {tag:'hr', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction1', text: 'Action 1'};
+	loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action1', type: 'button', onclick: 'action(id);'};
+	loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction2', text: 'Action 2'};
+	loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action2', type: 'button', onclick: 'action(id);'};
+	loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction3', text: 'Action 3'};
+	loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action3', type: 'button', onclick: 'action(id);'};
+	loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
 	loadHtmlTag(tag);
 
 	tag = {tag:'hr', to:'#optionsNetwork'};
@@ -234,11 +258,8 @@ function load() {
  * @param {propesties} properties 
  */
 function selectElement(properties){
-	var idsNodes = properties.nodes;
-	var idsEdges = properties.edges;
-	console.log("selectElement");
-	console.log(idsNodes);
-	console.log(idsEdges);
+	//var idsNodes = properties.nodes;
+	//var idsEdges = properties.edges;
 }
 
 /**
@@ -246,10 +267,8 @@ function selectElement(properties){
  */
 function doubleClickElement(properties){
 	var idsNodes = properties.nodes;
-	var idsEdges = properties.edges;
-	console.log("doubleClickElement");
-	console.log(idsNodes);
-	console.log(idsEdges);
+	//var idsEdges = properties.edges;
+	PYCON.send('graphDblClick',{nodes:idsNodes});
 }
 
 ////////////////////////////////////////////////////////////
@@ -264,9 +283,9 @@ function doubleClickElement(properties){
 function changeLayoutType(id){
 
 	switch(id) {
-		case "labelBarnesHutRadio":
-			enabledLayout = 0;
-			break;
+		//case "labelBarnesHutRadio":
+			//enabledLayout = 0;
+			//break;
 		case "labelRepulsionRadio":
 			enabledLayout = 1;
 			break;
@@ -303,14 +322,14 @@ function reDrawLayout(){
 	destroy();
 
 	switch(enabledLayout) {
-		case 0://smoothCurves: {dynamic:false, type: "continuous"}
-			options = {stabilize: false, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {barnesHut: {enabled: true, centralGravity:centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+		case 1://smoothCurves: {dynamic:false, type: "continuous"}
+			options = {stabilize: false, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {barnesHut: {enabled: false}, repulsion: {damping:0.09,nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
-		case 1:
+		/*case 1:
 			options = {stabilize: false, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {barnesHut: {enabled: false}, repulsion: {nodeDistance: nodeDistanceValue, centralGravity: centralGravityValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
-			break;
+			break;*/
 		case 2:
 			//"hubsize","directional"
 			options = {stabilize: false, hierarchicalLayout: {layout: "hubsize"}, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {hierarchicalRepulsion: {nodeDistance: nodeDistanceValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
@@ -328,7 +347,7 @@ function reDrawLayout(){
  */
 function reDrawToolLayout() {
 	
-	switch(enabledLayout) {
+	/*switch(enabledLayout) {
 		case 0:
 			$('#labelCentralGravity').prop( "disabled", false ).removeClass('disabled');
 			$("#sliderCentralGravity").prop( "disabled", false ).removeClass('disabled');
@@ -341,7 +360,7 @@ function reDrawToolLayout() {
 			$("#labelNodeDistance").prop( "disabled", false ).removeClass('disabled');
 			$("#sliderNodeDistance").prop( "disabled", false ).removeClass('disabled');
 			break;
-	}
+	}*/
 
 	switch(smoothCurves.dynamic) {
 		case false:
@@ -374,7 +393,9 @@ function destroy() {
  * Set focus on random node
  */
 function changeGraphFocus(){
-	var options = {position:{x:0, y:0}, scale:0.3, animation: {duration: 1000}};
+	coord = network.getCenterCoordinates();
+	scale = network.getScale();
+	var options = {position:{x:coord.x+coord.x*-1, y:coord.y+coord.y*-1}, scale:scale, animation: {duration: 1000}};
 	network.moveTo(options);
 }
 
@@ -420,7 +441,26 @@ function changeSmoothCurvesType(value){
  * change type of smooth curves roundness
  */
 function changeSmoothCurvesRoundness(value){
+
 	smoothCurves.roundness = value;
 	options.smoothCurves = {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness};
 	network.setOptions(options);
 }
+
+/**
+ * execute action
+ */
+function action(id){
+	switch(id) {
+		case 'Action1':
+			PYCON.send('graphAction',{n:1,selectedNodes:network.getSelection().nodes});
+			break;
+		case 'Action2':
+			PYCON.send('graphAction',{n:2,selectedNodes:network.getSelection().nodes});
+			break;
+		case 'Action3':
+			PYCON.send('graphAction',{n:3,selectedNodes:network.getSelection().nodes});
+			break;
+	}
+}
+;
