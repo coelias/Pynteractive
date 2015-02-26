@@ -16,7 +16,7 @@
 	border-color: black;
 }
 
-#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #labelFreezeLayout, #labelHideEdgesOnDragLayout, #labelHierarchicalRepulsionRadio, #labelSmoothCurves, #labelSmoothCurvesType, #labelSmoothCurvesDynamic, #labelSmoothCurvesRoundness, #labelGraphFocus {
+#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #labelFreezeLayout, #labelHideEdgesOnDragLayout, #labelHierarchicalRepulsionRadio, #labelSmoothCurves, #labelSmoothCurvesType, #labelSmoothCurvesDynamic, #labelSmoothCurvesRoundness, #labelGraphFocus, #labelAction1, #labelAction2, #labelAction3{
 	color: #404040;
 	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -132,6 +132,17 @@
 	border-radius: 5px;
   	border: 1px #0D6C9B solid; 
 	background: #0E78AD;
+}
+
+#Action1, #Action2, #Action3 {
+	position:absolute;
+	margin-top: 3px;
+	border-radius: 5px;
+  	border: 1px #0D6C9B solid; 
+	width: 10px;
+	height: 13px;
+	background: #0E78AD;
+    	right:3px;
 }
 
 hr {
