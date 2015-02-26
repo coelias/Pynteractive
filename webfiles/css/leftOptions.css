@@ -16,7 +16,7 @@
 	border-color: black;
 }
 
-#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #labelFreezeLayout, #labelHideEdgesOnDragLayout, #labelHierarchicalRepulsionRadio, #labelSmoothCurves, #labelSmoothCurvesType, #labelSmoothCurvesDynamic, #labelSmoothCurvesRoundness {
+#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #GraphFocus, #labelFreezeLayout, #labelHideEdgesOnDragLayout, #labelHierarchicalRepulsionRadio, #labelSmoothCurves, #labelSmoothCurvesType, #labelSmoothCurvesDynamic, #labelSmoothCurvesRoundness, #labelGraphFocus {
 	color: #404040;
 	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -31,7 +31,7 @@
 
 #labelNodeDistance{
 	position:absolute;
-	margin-top: 12px;
+	/*margin-top: 12px;*/
 }
 
 #sliderCentralGravity {
@@ -47,7 +47,8 @@
 #sliderNodeDistance {
 	position:absolute;
 	right: 0%;
-	margin-top: 19px;
+	margin-top: 7px;
+	/*margin-top: 10px;*/
 	background-color: #2290c9;
 	font-weight: bold;
 	height: 5px;
@@ -56,12 +57,13 @@
 
 #GraphFocus{ 
 	position:absolute;
-	margin-top: 4px;
+	margin-top: 3px;
 	border-radius: 5px;
   	border: 1px #0D6C9B solid; 
-	width: 100%;
+	width: 10px;
+	height: 13px;
 	background: #0E78AD;
-    	height:20px;
+    	right:3px;
 }
 
 #GraphFocus:active{ 
@@ -70,23 +72,23 @@
 
 #labelFreezeLayout{
 	position:absolute;
-	margin-top: 17px;
+	/*margin-top: 17px;*/
 }
 
 #FreezeLayout { 
 	position:absolute;
-	margin-top: 18px;
+	/*margin-top: 18px;*/
 	right: 0%;
 }
 
 #labelHideEdgesOnDragLayout{
 	position:absolute;
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 }
 
 #HideEdgesOnDragLayout { 
 	position:absolute;
-	margin-top: 21px;
+	/*margin-top: 21px;*/
 	right: 0%;
 }
 
