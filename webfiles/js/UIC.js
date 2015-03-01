@@ -16,7 +16,7 @@ addNode: function (id, label, title, group, shape, color, radius, image){
 		},
 
 addEdge: function (id, id1, id2, label, title, threshold, style, length){
-			var e = {"id":id,"from":id1,"to":id2, "style": style, "length":200};
+			var e = {"id":id,"from":id1,"to":id2, "style": style};
 			if (label) e.label=label;
 			if (title) e.title=title;
 			if (threshold) e.value=threshold;

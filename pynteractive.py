@@ -14,6 +14,7 @@ from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 from collections import Counter
 from lib.datastruct import *
 from lib.graph import *
+from lib.tree import *
 
 
 MUTEX=threading.Lock()

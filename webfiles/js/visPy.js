@@ -332,7 +332,7 @@ function reDrawLayout(){
 			break;*/
 		case 2:
 			//"hubsize","directional"
-			options = {stabilize: false, hierarchicalLayout: {layout: "hubsize"}, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {hierarchicalRepulsion: {nodeDistance: nodeDistanceValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
+			options = {stabilize: false, hierarchicalLayout: {layout: "directional"}, smoothCurves: {dynamic:smoothCurves.dynamic, type: smoothCurves.type, roundness:smoothCurves.roundness}, physics: {hierarchicalRepulsion: {nodeDistance: nodeDistanceValue}},hideEdgesOnDrag: hideEdgesOnDragLayout};
 			network = new vis.Network(container, data, options);
 			break;
 	}
