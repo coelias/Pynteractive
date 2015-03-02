@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 //////////    User Interface CONTROLLER (UIC)    ///////////
@@ -12,7 +11,7 @@ addNode: function (id, label, title, group, shape, color, radius, image){
 			if (color) n.color=color;
 			if (radius) n.radius=radius;
 			if (image) n.image=image;
-			nodesMap.add(n);
+			graphicElement.nodesMap.add(n);
 		},
 
 addEdge: function (id, id1, id2, label, title, threshold, style, length){
@@ -21,22 +20,22 @@ addEdge: function (id, id1, id2, label, title, threshold, style, length){
 			if (title) e.title=title;
 			if (threshold) e.value=threshold;
 			if (length) e.length=length;
-			edgesMap.add(e);
+			graphicElement.edgesMap.add(e);
 
-			from = nodesMap.get(id2);
+			from = graphicElement.nodesMap.get(id2);
 			if (from.radius == undefined) from.radius = 10;
 			from.radius = from.radius + 1;
-			nodesMap.update(from);
+			graphicElement.nodesMap.update(from);
 		},
 
 removeNode: function (id){
 			var n = {"id":id};
-			nodesMap.remove(n);
+			graphicElement.nodesMap.remove(n);
 		},
 
 removeEdge: function (id){
 			var e = {"id":id};
-			edgesMap.remove(e);
+			graphicElement.edgesMap.remove(e);
 		},
 
 close: function(){
