@@ -258,19 +258,16 @@ treeElement.prototype.reDrawTreeToolLayout = function () {
 
 	switch(this.enabledLayout) {
 		case 1:
-			//console.log($('#labelSmoothCurvesType'))
-			$('#labelLevelSeparation').prop( "disabled", true ).removeClass('disabled');
-			$("#sliderLevelSeparation").prop( "disabled", true ).removeClass('disabled');
-			$('#labelNodeSpacing').prop( "disabled", true).removeClass('disabled');
-			$("#sliderNodeSpacing").prop( "disabled", true ).removeClass('disabled');
-			$("#sliderSmoothCurvesRoundness").prop( "disabled", true ).removeClass('disabled');
+			$('#labelLevelSeparation').prop( "disabled", true ).addClass('disabled');
+			$("#sliderLevelSeparation").prop( "disabled", true ).addClass('disabled');
+			$('#labelNodeSpacing').prop( "disabled", true).addClass('disabled');
+			$("#sliderNodeSpacing").prop( "disabled", true ).addClass('disabled');
 			break;
 		case 2:
 			$('#labelLevelSeparation').prop( "disabled", false ).removeClass('disabled');
 			$("#sliderLevelSeparation").prop( "disabled", false ).removeClass('disabled');
 			$('#labelNodeSpacing').prop( "disabled", false).removeClass('disabled');
 			$("#sliderNodeSpacing").prop( "disabled", false ).removeClass('disabled');
-			$("#sliderSmoothCurvesRoundness").prop( "disabled", false ).removeClass('disabled');
 			break;
 	}
 

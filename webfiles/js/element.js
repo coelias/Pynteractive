@@ -155,6 +155,7 @@ element.prototype.reDrawToolLayout = function () {
 			$("#sliderSmoothCurvesRoundness").prop( "disabled", false ).removeClass('disabled');
 			break;
 		case true:
+			console.log($('#labelSmoothCurvesType'))
 			$('#labelSmoothCurvesType').prop( "disabled", true ).addClass('disabled');
 			$("#SmoothCurvesType").prop( "disabled", true ).addClass('disabled');
 			$('#labelSmoothCurvesRoundness').prop( "disabled", true ).addClass('disabled');
@@ -207,7 +208,6 @@ element.prototype.changeSmoothCurvesDynamic = function (){
 	this.options.smoothCurves = {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness:this.smoothCurves.roundness};
 	this.layout.setOptions(this.options);
 	
-	console.log("hohohho")
 	this.reDrawToolLayout();
 };
 
