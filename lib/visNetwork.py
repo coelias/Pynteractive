@@ -45,3 +45,20 @@ class VisNetwork(Network):
 		_id,label=Network.addEdge(self,n1,n2,label,title=title,width=width,style=style,length=length)
 		self.update("addEdge",_id,n1,n2,label,title,width,style,length)
 		return _id,label
+	
+	def delNode(self,node_id):
+		node,edges=Network.delNode(self,node_id)
+
+		self.update("renoveNode",node)
+		for i in edges:
+			self.update("renoveEdge",i)
+
+	def delEdge(self,n1,n2,label):
+		edge=Network.delEdge(self,n1,n2,label)
+		self.update("renoveEdge",edge)
+
+		
+
+
+		
+		

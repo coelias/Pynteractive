@@ -11,8 +11,8 @@ class Map(Network):
 		'''DO NOT USE, is used for graphic representation, everytime a new window is opened'''
 		for i in self.vertices.values():
 			self.update("addNode",i["_id"],i["_label"],'','','',i["_color"],i["_radius"],'',i["_lng"],i["_lat"])
-#		for i,j in self.edges.items():
-#			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_width"],j["_style"])
+		for i,j in self.edges.items():
+			self.update("addEdge",i,j["_n1"],j["_n2"],'','','','','',j["_color"])
 
 	def addNode(self,node_id,radius=5,color='red',lng=None,lat=None,place=None,country=None):
 		assert (lat==None and lng==None and place) or (not place and lat!=None and lng!=None)
@@ -26,6 +26,13 @@ class Map(Network):
 		_id,label=Network.addNode(self,node_id,node_id,radius=radius,color=color,lng=lng,lat=lat)
 		self.update("addNode",node_id,node_id,'','','',color,radius,'',lng,lat)
 		return _id,label
+
+	def addEdge(self,n1,n2,color):
+		_id,label=Network.addEdge(self,n1,n2,'',color=color)
+		self.update("addEdge",_id,n1,n2,'','','','','',color)
+
+
+			
 		
 
 	def getLocation(self,place,country=None):

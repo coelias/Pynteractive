@@ -260,7 +260,7 @@ graphElement.prototype.addEdge = function (edge){
  * remove Node
  */
 graphElement.prototype.removeNode = function (node){
-	element.nodesMap.remove(node);
+	element.nodesMap.remove(node.id);
 }
 
 
@@ -268,5 +268,5 @@ graphElement.prototype.removeNode = function (node){
  * remove Edge
  */
 graphElement.prototype.removeEdge = function (edge){
-	element.edgesMap.remove(edge);
+	element.edgesMap.remove(edge.id);
 }

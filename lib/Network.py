@@ -41,3 +41,24 @@ class Network(DataStruct):
 		data.update(dict([["_"+i,j] for i,j in kwargs.items()]))
 		self.edges[_id]=data
 		return _id,label
+
+	def delNode(self,node_id):
+		node_id=str(node_id)
+		assert node_id in self.vertices 
+		edges=[name for name,i in self.edges.items() if node_id in [i['_n1'],i['_n2']]]
+		for i in edges:
+			del self.edges[i]
+		del self.vertices[node_id]
+		return [node_id,edges]
+
+
+	def delEdge(self,n1,n2,label=''):
+		n1,n2=str(n1),str(n2)
+		assert n1 in self.vertices and n2 in self.vertices
+		_id="~".join([n1,n2,label])
+		assert _id in self.edges
+		del self.edges[_id]
+		return _id
+
+		
+
