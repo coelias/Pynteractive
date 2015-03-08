@@ -5,8 +5,22 @@ import re
 class Tree(VisNetwork):
 	releaf=re.compile("([^:]+)?(:[0-9.]+)?")
 	def __init__(self,name=None,directed=None):
-		VisNetwork.__init__(self,name,False)
+		self.nodenames=set()
+		VisNetwork.__init__(self,name,True)
 		self.root=None
+
+	def getName(self,name):
+		if not name in self.nodenames:
+			self.nodenames.add(name)
+			return name
+		k=1
+		newname=name+"#{0}".format(k)
+		while newname in self.nodenames:
+			k+=1
+			newname=name+"#{0}".format(k)
+		self.nodenames.add(newname)
+		return newname
+
 
 	class Node:
 		def __init__(self,name=None,lgth=None):
@@ -20,9 +34,9 @@ class Tree(VisNetwork):
 	def readNewick(self,newick):
 		try:
 			if os.path.isfile(newick):
-				self.root,pos=Tree.parseTree(open(newick).read(),0)
+				self.root,pos=self.parseTree(open(newick).read(),0)
 			else:
-				self.root,pos=Tree.parseTree(newick,0)
+				self.root,pos=self.parseTree(newick,0)
 		except:
 			raise Exception('Invalid format for Newick')
 
@@ -48,8 +62,7 @@ class Tree(VisNetwork):
 					self.addEdge(rt.name,newnodename,length=50)
 
 
-	@staticmethod
-	def parseTree(cad,pos):
+	def parseTree(self,cad,pos):
 		n=Tree.Node()
 		assert cad[pos]=='('
 		
@@ -58,7 +71,7 @@ class Tree(VisNetwork):
 				if pos==len(cad)-1: break
 				if cad[pos+1]==';': break
 				if cad[pos+1] not in "),":
-					name,lgth,pos=Tree.parseLeaf(cad,pos+1)
+					name,lgth,pos=self.parseLeaf(cad,pos+1)
 					n.name=name
 					n.length=lgth
 					return n,pos
@@ -67,15 +80,14 @@ class Tree(VisNetwork):
 				break
 	
 			if cad[pos+1]!='(': 
-				name,lgth,pos=Tree.parseLeaf(cad,pos+1)
+				name,lgth,pos=self.parseLeaf(cad,pos+1)
 				n.append(Tree.Node(name,lgth))
 			else:
-				nn,pos=Tree.parseTree(cad,pos+1)
+				nn,pos=self.parseTree(cad,pos+1)
 				n.append(nn)
 		return n,pos+1
 	
-	@staticmethod
-	def parseLeaf(cad,pos):
+	def parseLeaf(self,cad,pos):
 		length=None
 		name=None
 		i=pos
@@ -83,7 +95,7 @@ class Tree(VisNetwork):
 			i+=1
 		items=Tree.releaf.findall(cad[pos:i])
 		if not items: raise Exception("Tree wrongly constructed")
-		if items[0][0]: name=items[0][0]
+		if items[0][0]: name=self.getName(items[0][0])
 		if items[0][1]: length=float(items[0][1][1:])
 	
 		return name,length,i
