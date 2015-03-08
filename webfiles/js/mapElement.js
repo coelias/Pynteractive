@@ -17,11 +17,14 @@ mapElement.prototype.constructor = mapElement;
 
 mapElement.prototype.test = function () {
 
-	UIC.addNode("1", "", "", "", "", "red", 5, "", 51.5, -0.09);
-	UIC.addNode("2", "", "", "", "", "red", 5, "", 51.8, -0.09);
+	var node1 = {id: "1", lat:51.5, lng:-0.09, color:"red", radius:5};
+	var node2 = {id: "2", lat:51.8, lng:-0.09, color:"red", radius:5};
+	UIC.addNode(node1);
+	UIC.addNode(node2);
 
-	//var edge1 = {id: "1", id1: "1", id2:"2", color:"red"};
-	//UIC.addEdge(edge1);
+
+	var edge1 = {id: "1", from: "1", to:"2", color:"red"};
+	UIC.addEdge(edge1);
 
 	//console.log(this.markers);
 	//this.removeNode(node1);
@@ -43,15 +46,27 @@ mapElement.prototype.load = function () {
 	});
 
 	this.layout = L.map('layout', {
-	    center: [ 51.7504163, -1.2475879 ],
-	    zoom: 12,
-	    maxZoom: 18,
-	    minZoom: 3,
-	    zoomControl: false,
-	    layers: [osm]
+		center: [ 51.7504163, -1.2475879 ],
+		zoom: 12,
+		maxZoom: 18,
+		minZoom: 3,
+		zoomControl: false,
+		layers: [osm]
 	});
 
-	this.test();
+	new L.Control.GeoSearch({
+		provider: new L.GeoSearch.Provider.OpenStreetMap(),
+		position: 'topcenter',
+		showMarker: false,
+	}).addTo(this.layout);
+
+
+	new L.Control.Zoom({ position: 'topright' }).addTo(this.layout);
+
+        /*new L.Control.GeoSearch({
+            provider: new L.GeoSearch.Provider.OpenStreetMap()
+        }).addTo(this.layout);*/
+
 
 	//add events listener
 	//this.layout.on('select', this.selectElement);
@@ -114,6 +129,7 @@ mapElement.prototype.getLatLngNode = function (node){
  * add Node
  */
 mapElement.prototype.addNode = function (node){
+
 	var markerAux = new L.CircleMarker(new L.LatLng(node.location.lat,  node.location.lng), {
 		    radius: node.radius,
 		    fillColor: node.color,

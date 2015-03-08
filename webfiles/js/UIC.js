@@ -29,13 +29,11 @@ addEdge: function (id, id1, id2, label, title, threshold, style, length, color){
 
 removeNode: function (id){
 			var n = {"id":id};
-
 			element.removeNode(n);
 		},
 
 removeEdge: function (id){
 			var e = {"id":id};
-
 			element.removeEdge(e);
 		},
 

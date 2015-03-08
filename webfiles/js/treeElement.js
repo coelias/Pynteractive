@@ -303,7 +303,7 @@ treeElement.prototype.addEdge = function (edge){
  * remove Node
  */
 treeElement.prototype.removeNode = function (node){
-	element.nodesMap.remove(node);
+	element.nodesMap.remove(node.id);
 }
 
 
@@ -311,5 +311,5 @@ treeElement.prototype.removeNode = function (node){
  * remove Edge
  */
 treeElement.prototype.removeEdge = function (edge){
-	element.edgesMap.remove(edge);
+	element.edgesMap.remove(edge.id);
 }

@@ -249,10 +249,10 @@ graphElement.prototype.addNode = function (node){
 graphElement.prototype.addEdge = function (edge){
 	element.edgesMap.add(edge);
 
-	from = element.nodesMap.get(id2);
+	/*from = element.nodesMap.get(edge.to);
 	if (from.radius == undefined) from.radius = 10;
 	from.radius = from.radius + 1;
-	element.nodesMap.update(from);
+	element.nodesMap.update(from);*/
 }
 
 
