@@ -16,7 +16,7 @@
 	border-color: black;
 }
 
-#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #labelFreezeLayout, #labelHideEdgesOnDragLayout, #labelHierarchicalRepulsionRadio, #labelSmoothCurves, #labelSmoothCurvesType, #labelSmoothCurvesDynamic, #labelSmoothCurvesRoundness, #labelGraphFocus, #labelAction1, #labelAction2, #labelAction3{
+#labelBarnesHut, #labelRepulsion, #labelHierarchicalRepulsion, #labelCentralGravity, #labelNodeDistance, #labelLevelSeparation, #labelNodeSpacing, #labelFreezeLayout, #labelHideEdgesOnDragLayout, #labelHierarchicalRepulsionRadio, #labelSmoothCurves, #labelSmoothCurvesType, #labelSmoothCurvesDynamic, #labelSmoothCurvesRoundness, #labelGraphFocus, #labelAction1, #labelAction2, #labelAction3{
 	color: #ccccff;
 	font-weight: bold;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -31,7 +31,6 @@
 
 #labelNodeDistance{
 	position:absolute;
-	/*margin-top: 12px;*/
 }
 
 #sliderCentralGravity {
@@ -44,13 +43,10 @@
     	width: 55%;
 }
 
-#sliderNodeDistance {
+#sliderNodeDistance, #sliderLevelSeparation, #sliderNodeSpacing {
 	position:absolute;
 	right: 0%;
 	margin-top: 7px;
-	/*margin-top: 10px;*/
-	background-color: #2290c9;
-	font-weight: bold;
 	height: 5px;
     	width: 55%;
 }

@@ -1,5 +1,7 @@
 function treeElement() {
-
+	this.enabledLayout = 2;
+	this.levelSeparation = 150;
+      	this.nodeSpacing = 100;
 };
 
 treeElement.prototype = new element();
@@ -41,7 +43,7 @@ treeElement.prototype.loadHtml = function () {
 	tag = {tag:'label', to:'#optionsNetwork', id:'labelBarnesHut', text:'BarnesHut'};
 	this.loadHtmlTag(tag);
 	
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelRepulsionRadio', name: 'groupOptionsNetwork', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: true};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'labelRepulsionRadio', name: 'groupOptionsNetwork', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -50,7 +52,7 @@ treeElement.prototype.loadHtml = function () {
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelHierarchicalRepulsion', text: 'Hierarchical'};
 	this.loadHtmlTag(tag);
 	
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelHierarchicalRepulsionRadio', name: 'groupOptionsNetwork', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'labelHierarchicalRepulsionRadio', name: 'groupOptionsNetwork', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: true};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -61,9 +63,27 @@ treeElement.prototype.loadHtml = function () {
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelNodeDistance', text: 'Node Distance'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: this.nodeDistanceValue, onclick: 'this.changeLayoutNodeDistance(value)'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: this.nodeDistanceValue, onclick: 'element.changeLayoutNodeDistance(value)'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLevelSeparation', text: 'Level Separation'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderLevelSeparation', type: 'range', min: '0', max: '300', step: '10', value: this.levelSeparation, onclick: 'element.changeLayoutLevelSeparation(value)'};
 	this.loadHtmlTag(tag);
 	
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelNodeSpacing', text: 'Node Spacing'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeSpacing', type: 'range', min: '0', max: '300', step: '10', value: this.nodeSpacing, onclick: 'element.changeLayoutNodeSpacing(value)'};
+	this.loadHtmlTag(tag);
+
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 	jQuery('<hr/>', {}).appendTo('#optionsNetwork');
@@ -186,11 +206,14 @@ treeElement.prototype.reDrawLayout = function (){
 			this.layout = new vis.Network(this.container, this.data, this.options);
 			break;
 		case 2:
-			this.options = {stabilize: false, hierarchicalLayout: {layout: "directional"}, smoothCurves: {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness: this.smoothCurves.roundness}, physics: {hierarchicalRepulsion: {nodeDistance: this.nodeDistanceValue}}, hideEdgesOnDrag: this.hideEdgesOnDragLayout};
+
+			this.options = {stabilize: false, hierarchicalLayout: {layout: "directional", levelSeparation: this.levelSeparation, nodeSpacing: this.nodeSpacing}, smoothCurves:false, physics: {hierarchicalRepulsion: {nodeDistance: this.nodeDistanceValue}}, hideEdgesOnDrag: this.hideEdgesOnDragLayout};
+
 			this.layout = new vis.Network(this.container, this.data, this.options);
 			break;
 	}
 
+	this.reDrawTreeToolLayout();
 	this.reDrawToolLayout();
 
 	this.layout.freezeSimulation(this.freezeLayout);
@@ -206,4 +229,49 @@ treeElement.prototype.destroy = function () {
 		this.layout.destroy();
 	    	this.layout = null;
 	}
+};
+
+
+/**
+ * Change level separation of the tree
+ * @param {Number} value 
+ */
+treeElement.prototype.changeLayoutLevelSeparation = function (value){
+	this.levelSeparation = value;
+	this.reDrawLayout();
+};
+
+
+/**
+ * Change node spacing of the tree
+ * @param {Number} value 
+ */
+treeElement.prototype.changeLayoutNodeSpacing = function (value){
+	this.nodeSpacing = value;
+	this.reDrawLayout();
+};
+
+/**
+ * Re paint tool layout taking into account the method selected for layout visualization
+ */
+treeElement.prototype.reDrawTreeToolLayout = function () {
+
+	switch(this.enabledLayout) {
+		case 1:
+			//console.log($('#labelSmoothCurvesType'))
+			$('#labelLevelSeparation').prop( "disabled", true ).removeClass('disabled');
+			$("#sliderLevelSeparation").prop( "disabled", true ).removeClass('disabled');
+			$('#labelNodeSpacing').prop( "disabled", true).removeClass('disabled');
+			$("#sliderNodeSpacing").prop( "disabled", true ).removeClass('disabled');
+			$("#sliderSmoothCurvesRoundness").prop( "disabled", true ).removeClass('disabled');
+			break;
+		case 2:
+			$('#labelLevelSeparation').prop( "disabled", false ).removeClass('disabled');
+			$("#sliderLevelSeparation").prop( "disabled", false ).removeClass('disabled');
+			$('#labelNodeSpacing').prop( "disabled", false).removeClass('disabled');
+			$("#sliderNodeSpacing").prop( "disabled", false ).removeClass('disabled');
+			$("#sliderSmoothCurvesRoundness").prop( "disabled", false ).removeClass('disabled');
+			break;
+	}
+
 };

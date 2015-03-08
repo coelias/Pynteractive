@@ -148,6 +148,7 @@ element.prototype.reDrawToolLayout = function () {
 
 	switch(this.smoothCurves.dynamic) {
 		case false:
+			console.log($('#labelSmoothCurvesType'))
 			$('#labelSmoothCurvesType').prop( "disabled", false ).removeClass('disabled');
 			$("#SmoothCurvesType").prop( "disabled", false ).removeClass('disabled');
 			$('#labelSmoothCurvesRoundness').prop( "disabled", false ).removeClass('disabled');
@@ -205,7 +206,8 @@ element.prototype.changeSmoothCurvesDynamic = function (){
 	this.smoothCurves.dynamic = !this.smoothCurves.dynamic;
 	this.options.smoothCurves = {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness:this.smoothCurves.roundness};
 	this.layout.setOptions(this.options);
-
+	
+	console.log("hohohho")
 	this.reDrawToolLayout();
 };
 
@@ -222,7 +224,6 @@ element.prototype.changeSmoothCurvesType = function (value){
  * change type of smooth curves roundness
  */
 element.prototype.changeSmoothCurvesRoundness = function (value){
-
 	this.smoothCurves.roundness = value;
 	this.options.smoothCurves = {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness:this.smoothCurves.roundness};
 	this.layout.setOptions(this.options);
