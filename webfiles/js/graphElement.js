@@ -218,3 +218,13 @@ graphElement.prototype.reDrawLayout = function (){
 
 	this.layout.freezeSimulation(this.freezeLayout);
 };
+
+/**
+ * Destroy layout layout
+ */
+graphElement.prototype.destroy = function () {
+	if (this.layout != null) {
+		this.layout.destroy();
+	    	this.layout = null;
+	}
+};

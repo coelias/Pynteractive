@@ -107,10 +107,10 @@ element.prototype.changeLayoutType = function (id){
 
 	switch(id) {
 		case "labelRepulsionRadio":
-			enabledLayout = 1;
+			this.enabledLayout = 1;
 			break;
 		case "labelHierarchicalRepulsionRadio":
-			enabledLayout = 2;
+			this.enabledLayout = 2;
 			break;
 	}
 	this.reDrawLayout();
@@ -167,9 +167,7 @@ element.prototype.reDrawToolLayout = function () {
  * Destroy layout layout
  */
 element.prototype.destroy = function () {
-	if (this.layout != null) {
-	    this.layout = null;
-	}
+
 };
 
 /**

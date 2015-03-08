@@ -61,7 +61,7 @@ treeElement.prototype.loadHtml = function () {
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelNodeDistance', text: 'Node Distance'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: this.nodeDistanceValue, onclick: 'element.changeLayoutNodeDistance(value)'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderNodeDistance', type: 'range', min: '0', max: '300', step: '10', value: this.nodeDistanceValue, onclick: 'this.changeLayoutNodeDistance(value)'};
 	this.loadHtmlTag(tag);
 	
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -194,4 +194,16 @@ treeElement.prototype.reDrawLayout = function (){
 	this.reDrawToolLayout();
 
 	this.layout.freezeSimulation(this.freezeLayout);
+
+
+};
+
+/**
+ * Destroy layout layout
+ */
+treeElement.prototype.destroy = function () {
+	if (this.layout != null) {
+		this.layout.destroy();
+	    	this.layout = null;
+	}
 };
