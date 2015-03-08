@@ -186,6 +186,7 @@ hr {
 }
 
 #tools {
+	z-index:2;
 	position: relative;
 	height: 100%;
 	width: 100%;
@@ -196,6 +197,7 @@ hr {
 	-o-transition: left 0.4s ease-in-out;
 	transition: left 0.4s ease-in-out;
 }
+
 #tools.open-sidebar {
 	left: 240px;
 }
@@ -223,6 +225,7 @@ hr {
 	line-height: 160%;
 }
 .main-content #sidebar-toggle {
+	z-index:1;
 	background: #2290c9;
 	border-radius: 3px;
 	display: block;

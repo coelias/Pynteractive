@@ -54,19 +54,16 @@ mapElement.prototype.load = function () {
 		layers: [osm]
 	});
 
-	new L.Control.GeoSearch({
+	var geosearch = new L.Control.GeoSearch({
 		provider: new L.GeoSearch.Provider.OpenStreetMap(),
 		position: 'topcenter',
 		showMarker: false,
-	}).addTo(this.layout);
+		zoomLevel: 12
+	})
 
+	geosearch.addTo(this.layout);
 
 	new L.Control.Zoom({ position: 'topright' }).addTo(this.layout);
-
-        /*new L.Control.GeoSearch({
-            provider: new L.GeoSearch.Provider.OpenStreetMap()
-        }).addTo(this.layout);*/
-
 
 	//add events listener
 	//this.layout.on('select', this.selectElement);
