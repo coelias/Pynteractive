@@ -16,6 +16,9 @@ $(function () {
 		case "Tree":
 			loadTreeVisualization();
 			break;
+		case "Map":
+			loadMapVisualization();
+			break;
 	}
 
 });
@@ -32,5 +35,12 @@ function loadGraphVisualization(){
 	//load specific graphic element
 	$('head').append('<script src="js/graphElement.js"></script>');
 	element = new graphElement();
+	element.loadInstance();
+}
+
+function loadMapVisualization(){
+	//load specific graphic element
+	$('head').append('<script src="js/mapElement.js"></script>');
+	element = new mapElement();
 	element.loadInstance();
 }
