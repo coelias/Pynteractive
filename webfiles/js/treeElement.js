@@ -6,30 +6,6 @@ treeElement.prototype = new element();
 treeElement.prototype.constructor = treeElement;
 
 /**
- * Re paint all the layout taking into account three physics options {barnesHut, barnesHut disabled and hierarchical}
- */
-treeElement.prototype.reDrawLayout = function (){
-
-	this.destroy();
-
-	switch(this.enabledLayout) {
-		case 1: //smoothCurves: {dynamic:false, type: "continuous"}
-			this.options = {stabilize: true, stabilizationIterations:1, smoothCurves: false};
-			this.layout = new vis.Network(this.container, this.data, this.options);
-			break;
-		case 2:
-			this.options = {stabilize: true, smoothCurves: false};
-			this.layout = new vis.Network(this.container, this.data, this.options);
-			break;
-	}
-
-	this.reDrawToolLayout();
-
-	this.layout.freezeSimulation(this.freezeLayout);
-};
-
-
-/**
  * Load graph on layout div html page
  */
 treeElement.prototype.load = function () {
@@ -195,4 +171,27 @@ treeElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
+};
+
+/**
+ * Re paint all the layout taking into account three physics options {barnesHut, barnesHut disabled and hierarchical}
+ */
+treeElement.prototype.reDrawLayout = function (){
+
+	this.destroy();
+
+	switch(this.enabledLayout) {
+		case 1: //smoothCurves: {dynamic:false, type: "continuous"}
+			this.options = {stabilize: false, smoothCurves: {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness: this.smoothCurves.roundness}, physics: {barnesHut: {enabled: false}, repulsion: {damping:0.09, nodeDistance: this.nodeDistanceValue, centralGravity: this.centralGravityValue}},hideEdgesOnDrag: this.hideEdgesOnDragLayout};
+			this.layout = new vis.Network(this.container, this.data, this.options);
+			break;
+		case 2:
+			this.options = {stabilize: false, hierarchicalLayout: {layout: "directional"}, smoothCurves: {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness: this.smoothCurves.roundness}, physics: {hierarchicalRepulsion: {nodeDistance: this.nodeDistanceValue}}, hideEdgesOnDrag: this.hideEdgesOnDragLayout};
+			this.layout = new vis.Network(this.container, this.data, this.options);
+			break;
+	}
+
+	this.reDrawToolLayout();
+
+	this.layout.freezeSimulation(this.freezeLayout);
 };
