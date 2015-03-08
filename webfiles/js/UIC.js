@@ -16,12 +16,13 @@ addNode: function (id, label, title, group, shape, color, radius, image, lng, la
 			element.addNode(n);
 		},
 
-addEdge: function (id, id1, id2, label, title, threshold, style, length){
+addEdge: function (id, id1, id2, label, title, threshold, style, length, color){
 			var e = {"id":id,"from":id1,"to":id2, "style": style};
 			if (label) e.label=label;
 			if (title) e.title=title;
 			if (threshold) e.value=threshold;
 			if (length) e.length=length;
+			if (color) e.color=color;
 
 			element.addEdge(e);
 		},
