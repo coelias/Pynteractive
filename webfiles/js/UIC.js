@@ -3,7 +3,7 @@
 //////////    User Interface CONTROLLER (UIC)    ///////////
 ////////////////////////////////////////////////////////////
 var UIC = {
-addNode: function (id, label, title, group, shape, color, radius, image, level, lng, lat){
+addNode: function (id, label, title, group, shape, color, radius, image, lng, lat){
 			var n = {"id":id, "label":label, "shape":shape};
 			if (shape) n.shape=shape;
 			if (title) n.title=title;
@@ -11,7 +11,6 @@ addNode: function (id, label, title, group, shape, color, radius, image, level, 
 			if (color) n.color=color;
 			if (radius) n.radius=radius;
 			if (image) n.image=image;
-			if (level) n.level=level;
 			if (location) n.location={"lng":lng,"lat":lat};
 
 			element.addNode(n);

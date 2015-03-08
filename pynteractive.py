@@ -16,7 +16,7 @@ from lib.datastruct import *
 from lib.graph import *
 from lib.tree import *
 from lib.map import *
-
+import traceback
 
 MUTEX=threading.Lock()
 
@@ -131,6 +131,7 @@ class JSCom(WebSocket):
 			args=dat[1]
 			self.dicFuncs[funcname](**args)
 		except:
+			traceback.print_exc()
 			print "Error processing",str(self.data)
 
 	def handleConnected(self):

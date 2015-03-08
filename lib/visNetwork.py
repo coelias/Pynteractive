@@ -1,17 +1,12 @@
-from lib.datastruct import *
-import random
+from lib.Network import *
 
-class VisNetwork(DataStruct):
+class VisNetwork(Network):
 	def __init__(self,name=None,directed=False):
-		'''Creates a graph, It can be directed or not, if a name is not given it is created randomly'''
-		DataStruct.__init__(self,name)
-
-		self.vertices={}
-		self.edges={}
-		self.directed=directed
+		'''Creates a network for vis.js'''
+		Network.__init__(self,name,directed)
 
 	def addNode(self,node_id=None,label=None,title=None,group=None,shape=None,color=None,radius=None,image=None):
-		'''Adds a node to the graph:
+		'''Adds a node to the network:
 		node_id: identification of the node, if not specified it will be randomly generated
 		label: Text that will be shown within the node
 		title: Tooltip shown when hovering the node
@@ -24,20 +19,10 @@ class VisNetwork(DataStruct):
 		assert not shape or shape in ['ellipse','circle','box','database','image','circularImage','label','dot','star','triangle','triangleDown','square']
 		if shape in ['image','circularImage']: assert image!=None
 
-		if node_id==None:
-			i=1
-			while True:
-				if str(i) not in self.vertices:
-					node_id=i
-					break
-				i+=1
-		node_id=str(node_id)
-		if not label: label=node_id
-		else: label=str(label)
-		self.vertices[node_id]={"_id":node_id,"_label":label,"_title":title,"_group":group,"_color":color,"_radius":radius,"_image":image}
+		node_id,label=Network.addNode(self,node_id,label,title=title,group=group,shape=shape,color=color,radius=radius,image=image)
 
 		self.update("addNode",node_id,label,title,group,shape,color,radius,image)
-		return node_id
+		return node_id,label
 
 	def addEdge(self,n1,n2,label=None,title=None,width=None,style=None,length=None):
 		'''Adds an edge to a node, if it is not directed the order does not matter
@@ -49,8 +34,6 @@ class VisNetwork(DataStruct):
 
 		assert not style or style in ['line','arrow','arrow-center','dash-line']
 		if not self.directed: assert style not in ['arrow','arrow-center']
-		n1,n2=str(n1),str(n2)
-		assert n1 in self.vertices and n2 in self.vertices
 
 		if not label: label=''
 
@@ -58,9 +41,7 @@ class VisNetwork(DataStruct):
 			style='arrow'
 		else:
 			style='line'
-			if n1>n2:n1,n2=n2,n1
 
-		_id="~".join([n1,n2,label])
-		self.edges[_id]={"_n1":n1,"_n2":n2,"_label":label,"_title":title,"_threshold":width,"_style":style,"_length":length}
+		_id,label=Network.addEdge(self,n1,n2,label,title=title,width=width,style=style,length=length)
 		self.update("addEdge",_id,n1,n2,label,title,width,style,length)
-		return _id
+		return _id,label

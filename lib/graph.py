@@ -11,7 +11,7 @@ class Graph(VisNetwork):
 		for i in self.vertices.values():
 			self.update("addNode",i["_id"],i["_label"],i["_title"],i["_group"],i["_color"],i["_radius"],i["_image"])
 		for i,j in self.edges.items():
-			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_threshold"],j["_style"])
+			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_width"],j["_style"])
 
 	def random(self,nn,ne):
 		map(self.addNode,xrange(nn))

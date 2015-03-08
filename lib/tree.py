@@ -45,9 +45,9 @@ class Tree(VisNetwork):
 			top=[self.root]
 			self.addNode("_root")
 			if self.root.children:
-				topname=self.addNode(self.root.name,label=' ',shape='dot',radius=0.01)
+				topname,toplabel=self.addNode(self.root.name,label=' ',shape='dot',radius=0.01)
 			else:
-				topname=self.addNode(self.root.name,shape='dot')
+				topname,toplabel=self.addNode(self.root.name,shape='dot')
 			self.root.name=topname
 			self.addEdge("_root",topname)
 			while top:
@@ -55,9 +55,9 @@ class Tree(VisNetwork):
 				for i in rt.children:
 					top.append(i)
 					if i.children:
-						newnodename=self.addNode(i.name,shape='dot',radius=0.01,label=' ')
+						newnodename,newlabel=self.addNode(i.name,shape='dot',radius=0.01,label=' ')
 					else:
-						newnodename=self.addNode(i.name,shape='dot')
+						newnodename,newlabel=self.addNode(i.name,shape='dot')
 					i.name=newnodename
 					self.addEdge(rt.name,newnodename,length=50)
 
