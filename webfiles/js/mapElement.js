@@ -17,18 +17,15 @@ mapElement.prototype.constructor = mapElement;
 
 mapElement.prototype.test = function () {
 
-	var node1 = {id: "id1", location: {lat:51.5, lng:-0.09}, color:"red", radius:5};
-	var node2 = {id: "id2", location: {lat:51.8, lng:-0.09}, color:"red", radius:5};
-	this.addNode(node1);
-	this.addNode(node2);
+	UIC.addNode("1", "", "", "", "", "red", 5, "", 51.5, -0.09);
+	UIC.addNode("2", "", "", "", "", "red", 5, "", 51.8, -0.09);
 
-
-	var edge1 = {id: "id1", id1: "id1", id2:"id2", color:"red"};
-	this.addEdge(edge1);
+	//var edge1 = {id: "1", id1: "1", id2:"2", color:"red"};
+	//UIC.addEdge(edge1);
 
 	//console.log(this.markers);
-	this.removeNode(node1);
-	this.removeEdge(edge1);
+	//this.removeNode(node1);
+	//this.removeEdge(edge1);
 }
 
 /**
@@ -139,8 +136,8 @@ mapElement.prototype.addNode = function (node){
 mapElement.prototype.addEdge = function (edge){
 	//id, id1, id2, label, title, threshold, style, length
 
-	p1 = this.getLatLngNode(edge.id1);
-	p2 = this.getLatLngNode(edge.id2);
+	p1 = this.getLatLngNode(edge.from);
+	p2 = this.getLatLngNode(edge.to);
 
 	var pointA = new L.LatLng(p1.lat, p1.lng);
 	var pointB = new L.LatLng(p2.lat, p2.lng);
