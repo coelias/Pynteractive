@@ -32,7 +32,7 @@ treeElement.prototype.reDrawLayout = function (){
 /**
  * Load graph on layout div html page
  */
-mapElement.prototype.load = function () {
+treeElement.prototype.load = function () {
 	//create a layout
 	this.container = document.getElementById('layout');
 
@@ -51,7 +51,7 @@ mapElement.prototype.load = function () {
 /**
  * Load html page
  */
-element.prototype.loadHtml = function () {
+treeElement.prototype.loadHtml = function () {
 	
 	//create tools
 	var tag = {};

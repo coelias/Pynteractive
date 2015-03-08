@@ -31,7 +31,7 @@ graphElement.prototype.doubleClickElement = function (properties){
 /**
  * Load graph on layout div html page
  */
-mapElement.prototype.load = function () {
+graphElement.prototype.load = function () {
 	//create a layout
 	this.container = document.getElementById('layout');
 
@@ -50,7 +50,7 @@ mapElement.prototype.load = function () {
 /**
  * Load html page
  */
-element.prototype.loadHtml = function () {
+graphElement.prototype.loadHtml = function () {
 	
 	//create tools
 	var tag = {};
