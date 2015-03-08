@@ -49,16 +49,17 @@ class VisNetwork(Network):
 	def delNode(self,node_id):
 		node,edges=Network.delNode(self,node_id)
 
-		self.update("renoveNode",node)
 		for i in edges:
-			self.update("renoveEdge",i)
+			self.update("removeEdge",i)
+		self.update("removeNode",node)
 
-	def delEdge(self,n1,n2,label):
-		edge=Network.delEdge(self,n1,n2,label)
-		self.update("renoveEdge",edge)
+	def delEdge(self,ed_id):
+		Network.delEdge(self,ed_id)
+		self.update("removeEdge",ed_id)
 
-		
-
-
-		
-		
+	def clear(self):
+		v,e=self.getEdgesAndNodes()
+		for i in e:
+			self.delEdge(i)
+		for i in v:
+			self.delNode(i)

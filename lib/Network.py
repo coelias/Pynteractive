@@ -51,14 +51,11 @@ class Network(DataStruct):
 		del self.vertices[node_id]
 		return [node_id,edges]
 
-
-	def delEdge(self,n1,n2,label=''):
-		n1,n2=str(n1),str(n2)
-		assert n1 in self.vertices and n2 in self.vertices
-		_id="~".join([n1,n2,label])
+	def delEdge(self,_id):
 		assert _id in self.edges
 		del self.edges[_id]
 		return _id
 
-		
-
+	def getEdgesAndNodes(self):
+		n,e=self.vertices.keys(),self.edges.keys()
+		return n,e

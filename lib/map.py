@@ -44,7 +44,16 @@ class Map(Network):
 		except:
 			return None,None
 
+	def delNode(self,node_id):
+		node,edges=Network.delNode(self,node_id)
 
+		self.update("removeNode",node)
+		for i in edges:
+			self.update("removeEdge",i)
+
+	def delEdge(self,n1,n2,label):
+		edge=Network.delEdge(self,n1,n2,label)
+		self.update("removeEdge",edge)
 
 
 
