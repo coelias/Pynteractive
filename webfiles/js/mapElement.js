@@ -15,20 +15,17 @@ mapElement.prototype.constructor = mapElement;
 
 };*/
 
-mapElement.prototype.ltest = function () {
+mapElement.prototype.test = function () {
 
-	var node1 = {id: "id1", location: {lat:51.5, lng:-0.09}, color:"red", radius:5};
-	var node2 = {id: "id2", location: {lat:51.8, lng:-0.09}, color:"red", radius:5};
-	this.addNode(node1);
-	this.addNode(node2);
+	UIC.addNode("1", "", "", "", "", "red", 5, "", 51.5, -0.09);
+	UIC.addNode("2", "", "", "", "", "red", 5, "", 51.8, -0.09);
 
+	//var edge1 = {id: "1", id1: "1", id2:"2", color:"red"};
+	//UIC.addEdge(edge1);
 
-	var edge1 = {id: "id1"};
-	this.addEdge(edge1);
-
-	console.log(this.markers);
-	//this.removeNode("id1");
-	//this.removeEdge("id1");
+	//console.log(this.markers);
+	//this.removeNode(node1);
+	//this.removeEdge(edge1);
 }
 
 /**
@@ -41,7 +38,7 @@ mapElement.prototype.load = function () {
 	var maplink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 	var mmm = '<a href=https://github.com/coelias/Pynteractive>Pynteractive</a>'
 
-	osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 	    	attribution: ' &copy; '+maplink+" | "+mmm,
 	});
 
@@ -53,6 +50,8 @@ mapElement.prototype.load = function () {
 	    zoomControl: false,
 	    layers: [osm]
 	});
+
+	this.test();
 
 	//add events listener
 	//this.layout.on('select', this.selectElement);
@@ -117,7 +116,7 @@ mapElement.prototype.getLatLngNode = function (node){
 mapElement.prototype.addNode = function (node){
 	var markerAux = new L.CircleMarker(new L.LatLng(node.location.lat,  node.location.lng), {
 		    radius: node.radius,
-		    fillColor:  node.color,
+		    fillColor: node.color,
 		    color: 'black',
 		    weight: 1,
 		    opacity: 1,
@@ -137,15 +136,15 @@ mapElement.prototype.addNode = function (node){
 mapElement.prototype.addEdge = function (edge){
 	//id, id1, id2, label, title, threshold, style, length
 
-	p1 = this.getLatLngNode("id1");
-	p2 = this.getLatLngNode("id2");
+	p1 = this.getLatLngNode(edge.from);
+	p2 = this.getLatLngNode(edge.to);
 
 	var pointA = new L.LatLng(p1.lat, p1.lng);
 	var pointB = new L.LatLng(p2.lat, p2.lng);
 	var pointList = [pointA, pointB];
 
 	// create a red polyline from an array of LatLng points
-	var polyline = L.polyline(pointList, {color: 'red'});
+	var polyline = L.polyline(pointList, {color: edge.color});
 
 	polyline.options.id = edge.id;
 	polyline.on('click', this.clickEdge);
@@ -161,7 +160,8 @@ mapElement.prototype.addEdge = function (edge){
  * remove Node
  */
 mapElement.prototype.removeNode = function (node){
-	this.layout.removeLayer(this.markers[node]);
+	this.layout.removeLayer(this.markers[node.id]);
+	delete this.markers[node.id]; 
 }
 
 
@@ -169,7 +169,8 @@ mapElement.prototype.removeNode = function (node){
  * remove Edge
  */
 mapElement.prototype.removeEdge = function (edge){
-	this.layout.removeLayer(this.lines[edge]);
+	this.layout.removeLayer(this.lines[edge.id]);
+	delete this.lines[edge.id]; 
 }
 
 ////////////////////////////////////////////////////////////
