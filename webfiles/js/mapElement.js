@@ -15,6 +15,22 @@ mapElement.prototype.constructor = mapElement;
 
 };*/
 
+mapElement.prototype.ltest = function () {
+
+	var node1 = {id: "id1", location: {lat:51.5, lng:-0.09}, color:"red", radius:5};
+	var node2 = {id: "id2", location: {lat:51.8, lng:-0.09}, color:"red", radius:5};
+	this.addNode(node1);
+	this.addNode(node2);
+
+
+	var edge1 = {id: "id1"};
+	this.addEdge(edge1);
+
+	console.log(this.markers);
+	//this.removeNode("id1");
+	//this.removeEdge("id1");
+}
+
 /**
  * Load graph on layout div html page
  */
@@ -37,20 +53,6 @@ mapElement.prototype.load = function () {
 	    zoomControl: false,
 	    layers: [osm]
 	});
-
-	var node1 = {id: "id1", location: {lat:51.5, lng:-0.09}};
-	var node2 = {id: "id2", location: {lat:51.8, lng:-0.09}};
-	this.addNode(node1);
-	this.addNode(node2);
-
-
-
-	var edge1 = {id: "id1"};
-	this.addEdge(edge1);
-
-	console.log(this.markers);
-	//this.removeNode("id1");
-	//this.removeEdge("id1");
 
 	//add events listener
 	//this.layout.on('select', this.selectElement);
@@ -114,8 +116,8 @@ mapElement.prototype.getLatLngNode = function (node){
  */
 mapElement.prototype.addNode = function (node){
 	var markerAux = new L.CircleMarker(new L.LatLng(node.location.lat,  node.location.lng), {
-		    radius: 5,
-		    fillColor: "red",
+		    radius: node.radius,
+		    fillColor:  node.color,
 		    color: 'black',
 		    weight: 1,
 		    opacity: 1,
@@ -135,8 +137,6 @@ mapElement.prototype.addNode = function (node){
 mapElement.prototype.addEdge = function (edge){
 	//id, id1, id2, label, title, threshold, style, length
 
-
-
 	p1 = this.getLatLngNode("id1");
 	p2 = this.getLatLngNode("id2");
 
@@ -155,7 +155,6 @@ mapElement.prototype.addEdge = function (edge){
 
 	// zoom the map to the polyline
 	//this.layout.fitBounds(polyline.getBounds());
-
 }
 
 /**
@@ -182,16 +181,12 @@ mapElement.prototype.removeEdge = function (edge){
  * click node
  */
 mapElement.prototype.clickNode = function (node){
-	console.log(markers);
 	console.log(node.target.options.id);
-	console.log(this.markers[node.target.options.id]);
 }
 
 /**
  * click Edge
  */
 mapElement.prototype.clickEdge = function (edge){
-	console.log(this.lines);
 	console.log(edge.target.options.id);
-	console.log(this.lines[edge.target.options.id]);
 }
