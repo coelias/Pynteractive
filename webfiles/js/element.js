@@ -245,3 +245,42 @@ element.prototype.action = function (id){
 			break;
 	}
 };
+
+
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+//////////////////    UIC WRAPPER    ///////////////////////
+////////////////////////////////////////////////////////////
+
+/**
+ * add Node
+ */
+element.prototype.addNode = function (node){
+
+}
+
+
+/**
+ * add Edge
+ */
+element.prototype.addEdge = function (node){
+
+}
+
+
+/**
+ * remove Node
+ */
+element.prototype.removeNode = function (node){
+
+}
+
+
+/**
+ * remove Edge
+ */
+element.prototype.removeEdge = function (node){
+
+}
+

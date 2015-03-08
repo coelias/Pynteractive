@@ -3,7 +3,7 @@
 //////////    User Interface CONTROLLER (UIC)    ///////////
 ////////////////////////////////////////////////////////////
 var UIC = {
-addNode: function (id, label, title, group, shape, color, radius, image, level){
+addNode: function (id, label, title, group, shape, color, radius, image, level, lng, lat){
 			var n = {"id":id, "label":label, "shape":shape};
 			if (shape) n.shape=shape;
 			if (title) n.title=title;
@@ -12,7 +12,9 @@ addNode: function (id, label, title, group, shape, color, radius, image, level){
 			if (radius) n.radius=radius;
 			if (image) n.image=image;
 			if (level) n.level=level;
-			element.nodesMap.add(n);
+			if (location) n.location={"lng":lng,"lat":lat};
+
+			element.addNode(n);
 		},
 
 addEdge: function (id, id1, id2, label, title, threshold, style, length){
@@ -21,22 +23,20 @@ addEdge: function (id, id1, id2, label, title, threshold, style, length){
 			if (title) e.title=title;
 			if (threshold) e.value=threshold;
 			if (length) e.length=length;
-			element.edgesMap.add(e);
 
-			from = element.nodesMap.get(id2);
-			if (from.radius == undefined) from.radius = 10;
-			from.radius = from.radius + 1;
-			element.nodesMap.update(from);
+			element.addEdge(e);
 		},
 
 removeNode: function (id){
 			var n = {"id":id};
-			element.nodesMap.remove(n);
+
+			element.removeNode(n);
 		},
 
 removeEdge: function (id){
 			var e = {"id":id};
-			element.edgesMap.remove(e);
+
+			element.removeEdge(e);
 		},
 
 close: function(){

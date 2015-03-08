@@ -228,3 +228,45 @@ graphElement.prototype.destroy = function () {
 	    	this.layout = null;
 	}
 };
+
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+//////////////////    UIC WRAPPER    ///////////////////////
+////////////////////////////////////////////////////////////
+
+/**
+ * add Node
+ */
+graphElement.prototype.addNode = function (node){
+	element.nodesMap.add(node);
+}
+
+
+/**
+ * add Edge
+ */
+graphElement.prototype.addEdge = function (edge){
+	element.edgesMap.add(edge);
+
+	from = element.nodesMap.get(id2);
+	if (from.radius == undefined) from.radius = 10;
+	from.radius = from.radius + 1;
+	element.nodesMap.update(from);
+}
+
+
+/**
+ * remove Node
+ */
+graphElement.prototype.removeNode = function (node){
+	element.nodesMap.remove(node);
+}
+
+
+/**
+ * remove Edge
+ */
+graphElement.prototype.removeEdge = function (edge){
+	element.edgesMap.remove(edge);
+}

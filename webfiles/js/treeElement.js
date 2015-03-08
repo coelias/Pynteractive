@@ -272,3 +272,44 @@ treeElement.prototype.reDrawTreeToolLayout = function () {
 	}
 
 };
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+//////////////////    UIC WRAPPER    ///////////////////////
+////////////////////////////////////////////////////////////
+
+/**
+ * add Node
+ */
+treeElement.prototype.addNode = function (node){
+	element.nodesMap.add(node);
+}
+
+
+/**
+ * add Edge
+ */
+treeElement.prototype.addEdge = function (edge){
+	element.edgesMap.add(edge);
+
+	from = element.nodesMap.get(id2);
+	if (from.radius == undefined) from.radius = 10;
+	from.radius = from.radius + 1;
+	element.nodesMap.update(from);
+}
+
+
+/**
+ * remove Node
+ */
+treeElement.prototype.removeNode = function (node){
+	element.nodesMap.remove(node);
+}
+
+
+/**
+ * remove Edge
+ */
+treeElement.prototype.removeEdge = function (edge){
+	element.edgesMap.remove(edge);
+}
