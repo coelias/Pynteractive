@@ -15,6 +15,7 @@ from collections import Counter
 from lib.datastruct import *
 from lib.graph import *
 from lib.tree import *
+from lib.map import *
 
 
 MUTEX=threading.Lock()
