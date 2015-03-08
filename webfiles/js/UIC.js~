@@ -22,7 +22,7 @@ addEdge: function (id, id1, id2, label, title, threshold, style, length){
 			if (length) e.length=length;
 			element.edgesMap.add(e);
 
-			from = element.nodesMap.get(id2);
+			from = graphicElement.nodesMap.get(id2);
 			if (from.radius == undefined) from.radius = 10;
 			from.radius = from.radius + 1;
 			element.nodesMap.update(from);
