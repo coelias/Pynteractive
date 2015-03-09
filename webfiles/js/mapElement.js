@@ -84,6 +84,16 @@ mapElement.prototype.loadHtml = function () {
 	tag = {tag:'div', to:'#containerNetwork', id:'optionsNetwork'};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelSearchById', text: 'Search by ID'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'textSearchById', type: 'text', name:""};
+	this.loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'buttonSearchById', type: 'button', onclick: ' var id = $(\'#textSearchById\').val(); element.searchNodeById(id);'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction1', text: 'Action 1'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'button', to:'#optionsNetwork', id: 'Action1', type: 'button', onclick: 'element.action(id);'};
@@ -108,13 +118,15 @@ mapElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
+
 };
 
 /**
  * Get lat and lng given the id of a node
  */
 mapElement.prototype.getLatLngNode = function (node){
-	return this.markers[node]._latlng;
+	if(this.markers.hasOwnProperty(node)) return this.markers[node]._latlng;
+	return null;
 };
 
 ////////////////////////////////////////////////////////////
@@ -186,6 +198,13 @@ mapElement.prototype.removeEdge = function (edge){
 	delete this.lines[edge.id]; 
 }
 
+/**
+ * search by id
+ */
+mapElement.prototype.searchNodeById = function (id){
+	points = this.getLatLngNode(id);
+	if(points != null) this.layout.setView(points,this.zoom);
+};
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 /////////////////////    EVENTS   //////////////////////////

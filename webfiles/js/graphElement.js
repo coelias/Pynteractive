@@ -169,6 +169,15 @@ graphElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelSearchById', text: 'Search by ID'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'textSearchById', type: 'text', name:""};
+	this.loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'buttonSearchById', type: 'button', onclick: ' var id = $(\'#textSearchById\').val(); element.searchNodeById(id);'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction1', text: 'Action 1'};
 	this.loadHtmlTag(tag);
@@ -229,6 +238,13 @@ graphElement.prototype.destroy = function () {
 	}
 };
 
+/**
+ * search by id
+ */
+graphElement.prototype.searchNodeById = function (id){
+	var options = {animation: true, duration: 200, scale:3};
+	this.layout.focusOnNode(id, options);
+};
 
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////

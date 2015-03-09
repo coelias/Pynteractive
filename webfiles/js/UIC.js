@@ -39,5 +39,10 @@ removeEdge: function (id){
 
 close: function(){
 			close();
-		}
+		},
+
+searchNode: function(id){
+			element.searchNodeById(id);
+		},
 }
+
