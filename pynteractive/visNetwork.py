@@ -53,6 +53,9 @@ class VisNetwork(Network):
 			self.update("removeEdge",i)
 		self.update("removeNode",node)
 
+	def focusNode(self,id):
+		self.update("searchNode",id)
+
 	def delEdge(self,ed_id):
 		Network.delEdge(self,ed_id)
 		self.update("removeEdge",ed_id)

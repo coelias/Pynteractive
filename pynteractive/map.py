@@ -32,8 +32,8 @@ class Map(Network):
 		self.update("addEdge",_id,n1,n2,'','','','','',color)
 
 
-			
-		
+	def focusNode(self,id):
+		self.update("searchNode",id)
 
 	def getLocation(self,place,country=None):
 		url="http://open.mapquestapi.com/nominatim/v1/search.php?format=json&limit=1&addressdetails=0&q={0}".format(place)

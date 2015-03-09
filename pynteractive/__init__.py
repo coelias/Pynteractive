@@ -32,11 +32,9 @@ class WebServices:
 
 	@staticmethod
 	def stopServers():
-		print 'aaa'
 		if WebServices.SERVERS_ON:
 			ThreadingServer.force_stop()
 			WSOCKserver.close()
-	#	sys.exit()
 
 	@staticmethod
 	def startServers():
