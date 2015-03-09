@@ -1,26 +1,19 @@
-import globals
 import inspect
 import json
 import mimetypes
 import os
-import random
 import sys
 import tarfile
 import threading
 import urllib
-import webbrowser
-import time
-from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
-from collections import Counter
-from lib.datastruct import *
-from lib.graph import *
-from lib.tree import *
-from lib.map import *
 import traceback
+from pynteractive.SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
+import pynteractive.globals as pyn_globals
+from pynteractive.datastruct import DataStruct
 
-MUTEX=threading.Lock()
+Pynteractive_ws_MUTEX=threading.Lock()
 
-if globals.VERSION<30:
+if pyn_globals.VERSION<30:
 	from BaseHTTPServer import HTTPServer
 	from SimpleHTTPServer import SimpleHTTPRequestHandler
 	from SocketServer import ThreadingMixIn
@@ -43,7 +36,7 @@ class ThreadingServer(ThreadingMixIn, HTTPServer):
 	@staticmethod
 	def force_stop():
 		ThreadingServer.stopped = True
-		urllib.urlopen("http://localhost:{0}/".format(globals.PORT)).read()
+		urllib.urlopen("http://localhost:{0}/".format(pyn_globals.PORT)).read()
 
 class FileMgr:
 	def __init__(self,path=None,tar=None):
@@ -121,7 +114,7 @@ class JSCom(WebSocket):
 
 	def sendAction(self,fname,*params):
 		data=json.dumps([fname]+list(params))
-		with MUTEX:
+		with Pynteractive_ws_MUTEX:
 			self.sendMessage(data)
 
 	def handleMessage(self):
@@ -187,34 +180,3 @@ class SimpleWS(SimpleHTTPRequestHandler):
 	def log_message(self, format, *args):
 		return
 
-	
-
-
-
-
-
-
-######## Webserver
-def startServer():
-	serveraddr = ('', globals.PORT)
-	srvr = ThreadingServer(serveraddr, SimpleWS)
-	srvr.serve_forever()
-threading.Thread(target=startServer).start()
-
-########## Websocket server
-WSOCKserver = SimpleWebSocketServer("localhost", 8000, JSCom)
-DataStruct.connect(WSOCKserver.sendAction)
-
-def startWebSocket():
-	WSOCKserver.serveforever()
-threading.Thread(target=startWebSocket).start()
-
-print ">>> n=Graph()"
-n=Graph()
-
-import code
-code.interact(banner="",local=locals())
-
-ThreadingServer.force_stop()
-WSOCKserver.close()
-sys.exit()

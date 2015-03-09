@@ -1,6 +1,6 @@
 import random 
 import webbrowser
-import globals
+import pynteractive.globals as pyn_globals
 
 class DataStruct:
 	JSConnector=None
@@ -16,7 +16,7 @@ class DataStruct:
 		self._ID=name
 	
 	def view(self):
-		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}".format(globals.PORT,self._ID,self.__class__.__name__))
+		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}".format(pyn_globals.PORT,self._ID,self.__class__.__name__))
 
 	def closeView(self):
 		self.update("close")
@@ -42,3 +42,4 @@ class DataStruct:
 			if delimiter:
 				csv=[i.split(delimiter[0][0]) for i in csv]
 		return csv
+

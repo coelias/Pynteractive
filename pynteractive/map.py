@@ -1,4 +1,4 @@
-from lib.Network import *
+from pynteractive.Network import *
 import urllib
 import json
 
@@ -51,12 +51,13 @@ class Map(Network):
 		for i in edges:
 			self.update("removeEdge",i)
 
-	def delEdge(self,n1,n2,label):
-		edge=Network.delEdge(self,n1,n2,label)
-		self.update("removeEdge",edge)
+	def delEdge(self,eid):
+		edge=Network.delEdge(self,eid)
+		self.update("removeEdge",eid)
 
-
-
-		
-		
-
+	def clear(self):
+		v,e=self.getEdgesAndNodes()
+		for i in e:
+			self.delEdge(i)
+		for i in v:
+			self.delNode(i)

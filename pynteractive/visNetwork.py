@@ -1,4 +1,4 @@
-from lib.Network import *
+from pynteractive.Network import *
 
 class VisNetwork(Network):
 	def __init__(self,name=None,directed=False):

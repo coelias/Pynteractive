@@ -1,4 +1,4 @@
-from lib.visNetwork import *
+from pynteractive.visNetwork import *
 import random
 
 class Graph(VisNetwork):

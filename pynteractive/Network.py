@@ -1,4 +1,4 @@
-from lib.datastruct import *
+from pynteractive.datastruct import *
 
 class Network(DataStruct):
 	def __init__(self,name=None,directed=False):
