@@ -88,7 +88,7 @@ mapElement.prototype.loadHtml = function () {
 	this.loadHtmlTag(tag);
 	tag = {tag:'input', to:'#optionsNetwork', id: 'textSearchById', type: 'text', name:""};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'buttonSearchById', type: 'button', onclick: ' var id = $(\'#textSearchById\').val(); element.searchNodeById(id);'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'buttonSearchById', type: 'button', onclick: ' var id = jQuery(\'#textSearchById\').val(); element.searchNodeById(id);'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'hr', to:'#optionsNetwork'};

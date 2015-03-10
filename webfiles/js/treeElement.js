@@ -170,7 +170,7 @@ treeElement.prototype.loadHtml = function () {
 	this.loadHtmlTag(tag);
 	tag = {tag:'input', to:'#optionsNetwork', id: 'textSearchById', type: 'text', name:""};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'buttonSearchById', type: 'button', onclick: ' var id = $(\'#textSearchNodeById\').val(); element.searchById(id);'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'buttonSearchById', type: 'button', onclick: ' var id = jQuery(\'#textSearchNodeById\').val(); element.searchById(id);'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'hr', to:'#optionsNetwork'};
@@ -267,16 +267,16 @@ treeElement.prototype.reDrawTreeToolLayout = function () {
 
 	switch(this.enabledLayout) {
 		case 1:
-			$('#labelLevelSeparation').prop( "disabled", true ).addClass('disabled');
-			$("#sliderLevelSeparation").prop( "disabled", true ).addClass('disabled');
-			$('#labelNodeSpacing').prop( "disabled", true).addClass('disabled');
-			$("#sliderNodeSpacing").prop( "disabled", true ).addClass('disabled');
+			jQuery('#labelLevelSeparation').prop( "disabled", true ).addClass('disabled');
+			jQuery("#sliderLevelSeparation").prop( "disabled", true ).addClass('disabled');
+			jQuery('#labelNodeSpacing').prop( "disabled", true).addClass('disabled');
+			jQuery("#sliderNodeSpacing").prop( "disabled", true ).addClass('disabled');
 			break;
 		case 2:
-			$('#labelLevelSeparation').prop( "disabled", false ).removeClass('disabled');
-			$("#sliderLevelSeparation").prop( "disabled", false ).removeClass('disabled');
-			$('#labelNodeSpacing').prop( "disabled", false).removeClass('disabled');
-			$("#sliderNodeSpacing").prop( "disabled", false ).removeClass('disabled');
+			jQuery('#labelLevelSeparation').prop( "disabled", false ).removeClass('disabled');
+			jQuery("#sliderLevelSeparation").prop( "disabled", false ).removeClass('disabled');
+			jQuery('#labelNodeSpacing').prop( "disabled", false).removeClass('disabled');
+			jQuery("#sliderNodeSpacing").prop( "disabled", false ).removeClass('disabled');
 			break;
 	}
 

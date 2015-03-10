@@ -148,18 +148,18 @@ element.prototype.reDrawToolLayout = function () {
 
 	switch(this.smoothCurves.dynamic) {
 		case false:
-			console.log($('#labelSmoothCurvesType'))
-			$('#labelSmoothCurvesType').prop( "disabled", false ).removeClass('disabled');
-			$("#SmoothCurvesType").prop( "disabled", false ).removeClass('disabled');
-			$('#labelSmoothCurvesRoundness').prop( "disabled", false ).removeClass('disabled');
-			$("#sliderSmoothCurvesRoundness").prop( "disabled", false ).removeClass('disabled');
+			console.log(jQuery('#labelSmoothCurvesType'))
+			jQuery('#labelSmoothCurvesType').prop( "disabled", false ).removeClass('disabled');
+			jQuery("#SmoothCurvesType").prop( "disabled", false ).removeClass('disabled');
+			jQuery('#labelSmoothCurvesRoundness').prop( "disabled", false ).removeClass('disabled');
+			jQuery("#sliderSmoothCurvesRoundness").prop( "disabled", false ).removeClass('disabled');
 			break;
 		case true:
-			console.log($('#labelSmoothCurvesType'))
-			$('#labelSmoothCurvesType').prop( "disabled", true ).addClass('disabled');
-			$("#SmoothCurvesType").prop( "disabled", true ).addClass('disabled');
-			$('#labelSmoothCurvesRoundness').prop( "disabled", true ).addClass('disabled');
-			$("#sliderSmoothCurvesRoundness").prop( "disabled", true ).addClass('disabled');
+			console.log(jQuery('#labelSmoothCurvesType'))
+			jQuery('#labelSmoothCurvesType').prop( "disabled", true ).addClass('disabled');
+			jQuery("#SmoothCurvesType").prop( "disabled", true ).addClass('disabled');
+			jQuery('#labelSmoothCurvesRoundness').prop( "disabled", true ).addClass('disabled');
+			jQuery("#sliderSmoothCurvesRoundness").prop( "disabled", true ).addClass('disabled');
 			break;
 	}
 
