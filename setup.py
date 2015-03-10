@@ -1,6 +1,34 @@
 from setuptools import setup, find_packages  # Always prefer setuptools over distutils
 from codecs import open  # To use a consistent encoding
-from os import path
+import os
+import tarfile
+import StringIO
+import sys
+import base64
+
+def recurdir(d):
+	e=[os.path.join(d,i)  for i in os.listdir(d)]
+	ds=[i for i in e if os.path.isdir(i)]
+	fs=[i for i in e if os.path.isfile(i)]
+
+	for i in ds:
+		fs+=recurdir(i)
+	
+	return fs
+
+if "build" in sys.argv or "install" in sys.argv:
+	webtarbuff=StringIO.StringIO()
+	webtar=tarfile.open(fileobj=webtarbuff,mode="w:gz")
+	for i in recurdir('webfiles'):
+		webtar.add(i)
+	
+	webtar.close()
+	webtarbuff.seek(0)
+	webtarbuff=base64.b64encode(str(webtarbuff.read()))
+	q=open("pynteractive/webfiles.py",'w')
+	q.write("WEBFILES='''{0}'''".format(webtarbuff))
+	q.close()
+
 
 long_description='''Pynteractive is a library that uses different JS graphic suites (html)
 in order to generate interactive graphics (Networks, trees, charts, maps...'''
@@ -84,3 +112,8 @@ setup(
 	entry_points={
 	},
 )
+
+if "build" in sys.argv or "install" in sys.argv:
+	q=open("pynteractive/webfiles.py",'w')
+	q.write("WEBFILES=None".format(webtarbuff))
+	q.close()

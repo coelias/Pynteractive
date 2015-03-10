@@ -7,6 +7,8 @@ import tarfile
 import threading
 import urllib
 import traceback
+import base64
+import StringIO
 from pynteractive.SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 import pynteractive.globals as pyn_globals
 from pynteractive.datastruct import DataStruct
@@ -39,67 +41,44 @@ class ThreadingServer(ThreadingMixIn, HTTPServer):
 		urllib.urlopen("http://localhost:{0}/".format(pyn_globals.PORT)).read()
 
 class FileMgr:
-	def __init__(self,path=None,tar=None):
-		self.available=set()
-		if tar and not path:
-			self.tar=self.iniTar(tar)
+	def __init__(self,path=None,tarString=None):
+		assert (path and not tarString) or (tarString and not path)
+		if tarString:
+			self.contents=self.iniTar(StringIO.StringIO(base64.b64decode(tarString)))
 			self.METHOD="tar"
-		elif path and not tar:
-			self.iniPath(path)
-			self.path=path
+		else:
+			self.iniPath('.')
+			self.path='.'
 			self.METHOD="path"
-		else:
-			raise Exception("Bad initialization")
-
 	
-	def iniTar(self,tar):
-		assert tarfile.is_tarfile(tar)
-		if tar.split(".")[-1].lower() in ["tgz","gz"]:
-			tar = tarfile.open("sample.tar.gz", "r:gz")
-		else:
-			tar = tarfile.open("sample.tar.gz", "r")
+	def iniTar(self,tarStr):
+
+		tar = tarfile.open(fileobj=tarStr,mode="r:gz")
+		filelist=[]
 			
 		for tarinfo in tar:
 			if tarinfo.isreg():
-				self.available.add(tarinfo.name[1:])
+				filelist.append(tarinfo.name)
 			elif tarinfo.isdir(): pass #print ("a directory.")
 			else: pass #print ("something else.")
-		return tar
+		return dict([(item,tar.extractfile(item).read()) for item in filelist])
 
 	def iniPath(self,path):
 		pass
 
 	def __contains__ (self,item):
-		return item in self.available
+		if self.METHOD=='tar':
+			return item in self.contents
+		else:
+			return os.path.isfile(os.path.join(self.path,item))
 	
 	def __getitem__(self,item):
 		if self.METHOD=="tar":
-			return self.tar.extractfile("."+item).read()
-		
-#class simpleRH(SimpleHTTPRequestHandler):
-#	def do_GET(self):
-#		global FM
-#		# self.path
-#
-#		if self.path in FM:
-#			self.send_response(200)
-#			ext=self.path.split(".")[-1].lower()
-#			if ext in mimetypes.types_map:
-#				mime=mimetypes.types_map[ext]
-#				self.send_header("Content-Type", mime)
-#			self.end_headers()
-#			self.wfile.write(FM[self.path])
-#		else:
-#			self.send_response(404)
-#			self.send_header("Content-Type", mimetypes.types_map[".html"])
-#			self.end_headers()
-#			self.wfile.write("<h1>File not found (404)</h1><br>We are so sorry :(<br><br><br>That's no so bad, we will die someday anyway<br>Have a good day :D".encode())
-#
-#
-#	do_POST=do_GET
-
-#FM=FileMgr(tar="sample.tar.gz")	
-
+			return self.contents[item]
+		else:
+			with open(os.path.join(self.path,item)) as q:
+				res=q.read()
+			return res
 
 class JSCom(WebSocket):
 	def __init__(self,*args,**kwargs):
@@ -155,10 +134,12 @@ class JSCom(WebSocket):
 		DataStruct.refreshData(name)
 
 class SimpleWS(SimpleHTTPRequestHandler):
+	FILE_MGR=FileMgr(path='webfiles/') if not pyn_globals.WEBFILES else FileMgr(tarString=pyn_globals.WEBFILES)
+
 	def do_GET(self):
 		if self.path.startswith("/?"): resource="webfiles/index.html"
 		else: resource=os.path.join(*(["webfiles"]+self.path.split("?")[0].split("/")))
-		if os.path.isfile(resource):
+		if resource in SimpleWS.FILE_MGR:
 			self.send_response(200)
 			ext=self.path.split(".")[-1].lower()
 			if ext in mimetypes.types_map:
@@ -168,9 +149,7 @@ class SimpleWS(SimpleHTTPRequestHandler):
 				self.send_header("Content-Type","text/html")
 
 			self.end_headers()
-			f=open(resource,"rb")
-			self.wfile.write(f.read())
-			f.close()
+			self.wfile.write(SimpleWS.FILE_MGR[resource])
 		else:
 			self.send_response(404)
 			self.send_header("Content-Type", mimetypes.types_map[".html"])
