@@ -38,11 +38,20 @@ mapElement.prototype.load = function () {
 
 	//create a layout
 
+	//MAPS
 	var maplink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 	var mmm = '<a href=https://github.com/coelias/Pynteractive>Pynteractive</a>'
 
+	var osmstamen = new L.tileLayer('http://{s}.tile.stamen.com/toner-lite//{z}/{x}/{y}.png', {
+	    attribution: ' &copy; '+maplink+" | "+mmm,
+	});
+
+	var osmforest = new L.tileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', {
+	    attribution: ' &copy; '+maplink+" | "+mmm,
+	});
+
 	var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-	    	attribution: ' &copy; '+maplink+" | "+mmm,
+	    attribution: ' &copy; '+maplink+" | "+mmm,
 	});
 
 	this.layout = L.map('layout', {
@@ -51,9 +60,10 @@ mapElement.prototype.load = function () {
 		maxZoom: 18,
 		minZoom: 3,
 		zoomControl: false,
-		layers: [osm]
+		layers: [osmforest]
 	});
 
+	//SEARCH
 	var geosearch = new L.Control.GeoSearch({
 		provider: new L.GeoSearch.Provider.OpenStreetMap(),
 		position: 'topcenter',
@@ -63,11 +73,19 @@ mapElement.prototype.load = function () {
 
 	geosearch.addTo(this.layout);
 
-	new L.Control.Zoom({ position: 'topright' }).addTo(this.layout);
+	var controls = new L.Control.Zoom({ position: 'bottomright'});
+	controls.addTo(this.layout);
 
-	//add events listener
-	//this.layout.on('select', this.selectElement);
-	//this.layout.on('doubleClick', this.doubleClickElement);
+	//MAP LEGEND SELECTOR
+	var baseLayers = {
+		"OSM Stamen": osmstamen,
+		"OSM Forest": osmforest,
+		"OSM ": osm,
+	};
+
+	var layers = new L.control.layers(baseLayers, null, {collapsed: true, position: 'topright'});
+	layers.addTo(this.layout);
+
 };
 
 /**
