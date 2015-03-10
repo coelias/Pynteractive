@@ -1,14 +1,14 @@
 # Pynteractive: Interactive plots in python
-Pynterative is a python library aimed to create interative visualizations provided by several HTML5 JavaScript libraries like vis.js or d3.js.
+Pynterative is a python library aimed to create interative visualizations provided by several HTML5 JavaScript libraries like [vis.js](http://visjs.org/) or [d3.js](http://d3js.org/).
 
 It was motivated by the need of using HTML5 plots in biomedical research, (bioinformatics to be specific), however different charts and plots are being introduced as they are requested/needed. 
 
-It is designed to implement a very simple API allowing bidirectional communications. (Python <--> webbrowser)
+It is designed to implement a very simple API allowing bidirectional communications. (Python<-->webbrowser)
 
 ## Current features:
 
-* Graphs: graphs and digraphs provided by the vis.js framework
-* Trees
+* Networks: graphs and digraphs provided by the vis.js framework
+* Trees: Using different engines (d3.js, vis.js)
 * Maps: provided by leaflet (openstreet maps)
 
 ## Compatibility:
