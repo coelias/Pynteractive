@@ -9,7 +9,8 @@ class Graph(VisNetwork):
 	def refresh(self):
 		'''DO NOT USE, is used for graphic representation, everytime a new window is opened'''
 		for i in self.vertices.values():
-			self.update("addNode",i["_id"],i["_label"],i["_title"],i["_group"],i["_color"],i["_radius"],i["_image"])
+	#			addNode: function (   id,      label,      title,      group,     shape,      color,      radius,       image, lng, lat){
+			self.update("addNode",i["_id"],i["_label"],i["_title"],i["_group"],i["_shape"],i["_color"],i["_radius"],i["_image"])
 		for i,j in self.edges.items():
 			self.update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_width"],j["_style"])
 

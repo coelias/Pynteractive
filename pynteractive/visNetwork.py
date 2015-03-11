@@ -21,6 +21,7 @@ class VisNetwork(Network):
 
 		node_id,label=Network.addNode(self,node_id,label,title=title,group=group,shape=shape,color=color,radius=radius,image=image)
 
+	# 		 addNode: function (   id,label,title,group,shape,color,radius,image, lng, lat){
 		self.update("addNode",node_id,label,title,group,shape,color,radius,image)
 		return node_id,label
 
