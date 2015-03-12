@@ -73,6 +73,7 @@ mapElement.prototype.load = function () {
 
 	geosearch.addTo(this.layout);
 
+	//MAP ZOOM SELECTOR
 	var controls = new L.Control.Zoom({ position: 'bottomright'});
 	controls.addTo(this.layout);
 
