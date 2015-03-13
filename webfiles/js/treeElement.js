@@ -335,6 +335,43 @@ treeElement.prototype.addEdge = function (edge){
 	element.nodesMap.update(from);*/
 }
 
+/**
+ * update Node
+ */
+treeElement.prototype.updateNode = function (node){
+	nodeAux = element.nodesMap.get(node.id);
+	if (nodeAux != undefined) {
+		if(node.label == undefined) nodeAux.label= node.label;
+		if(node.radius == undefined) nodeAux.radius = node.radius;
+		if(node.shape == undefined) nodeAux.shape = node.shape;
+		if(node.title == undefined) nodeAux.title = node.title;
+		if(node.group == undefined) nodeAux.group = node.group;
+		if(node.color == undefined) nodeAux.color = node.color;
+		if(node.image == undefined) nodeAux.image = node.image;
+		if(node.location == undefined) nodeAux.location = node.location;
+		element.nodesMap.update(nodeAux);
+	}
+};
+
+
+/**
+ * update Edge
+ */
+treeElement.prototype.updateEdge = function (edge){
+	edgeAux = element.edgesMap.get(edge.id);
+	if (edgeAux != undefined) {
+		if(edge.from == undefined) edgeAux.from = edge.from;
+		if(edge.to == undefined) edgeAux.to = edge.to;
+		if(edge.style == undefined) edgeAux.style = edge.style;
+		if(edge.label == undefined) edgeAux.label = edge.label;
+		if(edge.title == undefined) edgeAux.title = edge.title;
+		if(edge.threshold == undefined) edgeAux.threshold = edge.threshold;
+		if(edge.length == undefined) edgeAux.length = edge.length;
+		if(edge.color == undefined) nodeAux.color = edge.color;
+
+	}
+	element.nodesMap.update(edgeAux);
+};
 
 /**
  * remove Node

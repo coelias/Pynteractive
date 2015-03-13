@@ -41,8 +41,12 @@ body, html {
 	position: absolute;
 	z-index:2;
 	width: 99%;
-	height: 90%;
+	height: 95%;
 	text-align:left;
+	left: 0.5%;
+
+	margin: -5px 0px 0px 0px;
+
 	overflow-y: auto;
 	resize: vertical; 
 	-moz-resize: vertical; 
@@ -51,8 +55,9 @@ body, html {
 	-o-transform: rotate(-180deg); 
 	-ms-transform: rotate(-180deg); 
 	-transform-transform: rotate(-180deg);
-	left: 0.5%;
-	bottom: -10px;
+
+
+
 }
 
 

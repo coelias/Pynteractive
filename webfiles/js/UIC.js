@@ -12,7 +12,6 @@ addNode: function (id, label, title, group, shape, color, radius, image, lng, la
 			if (radius) n.radius=radius;
 			if (image) n.image=image;
 			if (location) n.location={"lng":lng,"lat":lat};
-
 			element.addNode(n);
 		},
 
@@ -23,9 +22,35 @@ addEdge: function (id, id1, id2, label, title, threshold, style, length, color){
 			if (threshold) e.value=threshold;
 			if (length) e.length=length;
 			if (color) e.color=color;
-
 			element.addEdge(e);
 		},
+
+updateNode: function (id, label, title, group, shape, color, radius, image, lng, lat){
+			var n = {"id":id};
+			if (label) n.label=label;
+			if (title) n.title=title;
+			if (shape) n.shape=shape;
+			if (group) n.group=group;
+			if (color) n.color=color;
+			if (radius) n.radius=radius;
+			if (image) n.image=image;
+			if (lng && lat) n.location={"lng":lng,"lat":lat};
+			element.updateNode(n);
+		},
+
+updateEdge: function (id, id1, id2, label, title, threshold, style, length, color){
+			var e = {"id":id};
+			if (id1) e.id1=id1;
+			if (id2) e.id2=id2;
+			if (label) e.label=label;
+			if (title) e.title=title;
+			if (threshold) e.value=threshold;
+			if (style) e.style=style;
+			if (length) e.length=length;
+			if (color) e.color=color;
+			element.updateEdge(e);
+		},
+
 
 removeNode: function (id){
 			var n = {"id":id};

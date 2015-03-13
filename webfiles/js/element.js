@@ -305,6 +305,20 @@ element.prototype.addEdge = function (node){
 
 }
 
+/**
+ * update Node
+ */
+element.prototype.updateNode = function (node){
+
+}
+
+
+/**
+ * update Edge
+ */
+element.prototype.updateEdge = function (node){
+
+}
 
 /**
  * remove Node
