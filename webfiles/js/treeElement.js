@@ -7,6 +7,15 @@ function treeElement() {
 treeElement.prototype = new element();
 treeElement.prototype.constructor = treeElement;
 
+
+/**
+ * Redraw widgets
+ */
+treeElement.prototype.browserResizeEnd = function (){
+	element.layout.redraw();
+};
+
+
 /**
  * Load graph on layout div html page
  */
@@ -176,23 +185,34 @@ treeElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLog', text: 'Enable/Disable Log'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'enableLog', type: 'checkbox', checked: this.enabledLog, onclick: 'element.changeEnabledLog();'};
+	this.loadHtmlTag(tag);
+	
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction1', text: 'Action 1'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action1', type: 'button', onclick: 'element.action(id);'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action1', type: 'button', idAction: "1", onclick: 'element.action(this);'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction2', text: 'Action 2'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action2', type: 'button', onclick: 'element.action(id);'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action2', type: 'button', idAction: "2", onclick: 'element.action(this);'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction3', text: 'Action 3'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action3', type: 'button', onclick: 'element.action(id);'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action3', type: 'button', idAction: "3", onclick: 'element.action(this);'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
@@ -309,10 +329,10 @@ treeElement.prototype.addNode = function (node){
 treeElement.prototype.addEdge = function (edge){
 	element.edgesMap.add(edge);
 
-	from = element.nodesMap.get(id2);
+	/*rom = element.nodesMap.get(id2);
 	if (from.radius == undefined) from.radius = 10;
 	from.radius = from.radius + 1;
-	element.nodesMap.update(from);
+	element.nodesMap.update(from);*/
 }
 
 

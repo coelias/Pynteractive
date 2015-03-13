@@ -13,40 +13,6 @@ body, html {
 	top: -32px;
 }
 
-/*#logcontainer {
-	width: 99%;
-	height: 15%;
-	display: block;
-	border: 1px solid gray;
-	text-align: center;
-	overflow: hidden;
-	overflow: hidden; 
-	resize: vertical; 
-	-moz-resize: vertical; 
-	border: solid 3px  #2290c9; 
-	background: #fff; border-radius: 10px; 
-	padding: 0.5%; position: absolute; 
-	bottom: 0; 
-	-webkit-transform: rotate(-180deg); 
-	-moz-transform: rotate(-180deg); 
-	-o-transform: rotate(-180deg); 
-	-ms-transform: rotate(-180deg); 
-	-transform-transform: rotate(-180deg);
-}
-
-#log {
-	width: 100%;
-	height: 100%;
-	bottom: 0; 
-	resize: vertical; 
-	-moz-resize: vertical; 
-	-webkit-transform: rotate(-180deg); 
-	-moz-transform: rotate(-180deg); 
-	-o-transform: rotate(-180deg); 
-	-ms-transform: rotate(-180deg); 
-	-transform-transform: rotate(-180deg);
-}*/
-
 #logcontainer {
 	z-index:2;
 	width: 75%;
@@ -68,13 +34,16 @@ body, html {
 	-ms-transform: rotate(-180deg); 
 	-transform-transform: rotate(-180deg);
 	background: rgba(255, 255, 255, 0.5);
+	visibility:visible;
 }
 
 #log {
+	position: absolute;
 	z-index:2;
-	width: 100%;
-	height: 100%;
-	bottom: 0; 
+	width: 99%;
+	height: 90%;
+	text-align:left;
+	overflow-y: auto;
 	resize: vertical; 
 	-moz-resize: vertical; 
 	-webkit-transform: rotate(-180deg); 
@@ -82,6 +51,8 @@ body, html {
 	-o-transform: rotate(-180deg); 
 	-ms-transform: rotate(-180deg); 
 	-transform-transform: rotate(-180deg);
+	left: 0.5%;
+	bottom: -10px;
 }
 
 

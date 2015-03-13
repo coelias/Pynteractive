@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
-/////////    CLASS FEINITION AND VARIABLES    //////////////
+/////////    CLASS FUNCTIONS AND VARIABLES    //////////////
 ////////////////////////////////////////////////////////////
 
 function element() {
@@ -33,6 +33,9 @@ function element() {
 	this.smoothCurves.dynamic = false;
 	this.smoothCurves.type = "continuous";
 	this.smoothCurves.roundness = 0.5; //[0,1]
+
+	//log
+	this.enabledLog = true;
 };
 
 
@@ -42,7 +45,12 @@ element.prototype.loadInstance = function () {
 	//create layout visualization
 	this.load();
 	//create connection between GUI and Business model
-	PYCON.connect("ws://localhost:8000/")
+	PYCON.connect("ws://localhost:8000/");
+
+	//browser events
+	$(window).on("resize", this.browserResize);
+	//$(window).bind('resizeEnd', this.browserResizeEnd);
+	$(element).bind('resizeEnd', this.browserResizeEnd);
 };
 
 ////////////////////////////////////////////////////////////
@@ -92,6 +100,24 @@ element.prototype.doubleClickElement = function (properties){
 	var idsNodes = properties.nodes;
 	//var idsEdges = properties.edges;
 	PYCON.send('graphDblClick',{nodes:idsNodes});
+};
+
+/**
+ * Delect window resize and redraw widgets
+ */
+element.prototype.browserResize = function (){
+	if(this.resizeTO) clearTimeout(this.resizeTO);
+	this.resizeTO = setTimeout(function() {
+		var layout = document.getElementById("layout");
+		$(element).trigger('resizeEnd');
+	}, 500);
+};
+
+/**
+ * Redraw widgets
+ */
+element.prototype.browserResizeEnd = function (){
+
 };
 
 ////////////////////////////////////////////////////////////
@@ -148,14 +174,12 @@ element.prototype.reDrawToolLayout = function () {
 
 	switch(this.smoothCurves.dynamic) {
 		case false:
-			console.log(jQuery('#labelSmoothCurvesType'))
 			jQuery('#labelSmoothCurvesType').prop( "disabled", false ).removeClass('disabled');
 			jQuery("#SmoothCurvesType").prop( "disabled", false ).removeClass('disabled');
 			jQuery('#labelSmoothCurvesRoundness').prop( "disabled", false ).removeClass('disabled');
 			jQuery("#sliderSmoothCurvesRoundness").prop( "disabled", false ).removeClass('disabled');
 			break;
 		case true:
-			console.log(jQuery('#labelSmoothCurvesType'))
 			jQuery('#labelSmoothCurvesType').prop( "disabled", true ).addClass('disabled');
 			jQuery("#SmoothCurvesType").prop( "disabled", true ).addClass('disabled');
 			jQuery('#labelSmoothCurvesRoundness').prop( "disabled", true ).addClass('disabled');
@@ -229,21 +253,29 @@ element.prototype.changeSmoothCurvesRoundness = function (value){
 	this.layout.setOptions(this.options);
 };
 
+
+/**
+ * change enabled log
+ */
+element.prototype.changeEnabledLog = function (){
+	this.enabledLog = !this.enabledLog;
+
+        if (this.enabledLog){
+		jQuery("#logcontainer").css({opacity: 0.25, visibility: "visible", "z-index":2}).animate({opacity: 1}, 200);
+        }
+        else
+        {
+		jQuery("#logcontainer").css({opacity: 0.25, visibility: "visible", "z-index":-1}).animate({opacity: 0}, 200);
+        }
+
+};
+
 /**
  * execute action
  */
-element.prototype.action = function (id){
-	switch(id) {
-		case 'Action1':
-			PYCON.send('graphAction',{n:1,selectedNodes:this.layout.getSelection().nodes});
-			break;
-		case 'Action2':
-			PYCON.send('graphAction',{n:2,selectedNodes:this.layout.getSelection().nodes});
-			break;
-		case 'Action3':
-			PYCON.send('graphAction',{n:3,selectedNodes:this.layout.getSelection().nodes});
-			break;
-	}
+element.prototype.action = function (e){
+	var id = jQuery(e).attr("idaction");
+	PYCON.send('graphAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
 };
 
 /**
@@ -287,5 +319,24 @@ element.prototype.removeNode = function (node){
  */
 element.prototype.removeEdge = function (node){
 
+}
+
+/**
+ * clear text Log
+ */
+element.prototype.clearLog = function(){
+	jQuery("#log").html('')
+}
+
+/**
+ * add text Log
+ */
+element.prototype.addLog = function(text){
+	var previousText = jQuery("#log").html();
+	if(previousText == ''){
+		jQuery("#log").html(text)
+	}else{
+		jQuery("#log").html(previousText+"<br>"+text)
+	}
 }
 

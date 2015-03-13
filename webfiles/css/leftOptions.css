@@ -168,6 +168,12 @@ button {
 	background: #0E78AD;
 }
 
+#enableLog{ 
+	position:absolute;
+	margin-top: 5px;
+	right: 0%;
+}
+
 hr {
 	border-color: #0E78AD;
 	background-color: #0E78AD;

@@ -8,6 +8,13 @@ mapElement.prototype.constructor = mapElement;
 
 
 /**
+ * Redraw widgets
+ */
+mapElement.prototype.browserResizeEnd = function (){
+
+};
+
+/**
  * 
  */
 /*mapElement.prototype.nameFunction = function (){
@@ -113,23 +120,34 @@ mapElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLog', text: 'Enable/Disable Log'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'enableLog', type: 'checkbox', checked: this.enabledLog, onclick: 'element.changeEnabledLog();'};
+	this.loadHtmlTag(tag);
+	
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction1', text: 'Action 1'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action1', type: 'button', onclick: 'element.action(id);'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action1', type: 'button', idAction: "1", onclick: 'element.action(this);'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction2', text: 'Action 2'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action2', type: 'button', onclick: 'element.action(id);'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action2', type: 'button', idAction: "2", onclick: 'element.action(this);'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction3', text: 'Action 3'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action3', type: 'button', onclick: 'element.action(id);'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action3', type: 'button', idAction: "3", onclick: 'element.action(this);'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);

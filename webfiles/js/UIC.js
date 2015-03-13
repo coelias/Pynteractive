@@ -44,5 +44,13 @@ close: function(){
 searchNode: function(id){
 			element.searchNodeById(id);
 		},
+
+clearLog: function(){
+			element.clearLog();
+		},
+
+addLog: function(text){
+			element.addLog(text);
+		},
 }
 
