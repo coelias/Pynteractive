@@ -352,9 +352,8 @@ graphElement.prototype.updateEdge = function (edge){
 		if(edge.threshold == undefined) edgeAux.threshold = edge.threshold;
 		if(edge.length == undefined) edgeAux.length = edge.length;
 		if(edge.color == undefined) nodeAux.color = edge.color;
-
+		element.nodesMap.update(edgeAux);
 	}
-	element.nodesMap.update(edgeAux);
 };
 
 /**

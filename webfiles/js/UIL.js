@@ -33,7 +33,7 @@ function loadTreeVisualization(){
 
 function loadGraphVisualization(){
 	//load specific graphic element
-	jQuery('head').append('<script src="js/graphElement.js"></script>');
+	//jQuery('head').append('<script src="js/graphElement.js"></script>');
 
 	//var script = document.createElement("script");
 	//script.setAttribute("src", "js/graphElement.js");
@@ -41,7 +41,9 @@ function loadGraphVisualization(){
 
 	//var script = document.createElement("script");
 	//script.setAttribute("src", "js/graphElement.js");
-	//document.getElementsByTagName('head')[0].appendChild(script);
+	//document.head.appendChild(script);
+
+	jQuery('head').append('<script src="js/graphElement.js"></script>');
 
 	element = new graphElement();
 	element.loadInstance();
