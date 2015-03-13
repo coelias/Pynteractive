@@ -286,12 +286,23 @@ element.prototype.searchNodeById = function (id){
 };
 
 /**
- * search by id
+ * 
  */
 element.prototype.changeActionName  = function (id, name){
 	jQuery("#labelAction"+id).text(name);
 };
 
+/**
+ * search by id
+ */
+element.prototype.addAction  = function (id, name){
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction'+id, text: 'Action '+id};
+	this.loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action'+id, type: 'button', idAction: id, onclick: 'element.action(this);'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+};
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 //////////////////    UIC WRAPPER    ///////////////////////

@@ -24,12 +24,22 @@ label {
 }
 
 button {
+	/*border-radius: 5px;
+  	border: 1px #0D6C9B solid; 
+	width: 10px;
+	height: 13px;
+	background: #0E78AD;
+    	right:3px;*/
+
+	position:absolute;
+	margin-top: 3px;
 	border-radius: 5px;
   	border: 1px #0D6C9B solid; 
 	width: 10px;
 	height: 13px;
 	background: #0E78AD;
     	right:3px;
+
 }
 
 #labelBarnesHutRadio, #labelRepulsionRadio, #labelHierarchicalRepulsionRadio{
@@ -140,7 +150,7 @@ button {
 	background: #0E78AD;
 }
 
-#Action1, #Action2, #Action3 {
+/*#Action1, #Action2, #Action3 {
 	position:absolute;
 	margin-top: 3px;
 	border-radius: 5px;
@@ -149,7 +159,7 @@ button {
 	height: 13px;
 	background: #0E78AD;
     	right:3px;
-}
+}*/
 
 #buttonSearchById{
 	position:absolute;

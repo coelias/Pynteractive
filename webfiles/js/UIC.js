@@ -81,5 +81,9 @@ addLog: function(text){
 changeActionName: function(id,name){
 			element.changeActionName(id,name);
 		},
+
+addAction: function(id,name){
+			element.addAction(id,name);
+		},
 }
 

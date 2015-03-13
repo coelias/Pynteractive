@@ -217,8 +217,8 @@ treeElement.prototype.loadHtml = function () {
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'hr', to:'#optionsNetwork'};
-	this.loadHtmlTag(tag);
+	//tag = {tag:'hr', to:'#optionsNetwork'};
+	//this.loadHtmlTag(tag);
 
 };
 
