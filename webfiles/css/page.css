@@ -35,6 +35,7 @@ body, html {
 	-transform-transform: rotate(-180deg);
 	background: rgba(255, 255, 255, 0.5);
 	visibility:visible;
+	max-height: 98%;
 }
 
 #log {

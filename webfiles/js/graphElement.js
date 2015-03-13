@@ -226,31 +226,6 @@ graphElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	this.addLog("1")
-	this.addLog("2")
-	this.addLog("3")
-	this.addLog("4")
-	this.addLog("5")
-	this.addLog("6")
-	this.addLog("1")
-	this.addLog("2")
-	this.addLog("3")
-	this.addLog("4")
-	this.addLog("5")
-	this.addLog("6")
-	this.addLog("1")
-	this.addLog("2")
-	this.addLog("3")
-	this.addLog("4")
-	this.addLog("5")
-	this.addLog("6")
-	this.addLog("1")
-	this.addLog("2")
-	this.addLog("3")
-	this.addLog("4")
-	this.addLog("5")
-	this.addLog("6")
-
 };
 
 /**

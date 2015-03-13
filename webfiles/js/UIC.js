@@ -77,5 +77,9 @@ clearLog: function(){
 addLog: function(text){
 			element.addLog(text);
 		},
+
+changeActionName: function(id,name){
+			element.changeActionName(id,name);
+		},
 }
 
