@@ -12,26 +12,10 @@ pynteractive.Network module
     :undoc-members:
     :show-inheritance:
 
-pynteractive.SimpleWebSocketServer module
------------------------------------------
-
-.. automodule:: pynteractive.SimpleWebSocketServer
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 pynteractive.datastruct module
 ------------------------------
 
 .. automodule:: pynteractive.datastruct
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-pynteractive.globals module
----------------------------
-
-.. automodule:: pynteractive.globals
     :members:
     :undoc-members:
     :show-inheritance:
@@ -68,27 +52,3 @@ pynteractive.visNetwork module
     :undoc-members:
     :show-inheritance:
 
-pynteractive.webfiles module
-----------------------------
-
-.. automodule:: pynteractive.webfiles
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-pynteractive.webserver module
------------------------------
-
-.. automodule:: pynteractive.webserver
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: pynteractive
-    :members:
-    :undoc-members:
-    :show-inheritance:
