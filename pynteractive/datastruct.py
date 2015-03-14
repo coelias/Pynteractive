@@ -30,9 +30,9 @@ class DataStruct:
 		if fid not in self.actions:
 			print "Function not found!!!"
 		else:	
-#			try:
+			try:
 				return self.actions[fid][1](params)
-#			except:
+			except:
 				print "Error calling method",fid
 
 	def log(self,log):
@@ -45,7 +45,8 @@ class DataStruct:
 		self.update("close")
 
 	def update(self,func,*pars):
-		DataStruct.JSConnector(self._ID,func,*pars)
+		if DataStruct.JSConnector:
+			DataStruct.JSConnector(self._ID,func,*pars)
 
 	def refreshActions(self):
 		
