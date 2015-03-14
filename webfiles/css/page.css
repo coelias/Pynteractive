@@ -49,6 +49,7 @@ body, html {
 	overflow-y: auto;
 	overflow-x: scroll;
 	white-space: nowrap;
+	line-height: 85%;
 	resize: vertical; 
 	-moz-resize: vertical; 
 	-webkit-transform: rotate(-180deg); 

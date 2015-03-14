@@ -30,9 +30,9 @@ class DataStruct:
 		if fid not in self.actions:
 			print "Function not found!!!"
 		else:	
-			try:
-				return self.actions[fid](params)
-			except:
+#			try:
+				return self.actions[fid][1](params)
+#			except:
 				print "Error calling method",fid
 
 	def log(self,log):
