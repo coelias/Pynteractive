@@ -10,17 +10,26 @@
 
   <!-- JS libraries -->
   <!-- Network and Trees with Vis -->
-  <script type="text/javascript" src="http://visjs.org/dist/vis.js"></script>
-  <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="http://visjs.org/dist/vis.js"></script> 
+  <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" /> 
  
-  <!-- Map with leaflet-->
+  <!-- Map with leaflet -->
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
-  <!-- GeoSearch with geosearch-->
+  <!-- GeoSearch with geosearch -->
   <script src="http://smeijer.github.io/GeoSearch/js/l.control.geosearch.js"></script>
   <script src="http://smeijer.github.io/GeoSearch/js/l.geosearch.provider.openstreetmap.js"></script>
   <link rel="stylesheet" href="http://smeijer.github.io/GeoSearch/css/l.geosearch.css" />
+
+  <!-- Charts wth nvd3 -->	
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.css" rel="stylesheet">
+  
+  <script src="http://nvd3.org/assets/js/data/stream_layers.js"></script>
+
 
   <!-- CSS -->
   <link rel="stylesheet" href="../css/page.css" />
@@ -63,7 +72,6 @@ $(document).ready(function() {
 });
 </script>
 
-
 <!-- basic structure -->
 <div id="tools" class="container">
     <div id="sidebar"></div>
@@ -74,9 +82,14 @@ $(document).ready(function() {
             <span class="bar"></span>
         </a>
 
-	<div id="layout" class="content"></div>
+	<div id="layout" class="content">
+		<svg id="layout1"></svg>
+		<svg id="layout2"></svg>
+		<svg id="layout3"></svg>
+		<svg id="layout4"></svg>	
+	</div>
 	<div id="logcontainer" class="content">
-		<p id="log"></p>
+		<p id="log" ></p>
 	</div>
     </div>
 </div>

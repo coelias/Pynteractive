@@ -2,6 +2,11 @@ function treeElement() {
 	this.enabledLayout = 2;
 	this.levelSeparation = 150;
       	this.nodeSpacing = 100;
+
+	//data
+	this.nodesMap = new vis.DataSet();
+	this.edgesMap = new vis.DataSet();
+	this.groups = new vis.DataSet();
 };
 
 treeElement.prototype = new element();
@@ -15,11 +20,11 @@ treeElement.prototype.browserResizeEnd = function (){
 	element.layout.redraw();
 };
 
-
 /**
  * Load graph on layout div html page
  */
 treeElement.prototype.load = function () {
+
 	//create a layout
 	this.container = document.getElementById('layout');
 
@@ -319,18 +324,24 @@ treeElement.prototype.addEdge = function (edge){
  * update Node
  */
 treeElement.prototype.updateNode = function (node){
+	
 	nodeAux = element.nodesMap.get(node.id);
+
 	if (nodeAux != undefined) {
-		if(node.label == undefined) nodeAux.label= node.label;
-		if(node.radius == undefined) nodeAux.radius = node.radius;
-		if(node.shape == undefined) nodeAux.shape = node.shape;
-		if(node.title == undefined) nodeAux.title = node.title;
-		if(node.group == undefined) nodeAux.group = node.group;
-		if(node.color == undefined) nodeAux.color = node.color;
-		if(node.image == undefined) nodeAux.image = node.image;
-		if(node.location == undefined) nodeAux.location = node.location;
+		if(node.label != undefined) nodeAux.label= node.label;
+		if(node.radius != undefined) nodeAux.radius = node.radius;
+		if(node.shape != undefined) nodeAux.shape = node.shape;
+		if(node.title != undefined) nodeAux.title = node.title;
+		if(node.group != undefined) nodeAux.group = node.group;
+		if(node.color != undefined) nodeAux.color = node.color;
+		if(node.image != undefined) nodeAux.image = node.image;
+		if(node.location != undefined) nodeAux.location = node.location;
 		element.nodesMap.update(nodeAux);
+		element.layout.redraw();
 	}
+
+
+
 };
 
 
@@ -340,17 +351,16 @@ treeElement.prototype.updateNode = function (node){
 treeElement.prototype.updateEdge = function (edge){
 	edgeAux = element.edgesMap.get(edge.id);
 	if (edgeAux != undefined) {
-		if(edge.from == undefined) edgeAux.from = edge.from;
-		if(edge.to == undefined) edgeAux.to = edge.to;
-		if(edge.style == undefined) edgeAux.style = edge.style;
-		if(edge.label == undefined) edgeAux.label = edge.label;
-		if(edge.title == undefined) edgeAux.title = edge.title;
-		if(edge.threshold == undefined) edgeAux.threshold = edge.threshold;
-		if(edge.length == undefined) edgeAux.length = edge.length;
-		if(edge.color == undefined) nodeAux.color = edge.color;
-
+		if(edge.from != undefined) edgeAux.from = edge.from;
+		if(edge.to != undefined) edgeAux.to = edge.to;
+		if(edge.style != undefined) edgeAux.style = edge.style;
+		if(edge.label != undefined) edgeAux.label = edge.label;
+		if(edge.title != undefined) edgeAux.title = edge.title;
+		if(edge.threshold != undefined) edgeAux.threshold = edge.threshold;
+		if(edge.length != undefined) edgeAux.length = edge.length;
+		if(edge.color != undefined) nodeAux.color = edge.color;
+		element.nodesMap.update(edgeAux);
 	}
-	element.nodesMap.update(edgeAux);
 };
 
 /**

@@ -10,9 +10,6 @@ function element() {
 	this.container = document.getElementById('layout');
 
 	//data
-	this.nodesMap = new vis.DataSet();
-	this.edgesMap = new vis.DataSet();
-	this.groups = new vis.DataSet();
 	this.nodes, this.edges;
 	this.data = {};
 
@@ -35,7 +32,7 @@ function element() {
 	this.smoothCurves.roundness = 0.5; //[0,1]
 
 	//log
-	this.enabledLog = true;
+	this.enabledLog = false;
 };
 
 
@@ -283,13 +280,6 @@ element.prototype.action = function (e){
  */
 element.prototype.searchNodeById = function (id){
 	
-};
-
-/**
- * 
- */
-element.prototype.changeActionName  = function (id, name){
-	jQuery("#labelAction"+id).text(name);
 };
 
 /**

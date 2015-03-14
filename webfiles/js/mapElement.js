@@ -132,10 +132,6 @@ mapElement.prototype.loadHtml = function () {
 	this.loadHtmlTag(tag);
 
 
-	tag = {tag:'hr', to:'#optionsNetwork'};
-	this.loadHtmlTag(tag);
-
-
 };
 
 /**

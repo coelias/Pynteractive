@@ -19,30 +19,24 @@ $(function () {
 		case "Map":
 			loadMapVisualization();
 			break;
+		case "Chart":
+			loadChartVisualization();
+			break;
 	}
 
 });
 
 
 function loadTreeVisualization(){
-	//load specific graphic element
+	//load specific element
 	jQuery('head').append('<script src="js/treeElement.js"></script>');
+
 	element = new treeElement();
 	element.loadInstance();
 }
 
 function loadGraphVisualization(){
-	//load specific graphic element
-	//jQuery('head').append('<script src="js/graphElement.js"></script>');
-
-	//var script = document.createElement("script");
-	//script.setAttribute("src", "js/graphElement.js");
-	//document.head.appendChild(script); 
-
-	//var script = document.createElement("script");
-	//script.setAttribute("src", "js/graphElement.js");
-	//document.head.appendChild(script);
-
+	//load specific element
 	jQuery('head').append('<script src="js/graphElement.js"></script>');
 
 	element = new graphElement();
@@ -50,8 +44,17 @@ function loadGraphVisualization(){
 }
 
 function loadMapVisualization(){
-	//load specific graphic element
+	//load specific element
 	jQuery('head').append('<script src="js/mapElement.js"></script>');
+
 	element = new mapElement();
+	element.loadInstance();
+}
+
+function loadChartVisualization(){
+	//load specific  element
+	jQuery('head').append('<script src="js/chartElement.js"></script>');
+
+	element = new chartElement();
 	element.loadInstance();
 }

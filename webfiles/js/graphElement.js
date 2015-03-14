@@ -1,5 +1,8 @@
 function graphElement() {
-
+	//data
+	this.nodesMap = new vis.DataSet();
+	this.edgesMap = new vis.DataSet();
+	this.groups = new vis.DataSet();
 };
 
 graphElement.prototype = new element();
@@ -40,10 +43,12 @@ graphElement.prototype.browserResizeEnd = function (){
 ////////////////////    FUNCTIONS    ///////////////////////
 ////////////////////////////////////////////////////////////
 
+
 /**
  * Load graph on layout div html page
  */
 graphElement.prototype.load = function () {
+
 	//create a layout
 	this.container = document.getElementById('layout');
 
@@ -220,6 +225,7 @@ graphElement.prototype.reDrawLayout = function (){
 		case 1: //smoothCurves: {dynamic:false, type: "continuous"}
 			this.options = {stabilize: false, smoothCurves: {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness: this.smoothCurves.roundness}, physics: {barnesHut: {enabled: false}, repulsion: {damping:0.09, nodeDistance: this.nodeDistanceValue, centralGravity: this.centralGravityValue}},hideEdgesOnDrag: this.hideEdgesOnDragLayout};
 			this.layout = new vis.Network(this.container, this.data, this.options);
+
 			break;
 		case 2:
 			this.options = {stabilize: false, hierarchicalLayout: {layout: "directional"}, smoothCurves: {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness: this.smoothCurves.roundness}, physics: {hierarchicalRepulsion: {nodeDistance: this.nodeDistanceValue}}, hideEdgesOnDrag: this.hideEdgesOnDragLayout};
@@ -269,28 +275,34 @@ graphElement.prototype.addNode = function (node){
 graphElement.prototype.addEdge = function (edge){
 	element.edgesMap.add(edge);
 
-	/*from = this.nodesMap.get(edge.to);
+	from = element.nodesMap.get(edge.to);
 	if (from.radius == undefined) from.radius = 10;
-	from.radius = from.radius + 1;
-	element.nodesMap.update(from);*/
+	from.radius = from.radius + 100;
+	element.nodesMap.update(from);
 };
 
 /**
  * update Node
  */
 graphElement.prototype.updateNode = function (node){
+	
 	nodeAux = element.nodesMap.get(node.id);
+
 	if (nodeAux != undefined) {
-		if(node.label == undefined) nodeAux.label= node.label;
-		if(node.radius == undefined) nodeAux.radius = node.radius;
-		if(node.shape == undefined) nodeAux.shape = node.shape;
-		if(node.title == undefined) nodeAux.title = node.title;
-		if(node.group == undefined) nodeAux.group = node.group;
-		if(node.color == undefined) nodeAux.color = node.color;
-		if(node.image == undefined) nodeAux.image = node.image;
-		if(node.location == undefined) nodeAux.location = node.location;
+		if(node.label != undefined) nodeAux.label= node.label;
+		if(node.radius != undefined) nodeAux.radius = node.radius;
+		if(node.shape != undefined) nodeAux.shape = node.shape;
+		if(node.title != undefined) nodeAux.title = node.title;
+		if(node.group != undefined) nodeAux.group = node.group;
+		if(node.color != undefined) nodeAux.color = node.color;
+		if(node.image != undefined) nodeAux.image = node.image;
+		if(node.location != undefined) nodeAux.location = node.location;
 		element.nodesMap.update(nodeAux);
+		element.layout.redraw();
 	}
+
+
+
 };
 
 
@@ -300,14 +312,14 @@ graphElement.prototype.updateNode = function (node){
 graphElement.prototype.updateEdge = function (edge){
 	edgeAux = element.edgesMap.get(edge.id);
 	if (edgeAux != undefined) {
-		if(edge.from == undefined) edgeAux.from = edge.from;
-		if(edge.to == undefined) edgeAux.to = edge.to;
-		if(edge.style == undefined) edgeAux.style = edge.style;
-		if(edge.label == undefined) edgeAux.label = edge.label;
-		if(edge.title == undefined) edgeAux.title = edge.title;
-		if(edge.threshold == undefined) edgeAux.threshold = edge.threshold;
-		if(edge.length == undefined) edgeAux.length = edge.length;
-		if(edge.color == undefined) nodeAux.color = edge.color;
+		if(edge.from != undefined) edgeAux.from = edge.from;
+		if(edge.to != undefined) edgeAux.to = edge.to;
+		if(edge.style != undefined) edgeAux.style = edge.style;
+		if(edge.label != undefined) edgeAux.label = edge.label;
+		if(edge.title != undefined) edgeAux.title = edge.title;
+		if(edge.threshold != undefined) edgeAux.threshold = edge.threshold;
+		if(edge.length != undefined) edgeAux.length = edge.length;
+		if(edge.color != undefined) nodeAux.color = edge.color;
 		element.nodesMap.update(edgeAux);
 	}
 };

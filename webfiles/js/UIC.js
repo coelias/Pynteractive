@@ -26,7 +26,7 @@ addEdge: function (id, id1, id2, label, title, threshold, style, length, color){
 		},
 
 updateNode: function (id, label, title, group, shape, color, radius, image, lng, lat){
-			alert(3);
+
 			var n = {"id":id};
 			if (label) n.label=label;
 			if (title) n.title=title;
@@ -36,6 +36,9 @@ updateNode: function (id, label, title, group, shape, color, radius, image, lng,
 			if (radius) n.radius=radius;
 			if (image) n.image=image;
 			if (lng && lat) n.location={"lng":lng,"lat":lat};
+
+			console.log(n);
+
 			element.updateNode(n);
 		},
 
@@ -77,10 +80,6 @@ clearLog: function(){
 
 addLog: function(text){
 			element.addLog(text);
-		},
-
-changeActionName: function(id,name){
-			element.changeActionName(id,name);
 		},
 
 addAction: function(id,name){
