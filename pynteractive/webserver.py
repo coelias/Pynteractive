@@ -121,14 +121,9 @@ class JSCom(WebSocket):
 		if nodes:
 			DataStruct.OBJECTS[self.dataId].doubleClick(nodes[0].encode())
 
-	def graphAction(self,n,selectedNodes):
+	def performAction(self,n,selectedNodes):
 		selectedNodes=[i.encode() for i in selectedNodes]
-		if n==1:
-			DataStruct.OBJECTS[self.dataId].action1(selectedNodes)
-		elif n==2:
-			DataStruct.OBJECTS[self.dataId].action2(selectedNodes)
-		elif n==3:
-			DataStruct.OBJECTS[self.dataId].action3(selectedNodes)
+		DataStruct.OBJECTS[self.dataId].performAction(n,selectedNodes)
 
 	def refresh(self,name):
 		DataStruct.refreshData(name)

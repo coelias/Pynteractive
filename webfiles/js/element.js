@@ -275,7 +275,7 @@ element.prototype.changeEnabledLog = function (){
  */
 element.prototype.action = function (e){
 	var id = jQuery(e).attr("idaction");
-	PYCON.send('graphAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
+	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
 };
 
 /**
@@ -296,7 +296,7 @@ element.prototype.changeActionName  = function (id, name){
  * search by id
  */
 element.prototype.addAction  = function (id, name){
-	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction'+id, text: 'Action '+id};
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction'+id, text: name};
 	this.loadHtmlTag(tag);
 	tag = {tag:'button', to:'#optionsNetwork', id: 'Action'+id, type: 'button', idAction: id, onclick: 'element.action(this);'};
 	this.loadHtmlTag(tag);

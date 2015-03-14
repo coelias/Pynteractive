@@ -42,9 +42,3 @@ class Graph(VisNetwork):
 
 	def doubleClick(self,node):
 		pass
-	def action1(self,node):
-		pass
-	def action2(self,node):
-		pass
-	def action3(self,node):
-		pass

@@ -26,6 +26,7 @@ addEdge: function (id, id1, id2, label, title, threshold, style, length, color){
 		},
 
 updateNode: function (id, label, title, group, shape, color, radius, image, lng, lat){
+			alert(3);
 			var n = {"id":id};
 			if (label) n.label=label;
 			if (title) n.title=title;

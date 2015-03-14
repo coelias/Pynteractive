@@ -21,9 +21,13 @@ class VisNetwork(Network):
 
 		node_id,label=Network.addNode(self,node_id,label,title=title,group=group,shape=shape,color=color,radius=radius,image=image)
 
-	# 		 addNode: function (   id,label,title,group,shape,color,radius,image, lng, lat){
 		self.update("addNode",node_id,label,title,group,shape,color,radius,image)
 		return node_id,label
+
+	def updateNode(self,node_id,label=None,title=None,group=None,shape=None,color=None,radius=None,image=None):
+		Network.updateNode(self,node_id,abel=label,title=title,group=group,shape=shape,color=color,radius=radius,image=image)
+		i=self.vertices[node_id]
+		self.update("updateNode",i["_id"],i["_label"],i["_title"],i["_group"],i["_shape"],i["_color"],i["_radius"],i["_image"])
 
 	def addEdge(self,n1,n2,label=None,title=None,width=None,style=None,length=None):
 		'''Adds an edge to a node, if it is not directed the order does not matter
@@ -60,6 +64,8 @@ class VisNetwork(Network):
 	def delEdge(self,ed_id):
 		Network.delEdge(self,ed_id)
 		self.update("removeEdge",ed_id)
+
+		
 
 	def clear(self):
 		v,e=self.getEdgesAndNodes()

@@ -47,6 +47,8 @@ body, html {
 	left: 0.5%;
 	margin: 0px 0px 0px 0px;
 	overflow-y: auto;
+	overflow-x: scroll;
+	white-space: nowrap;
 	resize: vertical; 
 	-moz-resize: vertical; 
 	-webkit-transform: rotate(-180deg); 

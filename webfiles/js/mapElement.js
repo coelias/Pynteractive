@@ -131,26 +131,6 @@ mapElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction1', text: 'Action 1'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action1', type: 'button', idAction: "1", onclick: 'element.action(this);'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'br', to:'#optionsNetwork'};
-	this.loadHtmlTag(tag);
-
-	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction2', text: 'Action 2'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action2', type: 'button', idAction: "2", onclick: 'element.action(this);'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'br', to:'#optionsNetwork'};
-	this.loadHtmlTag(tag);
-
-	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction3', text: 'Action 3'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action3', type: 'button', idAction: "3", onclick: 'element.action(this);'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'br', to:'#optionsNetwork'};
-	this.loadHtmlTag(tag);
 
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);

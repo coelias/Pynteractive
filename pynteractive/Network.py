@@ -27,6 +27,12 @@ class Network(DataStruct):
 		self.vertices[node_id]=data
 		return node_id,label
 
+	def updateNode(self,node_id,**kwargs):
+		assert node_id in self.vertices
+		data=self.vertices[node_id]
+		data.update(dict([["_"+i,j] for i,j in kwargs.items() if j]))
+
+
 	def addEdge(self,n1,n2,label,**kwargs):
 		'''Adds an edge from node n1 to  node n2, if it is not directed the order does not matter'''
 		n1,n2=str(n1),str(n2)

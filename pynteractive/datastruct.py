@@ -14,9 +14,32 @@ class DataStruct:
 			raise ("Object {0} already exists!".format(ID))
 		DataStruct.OBJECTS[ID]=self
 		self._ID=name
+		self.actions={}
+		self.actionid=1
 	
 	def view(self):
 		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}".format(pyn_globals.PORT,self._ID,self.__class__.__name__))
+
+	def addAction(self,name,func):
+		self.actions[self.actionid]=[name,func]
+		self.update('addAction',self.actionid,name)
+		self.actionid+=1
+
+	def performAction(self,fid,params):
+		fid=int(fid)
+		if fid not in self.actions:
+			print "Function not found!!!"
+		else:	
+			try:
+				return self.actions[fid](params)
+			except:
+				print "Error calling method",fid
+
+	def log(self,log):
+		self.update('addLog',log)
+
+	def clearLog(self):
+		self.update('clearLog')
 
 	def closeView(self):
 		self.update("close")
@@ -24,9 +47,15 @@ class DataStruct:
 	def update(self,func,*pars):
 		DataStruct.JSConnector(self._ID,func,*pars)
 
+	def refreshActions(self):
+		
+		for fid,(name,func) in self.actions.items():
+			self.update('addAction',fid,name)
+
 	@staticmethod
 	def refreshData(name):
 		if name in DataStruct.OBJECTS:
+			DataStruct.OBJECTS[name].refreshActions()
 			DataStruct.OBJECTS[name].refresh()
 
 	@staticmethod
