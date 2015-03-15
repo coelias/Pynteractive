@@ -40,6 +40,14 @@ $ python setup.py install  ### (as root)
 $ pip install pynteractive
 ```
 
+## Documentation
+
+(Pynteractive API)[http://coelias.github.io/Pynteractive/html/]
+
+## Examples
+
+TODO
+
 ### Authors:
  - Carlos del Ojo
  - Oriol Mazariegos
