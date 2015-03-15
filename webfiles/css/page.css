@@ -67,8 +67,8 @@ body, html {
 
 #layout1,#layout2,#layout3,#layout4,#layout5 {
 	position:absolute;
-	width: 50%;
-	height: 40%;
+	width: 33%;
+	height: 50%;
 }
 
 #layout1 {
@@ -77,23 +77,23 @@ body, html {
 }
 
 #layout2 {
-	left:50%;
+	left:33%;
 	top:0%;
 }
 
 #layout3 {
-	left:0%;
-	top:50%;
+	left:66%;
+	top:0%;
 }
 
 #layout4 {
-	left:50%;
+	left:15%;
 	top:50%;
 }
 
 #layout5 {
-	left:0%;
-	top:0%;
+	left:48%;
+	top:50%;
 }
 
 
