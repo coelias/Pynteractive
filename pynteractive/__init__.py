@@ -4,6 +4,7 @@ from pynteractive.datastruct import *
 from pynteractive.graph import *
 from pynteractive.tree import *
 from pynteractive.map import *
+from pynteractive.chart import *
 import atexit
 from webserver import *
 
