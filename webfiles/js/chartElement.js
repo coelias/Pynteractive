@@ -143,7 +143,9 @@ chartElement.prototype.loadChart = function (id) {
 chartElement.prototype.load = function () {
 
 	//Get data
-    	this.data = [{"key": "key1", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '1', "shape": "circle", "size":"0.5"},{"x": '3', "y": '1', "shape": "circle", "size":"0.5"}]},{"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '3', "y": '2', "shape": "circle", "size":"0.5"}]}]; 
+    	data = [{"key": "key1", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '1', "shape": "circle", "size":"0.5"},{"x": '3', "y": '1', "shape": "circle", "size":"0.5"}]},{"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '3', "y": '2', "shape": "circle", "size":"0.5"}]}]; 
+
+	this.addData(data);
 
 	var char1 = element.data1(1,this.data);
 	var char2 = element.data2(2,this.data);
@@ -326,3 +328,10 @@ chartElement.prototype.data5 = function(id,data) {
 
 	return chart;
 };
+
+/**
+ * add data for chart
+ */
+chartElement.prototype.addData = function (data){
+	this.data = data;
+}

@@ -85,5 +85,11 @@ addLog: function(text){
 addAction: function(id,name){
 			element.addAction(id,name);
 		},
+
+addData: function(data){
+			element.addData(data);
+		},
 }
+
+
 

@@ -359,6 +359,14 @@ element.prototype.addLog = function(text){
 		jQuery("#log").html(text)
 	}else{
 		jQuery("#log").html(previousText+"<br>"+text)
+
 	}
+}
+
+/**
+ * add data for chart
+ */
+element.prototype.addData = function (data){
+
 }
 
