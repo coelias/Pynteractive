@@ -42,7 +42,7 @@ $ pip install pynteractive
 
 ## Documentation
 
-(Pynteractive API)[http://coelias.github.io/Pynteractive/html/]
+[Pynteractive API](http://coelias.github.io/Pynteractive/html/)
 
 ## Examples
 
