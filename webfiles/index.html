@@ -22,19 +22,17 @@
   <script src="http://smeijer.github.io/GeoSearch/js/l.geosearch.provider.openstreetmap.js"></script>
   <link rel="stylesheet" href="http://smeijer.github.io/GeoSearch/css/l.geosearch.css" />
 
-  <!-- Charts wth nvd3 -->	
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <!-- Charts wth nvd3 -->
+  <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet">-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.css" rel="stylesheet">
-  
-  <script src="http://nvd3.org/assets/js/data/stream_layers.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="../css/page.css" />
   <link rel="stylesheet" href="../css/leftOptions.css" /> 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+ <link href="http://nvd3.org/assets/css/common.css" rel="stylesheet">
 
 </head>
 <body>
@@ -82,11 +80,13 @@ $(document).ready(function() {
             <span class="bar"></span>
         </a>
 
+	<!-- <div id="layout" class="content"> -->
 	<div id="layout" class="content">
-		<svg id="layout1"></svg>
-		<svg id="layout2"></svg>
-		<svg id="layout3"></svg>
-		<svg id="layout4"></svg>	
+		<div id="chartlayout1"><svg id="layout1" ></svg></div>
+		<div id="chartlayout2"><svg id="layout2" ></svg></div>
+		<div id="chartlayout3"><svg id="layout3" ></svg></div>
+		<div id="chartlayout4"><svg id="layout4" ></svg></div>
+		<div id="chartlayout5"><svg id="layout5" ></svg></div>
 	</div>
 	<div id="logcontainer" class="content">
 		<p id="log" ></p>

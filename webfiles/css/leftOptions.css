@@ -35,11 +35,16 @@ button {
 
 }
 
-#labelBarnesHutRadio, #labelRepulsionRadio, #labelHierarchicalRepulsionRadio{
+/*input[type="radio"]{
 	position:absolute;
 	right: 0%;
 	font-weight: bold;
+}*/
 
+#labelBarnesHutRadio, #labelRepulsionRadio, #labelHierarchicalRepulsionRadio, #labelChartRadio1, #labelChartRadio2, #labelChartRadio3, #labelChartRadio4, #labelChartRadioAll, #labelChartRadio5 {
+	position:absolute;
+	right: 0%;
+	font-weight: bold;
 }
 
 #labelNodeDistance{
