@@ -27,12 +27,25 @@ class DataStruct:
 
 		An action consists of a **label** (*name*) shown in the web interface plus a **callback method** (*func*) called then the
 		button associated to the label is clicked. The callback function must accept one parameter that depending on the visualization
-		can be defferent (eg. list of nodes, sample id, etc...)'''
+		can be defferent (eg. list of nodes, sample id, etc...)
+		
+		example:
+		.. code:: python
+		a=Graph()
+		def myfunc(nodes):
+		     print 'these are the selected nodes',nodes
 
+		a.addAction('Print selected nodes',myfunc)
+		a.view()
+
+		# Noe select some nodes in the GUI and click your action on the left side bar
+		'''
 
 		self.actions[self.actionid]=[name,func]
 		self.update('addAction',self.actionid,name)
 		self.actionid+=1
+
+
 
 	def performAction(self,fid,params):
 		fid=int(fid)
