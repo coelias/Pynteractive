@@ -7,6 +7,7 @@ class DataStruct:
 	OBJECTS={}
 
 	def __init__(self,name=None):
+		'''DataStruct is the superclass for all pynteractive objects. It requires a *name* although if it is not provided a random name will be assigned.'''
 		if not name:
 			name=self.__class__.__name__+"-"+"".join([random.choice("ABCDEF0123456789") for i in range(4)])
 		ID=name
@@ -18,9 +19,17 @@ class DataStruct:
 		self.actionid=1
 	
 	def view(self):
+		'''This method opens the default web browser in the system showing the web visualization associated to the data'''
 		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}".format(pyn_globals.PORT,self._ID,self.__class__.__name__))
 
 	def addAction(self,name,func):
+		'''Actions can be added to each visualization
+
+		An action consists of a **label** (*name*) shown in the web interface plus a **callback method** (*func*) called then the
+		button associated to the label is clicked. The callback function must accept one parameter that depending on the visualization
+		can be defferent (eg. list of nodes, sample id, etc...)'''
+
+
 		self.actions[self.actionid]=[name,func]
 		self.update('addAction',self.actionid,name)
 		self.actionid+=1
