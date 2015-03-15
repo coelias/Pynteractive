@@ -53,46 +53,6 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-pynteractive.Network">
-<span id="pynteractive-network-module"></span><h2>pynteractive.Network module<a class="headerlink" href="#module-pynteractive.Network" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="pynteractive.Network.Network">
-<em class="property">class </em><code class="descclassname">pynteractive.Network.</code><code class="descname">Network</code><span class="sig-paren">(</span><em>name=None</em>, <em>directed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pynteractive.datastruct.DataStruct" title="pynteractive.datastruct.DataStruct"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.datastruct.DataStruct</span></code></a></p>
-<dl class="method">
-<dt id="pynteractive.Network.Network.addEdge">
-<code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>label</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.addEdge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds an edge from node n1 to  node n2, if it is not directed the order does not matter</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.Network.Network.addNode">
-<code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id=None</em>, <em>label=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.addNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.Network.Network.delEdge">
-<code class="descname">delEdge</code><span class="sig-paren">(</span><em>_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.delEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.Network.Network.delNode">
-<code class="descname">delNode</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.delNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.Network.Network.getEdgesAndNodes">
-<code class="descname">getEdgesAndNodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.getEdgesAndNodes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.Network.Network.updateNode">
-<code class="descname">updateNode</code><span class="sig-paren">(</span><em>node_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.updateNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="module-pynteractive.datastruct">
 <span id="pynteractive-datastruct-module"></span><h2>pynteractive.datastruct module<a class="headerlink" href="#module-pynteractive.datastruct" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -111,7 +71,11 @@
 <dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.addAction">
 <code class="descname">addAction</code><span class="sig-paren">(</span><em>name</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.addAction" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Actions can be added to each visualization</p>
+<p>An action consists of a <strong>label</strong> (<em>name</em>) shown in the web interface plus a <strong>callback method</strong> (<em>func</em>) called then the
+button associated to the label is clicked. The callback function must accept one parameter that depending on the visualization
+can be defferent (eg. list of nodes, sample id, etc...)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.clearLog">
@@ -161,6 +125,106 @@
 <dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.view">
 <code class="descname">view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method opens the default web browser in the system showing the web visualization associated to the data</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pynteractive.Network">
+<span id="pynteractive-network-module"></span><h2>pynteractive.Network module<a class="headerlink" href="#module-pynteractive.Network" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pynteractive.Network.Network">
+<em class="property">class </em><code class="descclassname">pynteractive.Network.</code><code class="descname">Network</code><span class="sig-paren">(</span><em>name=None</em>, <em>directed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynteractive.datastruct.DataStruct" title="pynteractive.datastruct.DataStruct"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.datastruct.DataStruct</span></code></a></p>
+<dl class="method">
+<dt id="pynteractive.Network.Network.addEdge">
+<code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>label</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.addEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an edge from node n1 to  node n2, if it is not directed the order does not matter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.Network.Network.addNode">
+<code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id=None</em>, <em>label=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.addNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.Network.Network.delEdge">
+<code class="descname">delEdge</code><span class="sig-paren">(</span><em>_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.delEdge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.Network.Network.delNode">
+<code class="descname">delNode</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.delNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.Network.Network.getEdgesAndNodes">
+<code class="descname">getEdgesAndNodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.getEdgesAndNodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.Network.Network.updateNode">
+<code class="descname">updateNode</code><span class="sig-paren">(</span><em>node_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.updateNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pynteractive.visNetwork">
+<span id="pynteractive-visnetwork-module"></span><h2>pynteractive.visNetwork module<a class="headerlink" href="#module-pynteractive.visNetwork" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pynteractive.visNetwork.VisNetwork">
+<em class="property">class </em><code class="descclassname">pynteractive.visNetwork.</code><code class="descname">VisNetwork</code><span class="sig-paren">(</span><em>name=None</em>, <em>directed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynteractive.Network.Network" title="pynteractive.Network.Network"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.Network.Network</span></code></a></p>
+<dl class="method">
+<dt id="pynteractive.visNetwork.VisNetwork.addEdge">
+<code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>label=None</em>, <em>title=None</em>, <em>width=None</em>, <em>style=None</em>, <em>length=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.addEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an edge to a node, if it is not directed the order does not matter
+label: label on the edge
+title: text shown when hovering the edge
+width: width in pixeld of the edge
+style: line style -&gt; line,arrow,arrow-center,dash-line
+length: length of the edge</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.visNetwork.VisNetwork.addNode">
+<code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id=None</em>, <em>label=None</em>, <em>title=None</em>, <em>group=None</em>, <em>shape=None</em>, <em>color=None</em>, <em>radius=None</em>, <em>image=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.addNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a node to the network:
+node_id: identification of the node, if not specified it will be randomly generated
+label: Text that will be shown within the node
+title: Tooltip shown when hovering the node
+group: color group (numeric, eg: 1,2,3,4) used for clusterings
+shape: any of ellipse,circle,box,database,image,circularImage,label,dot,star,triangle,triangleDown,square
+color: color name or html code (eg: red, #FF0000)
+radius: radius of the shape
+image: Image in case the shape is image or circularImage</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.visNetwork.VisNetwork.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.visNetwork.VisNetwork.delEdge">
+<code class="descname">delEdge</code><span class="sig-paren">(</span><em>ed_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.delEdge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.visNetwork.VisNetwork.delNode">
+<code class="descname">delNode</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.delNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.visNetwork.VisNetwork.focusNode">
+<code class="descname">focusNode</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.focusNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.visNetwork.VisNetwork.updateNode">
+<code class="descname">updateNode</code><span class="sig-paren">(</span><em>node_id</em>, <em>label=None</em>, <em>title=None</em>, <em>group=None</em>, <em>shape=None</em>, <em>color=None</em>, <em>radius=None</em>, <em>image=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.updateNode" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -295,62 +359,12 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-pynteractive.visNetwork">
-<span id="pynteractive-visnetwork-module"></span><h2>pynteractive.visNetwork module<a class="headerlink" href="#module-pynteractive.visNetwork" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pynteractive.chart">
+<span id="pynteractive-chart-module"></span><h2>pynteractive.chart module<a class="headerlink" href="#module-pynteractive.chart" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="pynteractive.visNetwork.VisNetwork">
-<em class="property">class </em><code class="descclassname">pynteractive.visNetwork.</code><code class="descname">VisNetwork</code><span class="sig-paren">(</span><em>name=None</em>, <em>directed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pynteractive.Network.Network" title="pynteractive.Network.Network"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.Network.Network</span></code></a></p>
-<dl class="method">
-<dt id="pynteractive.visNetwork.VisNetwork.addEdge">
-<code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>label=None</em>, <em>title=None</em>, <em>width=None</em>, <em>style=None</em>, <em>length=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.addEdge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds an edge to a node, if it is not directed the order does not matter
-label: label on the edge
-title: text shown when hovering the edge
-width: width in pixeld of the edge
-style: line style -&gt; line,arrow,arrow-center,dash-line
-length: length of the edge</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.visNetwork.VisNetwork.addNode">
-<code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id=None</em>, <em>label=None</em>, <em>title=None</em>, <em>group=None</em>, <em>shape=None</em>, <em>color=None</em>, <em>radius=None</em>, <em>image=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.addNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a node to the network:
-node_id: identification of the node, if not specified it will be randomly generated
-label: Text that will be shown within the node
-title: Tooltip shown when hovering the node
-group: color group (numeric, eg: 1,2,3,4) used for clusterings
-shape: any of ellipse,circle,box,database,image,circularImage,label,dot,star,triangle,triangleDown,square
-color: color name or html code (eg: red, #FF0000)
-radius: radius of the shape
-image: Image in case the shape is image or circularImage</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.visNetwork.VisNetwork.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.clear" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.visNetwork.VisNetwork.delEdge">
-<code class="descname">delEdge</code><span class="sig-paren">(</span><em>ed_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.delEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.visNetwork.VisNetwork.delNode">
-<code class="descname">delNode</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.delNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.visNetwork.VisNetwork.focusNode">
-<code class="descname">focusNode</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.focusNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.visNetwork.VisNetwork.updateNode">
-<code class="descname">updateNode</code><span class="sig-paren">(</span><em>node_id</em>, <em>label=None</em>, <em>title=None</em>, <em>group=None</em>, <em>shape=None</em>, <em>color=None</em>, <em>radius=None</em>, <em>image=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.updateNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dt id="pynteractive.chart.Chart">
+<em class="property">class </em><code class="descclassname">pynteractive.chart.</code><code class="descname">Chart</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pynteractive.datastruct.DataStruct" title="pynteractive.datastruct.DataStruct"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.datastruct.DataStruct</span></code></a></p>
 </dd></dl>
 
 </div>
@@ -366,12 +380,13 @@ image: Image in case the shape is image or circularImage</p>
   <ul>
 <li><a class="reference internal" href="#">pynteractive package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-pynteractive.Network">pynteractive.Network module</a></li>
 <li><a class="reference internal" href="#module-pynteractive.datastruct">pynteractive.datastruct module</a></li>
+<li><a class="reference internal" href="#module-pynteractive.Network">pynteractive.Network module</a></li>
+<li><a class="reference internal" href="#module-pynteractive.visNetwork">pynteractive.visNetwork module</a></li>
 <li><a class="reference internal" href="#module-pynteractive.graph">pynteractive.graph module</a></li>
 <li><a class="reference internal" href="#module-pynteractive.map">pynteractive.map module</a></li>
 <li><a class="reference internal" href="#module-pynteractive.tree">pynteractive.tree module</a></li>
-<li><a class="reference internal" href="#module-pynteractive.visNetwork">pynteractive.visNetwork module</a></li>
+<li><a class="reference internal" href="#module-pynteractive.chart">pynteractive.chart module</a></li>
 </ul>
 </li>
 </ul>

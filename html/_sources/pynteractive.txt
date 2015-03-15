@@ -4,6 +4,14 @@ pynteractive package
 Submodules
 ----------
 
+pynteractive.datastruct module
+------------------------------
+
+.. automodule:: pynteractive.datastruct
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pynteractive.Network module
 ---------------------------
 
@@ -12,10 +20,10 @@ pynteractive.Network module
     :undoc-members:
     :show-inheritance:
 
-pynteractive.datastruct module
+pynteractive.visNetwork module
 ------------------------------
 
-.. automodule:: pynteractive.datastruct
+.. automodule:: pynteractive.visNetwork
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,10 +52,10 @@ pynteractive.tree module
     :undoc-members:
     :show-inheritance:
 
-pynteractive.visNetwork module
-------------------------------
+pynteractive.chart module
+-------------------------
 
-.. automodule:: pynteractive.visNetwork
+.. automodule:: pynteractive.chart
     :members:
     :undoc-members:
     :show-inheritance:
