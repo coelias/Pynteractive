@@ -75,6 +75,15 @@
 <p>An action consists of a <strong>label</strong> (<em>name</em>) shown in the web interface plus a <strong>callback method</strong> (<em>func</em>) called then the
 button associated to the label is clicked. The callback function must accept one parameter that depending on the visualization
 can be defferent (eg. list of nodes, sample id, etc...)</p>
+<p>example:
+code:: python
+a=Graph()
+def myfunc(nodes):</p>
+<blockquote>
+<div>print &#8216;these are the selected nodes&#8217;,nodes</div></blockquote>
+<p>a.addAction(&#8216;Print selected nodes&#8217;,myfunc)
+a.view()</p>
+<p># Noe select some nodes in the GUI and click your action on the left side bar</p>
 </dd></dl>
 
 <dl class="method">
