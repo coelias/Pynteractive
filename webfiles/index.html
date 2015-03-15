@@ -24,7 +24,9 @@
 
   <!-- Charts wth nvd3 -->
   <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet">-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet">
 
@@ -82,11 +84,17 @@ $(document).ready(function() {
 
 	<!-- <div id="layout" class="content"> -->
 	<div id="layout" class="content">
-		<div id="chartlayout1"><svg id="layout1" ></svg></div>
-		<div id="chartlayout2"><svg id="layout2" ></svg></div>
-		<div id="chartlayout3"><svg id="layout3" ></svg></div>
-		<div id="chartlayout4"><svg id="layout4" ></svg></div>
-		<div id="chartlayout5"><svg id="layout5" ></svg></div>
+		<div id="charts" style="display:none">
+		<div>
+		<div id="chartlayout1" class="span4" style="display:visible"><svg id="layout1" class="nvd3.svg"></svg></div>
+		<div id="chartlayout2" class="span4" style="display:visible"><svg id="layout2" class="nvd3.svg"></svg></div>
+		<div id="chartlayout3" class="span4" style="display:visible"><svg id="layout3" class="nvd3.svg"></svg></div>
+		</div>
+		<div>
+		<div id="chartlayout4" class="span4" style="display:visible"><svg id="layout4" class="nvd3.svg"></svg></div>
+		<div id="chartlayout5" class="span4" style="display:visible"><svg id="layout5" class="nvd3.svg"></svg></div>
+		</div>
+		</div>
 	</div>
 	<div id="logcontainer" class="content">
 		<p id="log" ></p>

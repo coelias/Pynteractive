@@ -89,6 +89,7 @@ addAction: function(id,name){
 addData: function(data){
 			element.addData(data);
 		},
+
 }
 
 

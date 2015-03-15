@@ -60,40 +60,17 @@ body, html {
 
 }
 
-#layout {
+#layout, #layout1,#layout2,#layout3,#layout4,#layout5 {
 	width: 100%;
 	height: 100%;
 }
 
-#layout1,#layout2,#layout3,#layout4,#layout5 {
-	position:absolute;
+#chartlayout1,#chartlayout2, #chartlayout3, #chartlayout4, #chartlayout5 {
+	float: left;
 	width: 33%;
 	height: 50%;
+	display: visible;
 }
 
-#layout1 {
-	left:0%;
-	top:0%;
-}
-
-#layout2 {
-	left:33%;
-	top:0%;
-}
-
-#layout3 {
-	left:66%;
-	top:0%;
-}
-
-#layout4 {
-	left:15%;
-	top:50%;
-}
-
-#layout5 {
-	left:48%;
-	top:50%;
-}
 
 
