@@ -34,13 +34,13 @@ class Tree(VisNetwork):
 	def readNewick(self,newick):
 		try:
 			if os.path.isfile(newick):
-				self.root,pos=self.parseTree(open(newick).read(),0)
+				self.root,pos=self._parseTree(open(newick).read(),0)
 			else:
-				self.root,pos=self.parseTree(newick,0)
+				self.root,pos=self._parseTree(newick,0)
 		except:
 			raise Exception('Invalid format for Newick')
 
-	def refresh(self):
+	def _refresh(self):
 		if self.root:
 			top=[self.root]
 			self.addNode("_root")
@@ -62,7 +62,7 @@ class Tree(VisNetwork):
 					self.addEdge(rt.name,newnodename,length=50)
 
 
-	def parseTree(self,cad,pos):
+	def _parseTree(self,cad,pos):
 		n=Tree.Node()
 		assert cad[pos]=='('
 		
@@ -71,7 +71,7 @@ class Tree(VisNetwork):
 				if pos==len(cad)-1: break
 				if cad[pos+1]==';': break
 				if cad[pos+1] not in "),":
-					name,lgth,pos=self.parseLeaf(cad,pos+1)
+					name,lgth,pos=self._parseLeaf(cad,pos+1)
 					n.name=name
 					n.length=lgth
 					return n,pos
@@ -80,14 +80,14 @@ class Tree(VisNetwork):
 				break
 	
 			if cad[pos+1]!='(': 
-				name,lgth,pos=self.parseLeaf(cad,pos+1)
+				name,lgth,pos=self._parseLeaf(cad,pos+1)
 				n.append(Tree.Node(name,lgth))
 			else:
-				nn,pos=self.parseTree(cad,pos+1)
+				nn,pos=self._parseTree(cad,pos+1)
 				n.append(nn)
 		return n,pos+1
 	
-	def parseLeaf(self,cad,pos):
+	def _parseLeaf(self,cad,pos):
 		length=None
 		name=None
 		i=pos
@@ -103,19 +103,19 @@ class Tree(VisNetwork):
 
 if __name__=='__main__':
 	print "1"
-	parseTree("(,,(,));",0)
+	_parseTree("(,,(,));",0)
 	print "3"
-	parseTree("(A,B,(C,D));",0)
+	_parseTree("(A,B,(C,D));",0)
 	print "4"
-	parseTree("(A,B,(C,D)E)F;",0)
+	_parseTree("(A,B,(C,D)E)F;",0)
 	print "5"
-	parseTree("(:0.1,:0.2,(:0.3,:0.4):0.5);",0)
+	_parseTree("(:0.1,:0.2,(:0.3,:0.4):0.5);",0)
 	print "6"
-	parseTree("(:0.1,:0.2,(:0.3,:0.4):0.5):0.0;",0)
+	_parseTree("(:0.1,:0.2,(:0.3,:0.4):0.5):0.0;",0)
 	print "7"
-	parseTree("(A:0.1,B:0.2,(C:0.3,D:0.4):0.5);",0)
+	_parseTree("(A:0.1,B:0.2,(C:0.3,D:0.4):0.5);",0)
 	print "8"
-	parseTree("(A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F;",0)
+	_parseTree("(A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F;",0)
 	print "9"
-	parseTree("((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A;",0)
+	_parseTree("((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A;",0)
 

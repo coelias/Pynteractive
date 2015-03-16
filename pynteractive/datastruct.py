@@ -3,21 +3,79 @@ import webbrowser
 import pynteractive.globals as pyn_globals
 
 class DataStruct:
-	JSConnector=None
-	OBJECTS={}
+	'''DataStruct is the basic data structure aimed to abstract any data set that will be represented in Pynteractive Web GUI. All
+	different dataset inherit from DataStruct class, and datastruct class implements the basic mechanisms to communicate with the
+	Pynteractive web server'''
+
+	_JSConnector=None
+	_OBJECTS={}
 
 	def __init__(self,name=None):
 		'''DataStruct is the superclass for all pynteractive objects. It requires a *name* although if it is not provided a random name will be assigned.'''
 		if not name:
 			name=self.__class__.__name__+"-"+"".join([random.choice("ABCDEF0123456789") for i in range(4)])
 		ID=name
-		if ID in DataStruct.OBJECTS:
+		if ID in DataStruct._OBJECTS:
 			raise ("Object {0} already exists!".format(ID))
-		DataStruct.OBJECTS[ID]=self
+		DataStruct._OBJECTS[ID]=self
 		self._ID=name
 		self.actions={}
 		self.actionid=1
 	
+
+	def _performAction(self,fid,params):
+		fid=int(fid)
+		if fid not in self.actions:
+			print "Function not found!!!"
+		else:	
+			try:
+				return self.actions[fid][1](params)
+			except:
+				print "Error calling method",fid
+
+
+	def _update(self,func,*pars):
+		'''This method calls a JS function via the WebSockets (USED INTERNALLY BY PYNTERACTIVE)'''
+		if DataStruct._JSConnector:
+			DataStruct._JSConnector(self._ID,func,*pars)
+
+	def _refreshActions(self):
+		for fid,(name,func) in self.actions.items():
+			self._update('addAction',fid,name)
+
+	@staticmethod
+	def _refreshData(name):
+		if name in DataStruct._OBJECTS:
+			DataStruct._OBJECTS[name]._refreshActions()
+			DataStruct._OBJECTS[name]._refresh()
+
+	@staticmethod
+	def _connect(updateFunc):
+		DataStruct._JSConnector=updateFunc
+
+	@staticmethod
+	def readCsv(csvfile):
+		'''readsCsv and returns the output as a vector of vectors. Detects delimiter automatically'''
+		with open(csvfile) as f:
+			csv=[i.strip() for i in f]
+		if csv:
+			delimiter=Counter([i for i in csv[0] if i in "\t ;,|"]).most_common(1)
+			if delimiter:
+				csv=[i.split(delimiter[0][0]) for i in csv]
+		return csv
+
+	def log(self,log):
+		'''Dumps HTML code in the Log section in the web GUI'''
+		self._update('addLog',log)
+
+	def clearLog(self):
+		'''Clears the contents of the log box in the web GUI'''
+		self._update('clearLog')
+
+	def closeView(self):
+		'''Closes the browser window/tab containing the dataset GUI'''
+		self._update("close")
+
 	def view(self):
 		'''This method opens the default web browser in the system showing the web visualization associated to the data'''
 		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}".format(pyn_globals.PORT,self._ID,self.__class__.__name__))
@@ -30,7 +88,9 @@ class DataStruct:
 		can be defferent (eg. list of nodes, sample id, etc...)
 		
 		example:
-		.. code:: python
+
+.. code:: python
+
 		a=Graph()
 		def myfunc(nodes):
 		     print 'these are the selected nodes',nodes
@@ -38,60 +98,9 @@ class DataStruct:
 		a.addAction('Print selected nodes',myfunc)
 		a.view()
 
-		# Noe select some nodes in the GUI and click your action on the left side bar
+		# Now you can select some nodes in the GUI and click your action on the left side bar
 		'''
 
 		self.actions[self.actionid]=[name,func]
-		self.update('addAction',self.actionid,name)
+		self._update('addAction',self.actionid,name)
 		self.actionid+=1
-
-
-
-	def performAction(self,fid,params):
-		fid=int(fid)
-		if fid not in self.actions:
-			print "Function not found!!!"
-		else:	
-			try:
-				return self.actions[fid][1](params)
-			except:
-				print "Error calling method",fid
-
-	def log(self,log):
-		self.update('addLog',log)
-
-	def clearLog(self):
-		self.update('clearLog')
-
-	def closeView(self):
-		self.update("close")
-
-	def update(self,func,*pars):
-		if DataStruct.JSConnector:
-			DataStruct.JSConnector(self._ID,func,*pars)
-
-	def refreshActions(self):
-		
-		for fid,(name,func) in self.actions.items():
-			self.update('addAction',fid,name)
-
-	@staticmethod
-	def refreshData(name):
-		if name in DataStruct.OBJECTS:
-			DataStruct.OBJECTS[name].refreshActions()
-			DataStruct.OBJECTS[name].refresh()
-
-	@staticmethod
-	def connect(updateFunc):
-		DataStruct.JSConnector=updateFunc
-
-	@staticmethod
-	def readCsv(csvfile):
-		with open(csvfile) as f:
-			csv=[i.strip() for i in f]
-		if csv:
-			delimiter=Counter([i for i in csv[0] if i in "\t ;,|"]).most_common(1)
-			if delimiter:
-				csv=[i.split(delimiter[0][0]) for i in csv]
-		return csv
-

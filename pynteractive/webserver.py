@@ -119,14 +119,14 @@ class JSCom(WebSocket):
 
 	def graphDblClick(self,nodes):
 		if nodes:
-			DataStruct.OBJECTS[self.dataId].doubleClick(nodes[0].encode())
+			DataStruct._OBJECTS[self.dataId].doubleClick(nodes[0].encode())
 
 	def performAction(self,n,selectedNodes):
 		selectedNodes=[i.encode() for i in selectedNodes]
-		DataStruct.OBJECTS[self.dataId].performAction(n,selectedNodes)
+		DataStruct._OBJECTS[self.dataId]._performAction(n,selectedNodes)
 
 	def refresh(self,name):
-		DataStruct.refreshData(name)
+		DataStruct._refreshData(name)
 
 class SimpleWS(SimpleHTTPRequestHandler):
 	FILE_MGR=FileMgr(path='webfiles/') if not pyn_globals.WEBFILES else FileMgr(tarString=pyn_globals.WEBFILES)
