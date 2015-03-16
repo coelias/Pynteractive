@@ -58,17 +58,7 @@
 <dl class="class">
 <dt id="pynteractive.datastruct.DataStruct">
 <em class="property">class </em><code class="descclassname">pynteractive.datastruct.</code><code class="descname">DataStruct</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="pynteractive.datastruct.DataStruct.JSConnector">
-<code class="descname">JSConnector</code><em class="property"> = None</em><a class="headerlink" href="#pynteractive.datastruct.DataStruct.JSConnector" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pynteractive.datastruct.DataStruct.OBJECTS">
-<code class="descname">OBJECTS</code><em class="property"> = {}</em><a class="headerlink" href="#pynteractive.datastruct.DataStruct.OBJECTS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
+<dd><dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.addAction">
 <code class="descname">addAction</code><span class="sig-paren">(</span><em>name</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.addAction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Actions can be added to each visualization</p>
@@ -85,7 +75,7 @@ can be defferent (eg. list of nodes, sample id, etc...)</p>
 <span class="n">a</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Print selected nodes&#39;</span><span class="p">,</span><span class="n">myfunc</span><span class="p">)</span>
 <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
 
-<span class="c"># Noe select some nodes in the GUI and click your action on the left side bar</span>
+<span class="c"># Now you can select some nodes in the GUI and click your action on the left side bar</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -93,46 +83,24 @@ can be defferent (eg. list of nodes, sample id, etc...)</p>
 <dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.clearLog">
 <code class="descname">clearLog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.clearLog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Clears the contents of the log box in the web GUI</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.closeView">
 <code class="descname">closeView</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.closeView" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="pynteractive.datastruct.DataStruct.connect">
-<em class="property">static </em><code class="descname">connect</code><span class="sig-paren">(</span><em>updateFunc</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.connect" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Closes the browser window/tab containing the dataset GUI</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.log">
 <code class="descname">log</code><span class="sig-paren">(</span><em>log</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.log" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.datastruct.DataStruct.performAction">
-<code class="descname">performAction</code><span class="sig-paren">(</span><em>fid</em>, <em>params</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.performAction" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Dumps HTML code in the Log section in the web GUI</p>
+</dd></dl>
 
 <dl class="staticmethod">
 <dt id="pynteractive.datastruct.DataStruct.readCsv">
 <em class="property">static </em><code class="descname">readCsv</code><span class="sig-paren">(</span><em>csvfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.readCsv" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.datastruct.DataStruct.refreshActions">
-<code class="descname">refreshActions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.refreshActions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="pynteractive.datastruct.DataStruct.refreshData">
-<em class="property">static </em><code class="descname">refreshData</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.refreshData" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.datastruct.DataStruct.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>func</em>, <em>*pars</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.update" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -264,12 +232,6 @@ image: Image in case the shape is image or circularImage</p>
 <code class="descname">random</code><span class="sig-paren">(</span><em>nn</em>, <em>ne</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.graph.Graph.random" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="pynteractive.graph.Graph.refresh">
-<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.graph.Graph.refresh" title="Permalink to this definition">¶</a></dt>
-<dd><p>DO NOT USE, is used for graphic representation, everytime a new window is opened</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -314,12 +276,6 @@ image: Image in case the shape is image or circularImage</p>
 <code class="descname">getLocation</code><span class="sig-paren">(</span><em>place</em>, <em>country=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.getLocation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="pynteractive.map.Map.refresh">
-<code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.refresh" title="Permalink to this definition">¶</a></dt>
-<dd><p>DO NOT USE, is used for graphic representation, everytime a new window is opened</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -357,11 +313,6 @@ image: Image in case the shape is image or circularImage</p>
 <dl class="method">
 <dt id="pynteractive.tree.Tree.readNewick">
 <code class="descclassname">Tree.</code><code class="descname">readNewick</code><span class="sig-paren">(</span><em>newick</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.readNewick" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.tree.Tree.refresh">
-<code class="descclassname">Tree.</code><code class="descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.refresh" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
