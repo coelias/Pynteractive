@@ -58,7 +58,10 @@
 <dl class="class">
 <dt id="pynteractive.datastruct.DataStruct">
 <em class="property">class </em><code class="descclassname">pynteractive.datastruct.</code><code class="descname">DataStruct</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>DataStruct is the basic data structure aimed to abstract any data set that will be represented in Pynteractive Web GUI. All
+different dataset inherit from DataStruct class, and datastruct class implements the basic mechanisms to communicate with the
+Pynteractive web server</p>
+<dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.addAction">
 <code class="descname">addAction</code><span class="sig-paren">(</span><em>name</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.addAction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Actions can be added to each visualization</p>
@@ -101,7 +104,8 @@ can be defferent (eg. list of nodes, sample id, etc...)</p>
 <dl class="staticmethod">
 <dt id="pynteractive.datastruct.DataStruct.readCsv">
 <em class="property">static </em><code class="descname">readCsv</code><span class="sig-paren">(</span><em>csvfile</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.readCsv" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>readsCsv and returns the output as a vector of vectors. Detects delimiter automatically</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.view">
@@ -118,36 +122,46 @@ can be defferent (eg. list of nodes, sample id, etc...)</p>
 <dt id="pynteractive.Network.Network">
 <em class="property">class </em><code class="descclassname">pynteractive.Network.</code><code class="descname">Network</code><span class="sig-paren">(</span><em>name=None</em>, <em>directed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pynteractive.datastruct.DataStruct" title="pynteractive.datastruct.DataStruct"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.datastruct.DataStruct</span></code></a></p>
+<p>This class implements basic methods and datastructures to represent a Newtork. IT is used for either 
+Graphs or trees</p>
 <dl class="method">
 <dt id="pynteractive.Network.Network.addEdge">
 <code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>label</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.addEdge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds an edge from node n1 to  node n2, if it is not directed the order does not matter</p>
+<dd><p>Adds an edge from node n1 to  node n2, if it is not directed the order does not matter. The edge id will be a combination of n1,n2 and label (eg: addEdge(&#8216;node1&#8217;,&#8217;node2&#8217;,&#8217;connection_node1_node2&#8217;) &#8211;&gt; edge_id = &#8216;node1~node2~connection_node1_node2&#8217;)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.Network.Network.addNode">
 <code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id=None</em>, <em>label=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.addNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Ads a node into the network, you can specify a cwnode_id and a label, if no node_id is specified, it will be randomly generated (autoincremental id)
+and if label is None it will get the same value as the node_id</p>
+<p>Random parameters can be assigned to the node via <a href="#id1"><span class="problematic" id="id2">**</span></a>kargs.</p>
+<p>It returns the tuple <em>node_id,label</em>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.Network.Network.delEdge">
 <code class="descname">delEdge</code><span class="sig-paren">(</span><em>_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.delEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes a connection between two given nodes</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.Network.Network.delNode">
 <code class="descname">delNode</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.delNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes a node from the network as well as the edges</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.Network.Network.getEdgesAndNodes">
 <code class="descname">getEdgesAndNodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.getEdgesAndNodes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the nodes and the edges of the Network &#8211;&gt; ([node_ids],[edge_ids])</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.Network.Network.updateNode">
 <code class="descname">updateNode</code><span class="sig-paren">(</span><em>node_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.Network.Network.updateNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Updates parameters related to node <em>node_id</em> updating those parameters specified via <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -162,51 +176,56 @@ can be defferent (eg. list of nodes, sample id, etc...)</p>
 <dt id="pynteractive.visNetwork.VisNetwork.addEdge">
 <code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>label=None</em>, <em>title=None</em>, <em>width=None</em>, <em>style=None</em>, <em>length=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.addEdge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds an edge to a node, if it is not directed the order does not matter
-label: label on the edge
-title: text shown when hovering the edge
-width: width in pixeld of the edge
-style: line style -&gt; line,arrow,arrow-center,dash-line
-length: length of the edge</p>
+* label: label on the edge
+* title: text shown when hovering the edge
+* width: width in pixeld of the edge
+* style: line style -&gt; <strong>line</strong>,**arrow**,**arrow-center**,**dash-line**
+* length: length of the edge</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.visNetwork.VisNetwork.addNode">
 <code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id=None</em>, <em>label=None</em>, <em>title=None</em>, <em>group=None</em>, <em>shape=None</em>, <em>color=None</em>, <em>radius=None</em>, <em>image=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.addNode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a node to the network:
-node_id: identification of the node, if not specified it will be randomly generated
-label: Text that will be shown within the node
-title: Tooltip shown when hovering the node
-group: color group (numeric, eg: 1,2,3,4) used for clusterings
-shape: any of ellipse,circle,box,database,image,circularImage,label,dot,star,triangle,triangleDown,square
-color: color name or html code (eg: red, #FF0000)
-radius: radius of the shape
-image: Image in case the shape is image or circularImage</p>
+* node_id: identification of the node, if not specified it will be randomly generated
+* label: Text that will be shown within the node
+* title: Tooltip shown when hovering the node
+* group: color group (numeric, eg: 1,2,3,4) used for clusterings
+* shape: any of <strong>ellipse</strong>,**circle**,**box**,**database**,**image**,**circularImage**,**label**,**dot**,**star**,**triangle**,**triangleDown**,**square**
+* color: color name or html code (eg: red, #FF0000)
+* radius: radius of the shape
+* image: Image in case the shape is image or circularImage</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.visNetwork.VisNetwork.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.clear" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Clears the GUI by removing every node and edge in the network</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.visNetwork.VisNetwork.delEdge">
 <code class="descname">delEdge</code><span class="sig-paren">(</span><em>ed_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.delEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes a connection between two given nodes</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.visNetwork.VisNetwork.delNode">
 <code class="descname">delNode</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.delNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes a node from the network as well as the edges</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.visNetwork.VisNetwork.focusNode">
 <code class="descname">focusNode</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.focusNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Forces the GUI to zoom in into the specified node</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.visNetwork.VisNetwork.updateNode">
 <code class="descname">updateNode</code><span class="sig-paren">(</span><em>node_id</em>, <em>label=None</em>, <em>title=None</em>, <em>group=None</em>, <em>shape=None</em>, <em>color=None</em>, <em>radius=None</em>, <em>image=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.updateNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Updates a node in the network</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -225,12 +244,221 @@ image: Image in case the shape is image or circularImage</p>
 <dl class="method">
 <dt id="pynteractive.graph.Graph.fromCsv">
 <code class="descname">fromCsv</code><span class="sig-paren">(</span><em>fil</em>, <em>matrix=False</em>, <em>distances=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.graph.Graph.fromCsv" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Draws a network given a csv file</p>
+<blockquote>
+<div>The format for the CSV can be:</div></blockquote>
+<table border="1" class="docutils" id="id5">
+<caption><span class="caption-text">Pair of nodes connected</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">n1</th>
+<th class="head">n2</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>a</td>
+<td>b</td>
+</tr>
+<tr class="row-odd"><td>a</td>
+<td>c</td>
+</tr>
+<tr class="row-even"><td>c</td>
+<td>d</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id6">
+<caption><span class="caption-text">Node in first column connected to the ones in the next columns </span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">n1</th>
+<th class="head">n2</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>a</td>
+<td>b</td>
+<td>d</td>
+<td>e</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>b</td>
+<td>c</td>
+<td>e</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>e</td>
+<td>f</td>
+<td>a</td>
+<td>d</td>
+<td>e</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id7">
+<caption><span class="caption-text">Network matrix (matrix=True,distances=False) </span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head">a</th>
+<th class="head">b</th>
+<th class="head">c</th>
+<th class="head">d</th>
+<th class="head">e</th>
+<th class="head">f</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>a</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>b</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>c</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>d</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>e</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>f</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id8">
+<caption><span class="caption-text">Network matrix with distances (matrix=True,distances=True) </span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head">a</th>
+<th class="head">b</th>
+<th class="head">c</th>
+<th class="head">d</th>
+<th class="head">e</th>
+<th class="head">f</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>a</td>
+<td>54</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>b</td>
+<td>23</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>c</td>
+<td>0</td>
+<td>10</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>d</td>
+<td>0</td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>13</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>e</td>
+<td>56</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>f</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.graph.Graph.random">
 <code class="descname">random</code><span class="sig-paren">(</span><em>nn</em>, <em>ne</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.graph.Graph.random" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Creates a random Graph containing <em>nn</em> nodes and <em>ne</em> edges</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -271,11 +499,6 @@ image: Image in case the shape is image or circularImage</p>
 <code class="descname">focusNode</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.focusNode" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="pynteractive.map.Map.getLocation">
-<code class="descname">getLocation</code><span class="sig-paren">(</span><em>place</em>, <em>country=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.getLocation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div>
@@ -298,16 +521,6 @@ image: Image in case the shape is image or circularImage</p>
 <dl class="method">
 <dt id="pynteractive.tree.Tree.getName">
 <code class="descclassname">Tree.</code><code class="descname">getName</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.getName" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.tree.Tree.parseLeaf">
-<code class="descclassname">Tree.</code><code class="descname">parseLeaf</code><span class="sig-paren">(</span><em>cad</em>, <em>pos</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.parseLeaf" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.tree.Tree.parseTree">
-<code class="descclassname">Tree.</code><code class="descname">parseTree</code><span class="sig-paren">(</span><em>cad</em>, <em>pos</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.parseTree" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
