@@ -87,9 +87,20 @@ addAction: function(id,name){
 		},
 
 addChartData: function(data){
-			element.addData(data);
+			element.addChartData(data);
 		},
 
+removeChartData: function(idSerie){
+			element.removeChartData(idSerie);
+		},
+
+addSeriedata: function(idSerie,data){
+			element.addSerieData(idSerie,data);
+		},
+
+removeSeriedata: function(idSerie,index){
+			element.removeSerieData(idSerie,index);
+		},
 }
 
 

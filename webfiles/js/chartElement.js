@@ -110,7 +110,7 @@ chartElement.prototype.changeLayoutType = function (id){
 		jQuery("#layout4").css({opacity: 0.25,top: "50%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
 		jQuery("#layout5").css({opacity: 0.25,top: "50%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);*/
 
-		this.load();
+		this.loadCharts();
 	}else{
 		jQuery("#chartlayout1").css({opacity: 0.25, display: "none"}).animate({opacity: 0}, 200);
 		jQuery("#chartlayout2").css({opacity: 0.25, display: "none"}).animate({opacity: 0}, 200);
@@ -123,7 +123,6 @@ chartElement.prototype.changeLayoutType = function (id){
 		jQuery("#layout3").css({opacity: 0.25,width:"0%", height: "0%"});
 		jQuery("#layout4").css({opacity: 0.25,width:"0%", height: "0%"});
 		jQuery("#layout5").css({opacity: 0.25,width:"0%", height: "0%"});*/
-
 		jQuery("#layout"+id.slice(-1)).css({opacity: 0.25,top: "0%", left: "0%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
 
 		jQuery("#chartlayout"+id.slice(-1)).css({display: "visible", opacity: 0.25, margin: "5%", width:"75%", height: "75%"}).animate({opacity: 1}, 200);
@@ -163,9 +162,30 @@ chartElement.prototype.loadChart = function (id) {
 chartElement.prototype.load = function () {
 
 	//Get data
-    	data = [{"key": "key1", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '1', "shape": "circle", "size":"0.5"},{"x": '3', "y": '1', "shape": "circle", "size":"0.5"}]},{"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '3', "y": '2', "shape": "circle", "size":"0.5"}]}]; 
+    	//data = [{"key": "key1", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '1', "shape": "circle", "size":"0.5"},{"x": '3', "y": '1', "shape": "circle", "size":"0.5"}]},{"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '3', "y": '2', "shape": "circle", "size":"0.5"}]}]; 
+    	this.data = []; 
 
-	this.addData(data);
+	var serie1 = {"key": "key1", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '1', "shape": "circle", "size":"0.5"},{"x": '3', "y": '1', "shape": "circle", "size":"0.5"}]};
+	this.addChartData(serie1);
+	//var serie2 = {"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '3', "y": '2', "shape": "circle", "size":"0.5"}]};
+	var serie2 = {"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}]};
+	serie2Data = {"x": '3', "y": '2', "shape": "circle", "size":"0.5"};
+
+	this.addChartData(serie2);
+	this.addSerieData("key2",serie2Data);
+	this.addSerieData("key2",serie2Data);
+
+	this.removeSerieData("key2",4);
+
+	//this.removeData("key2");
+	this.loadCharts();
+
+};
+
+/**
+ * Load graph on layout div html page
+ */
+chartElement.prototype.loadCharts = function () {
 
 	jQuery("#charts").css({opacity: 0.25, display: "visible"}).animate({opacity: 1}, 200);
 
@@ -360,6 +380,53 @@ chartElement.prototype.data5 = function(id,data) {
 /**
  * add data for chart
  */
-chartElement.prototype.addData = function (data){
-	this.data = data;
+chartElement.prototype.addChartData = function (data){
+	this.data.push(data);
 }
+
+/**
+ * remove data for chart
+ */
+chartElement.prototype.removeChartData = function (id){
+	var data = this.data;
+	jQuery.each(data, function(i, val) {
+		if(val.key == id) // delete index
+		{
+			delete data[i];
+			data.length = data.length-1;
+		}
+	});
+
+}
+
+/**
+ * add data in a serie for chart
+ */
+chartElement.prototype.addSerieData = function (id,dataSerie){
+	var data = this.data;
+	jQuery.each(data, function(i, val) {
+		if(val.key == id) // delete index
+		{
+			console.log(data)
+			data[i].values.push(dataSerie);
+		}
+	});
+}
+
+/**
+ * remove data in a serie for chart
+ */
+chartElement.prototype.removeSerieData = function (id,indexData){
+	var data = this.data;
+	jQuery.each(data, function(i, val) {
+		if(val.key == id) // delete index
+		{
+			//delete data[i].values[indexData-1];
+			delete data[i].values[indexData-1];
+			//delete data[i].values.length = delete data[i].values.length-1;
+			data[i].values.length = data[i].values.length-1;
+		}
+	});
+
+}
+
