@@ -325,49 +325,24 @@ chartElement.prototype.data4 = function(id,data) {
  * Set layout Pie Chart
  */
 chartElement.prototype.data5 = function(id,data) {
+
 	var chart = nv.models.pieChart()
-		.x(function(d) { return d.label })
-		.y(function(d) { return d.value })
+		//.x(function(d) { return d.label })
+		//.y(function(d) { return d.value })
 		.showLabels(true);
 
-	var data = [
-	{ 
-	"label": "One",
-	"value" : 29.765957771107
-	} , 
-	{ 
-	"label": "Two",
-	"value" : 0
-	} , 
-	{ 
-	"label": "Three",
-	"value" : 32.807804682612
-	} , 
-	{ 
-	"label": "Four",
-	"value" : 196.45946739256
-	} , 
-	{ 
-	"label": "Five",
-	"value" : 0.19434030906893
-	} , 
-	{ 
-	"label": "Six",
-	"value" : 98.079782601442
-	} , 
-	{ 
-	"label": "Seven",
-	"value" : 13.925743130903
-	} , 
-	{ 
-	"label": "Eight",
-	"value" : 5.1387322875705
+	var dataAux = [];
+	//extract series
+	for (var i in data) {
+		for (var j in data) {
+
+			dataAux.push(data[i].values[j]);
+		}
 	}
-	];
 
 	d3.select("#layout"+id)
 		//.append("svg:svg")
-		.datum(data)
+		.datum(dataAux)
 		.transition()
 		.duration(350)
 		.call(chart);
@@ -390,7 +365,7 @@ chartElement.prototype.addChartData = function (data){
 chartElement.prototype.removeChartData = function (id){
 	var data = this.data;
 	jQuery.each(data, function(i, val) {
-		if(val.key == id) // delete index
+		if(val.key == id)
 		{
 			delete data[i];
 			data.length = data.length-1;
@@ -405,9 +380,8 @@ chartElement.prototype.removeChartData = function (id){
 chartElement.prototype.addSerieData = function (id,dataSerie){
 	var data = this.data;
 	jQuery.each(data, function(i, val) {
-		if(val.key == id) // delete index
+		if(val.key == id)
 		{
-			console.log(data)
 			data[i].values.push(dataSerie);
 		}
 	});
@@ -419,11 +393,9 @@ chartElement.prototype.addSerieData = function (id,dataSerie){
 chartElement.prototype.removeSerieData = function (id,indexData){
 	var data = this.data;
 	jQuery.each(data, function(i, val) {
-		if(val.key == id) // delete index
+		if(val.key == id)
 		{
-			//delete data[i].values[indexData-1];
 			delete data[i].values[indexData-1];
-			//delete data[i].values.length = delete data[i].values.length-1;
 			data[i].values.length = data[i].values.length-1;
 		}
 	});
