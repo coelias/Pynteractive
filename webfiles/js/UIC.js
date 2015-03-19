@@ -94,11 +94,11 @@ removeChartData: function(idSerie){
 			element.removeChartData(idSerie);
 		},
 
-addSeriedata: function(idSerie,data){
+addSeriesData: function(idSerie,data){
 			element.addSerieData(idSerie,data);
 		},
 
-removeSeriedata: function(idSerie,index){
+removeSeriesData: function(idSerie,index){
 			element.removeSerieData(idSerie,index);
 		},
 }
