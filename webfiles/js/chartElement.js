@@ -1,7 +1,7 @@
 function chartElement() {
 	this.data;
 	this.ex;
-	this.layoutType = "All";
+	this.layoutType = "Line";
 };
 
 chartElement.prototype = new element();
@@ -96,7 +96,9 @@ chartElement.prototype.changeLayoutType = function (id){
 
 	//Bar, Scatter, Line, Stack, Pie, All
 
+	jQuery("#"+this.layoutType).attr("checked",true);
 	this.layoutType = id;
+	jQuery("#"+id).attr("checked",true);
 
 	if(id=='All'){
 
