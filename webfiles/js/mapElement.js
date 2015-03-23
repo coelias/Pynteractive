@@ -24,14 +24,14 @@ mapElement.prototype.browserResizeEnd = function (){
 
 mapElement.prototype.test = function () {
 
-	var node1 = {id: "1", lat:51.5, lng:-0.09, color:"red", radius:5};
-	var node2 = {id: "2", lat:51.8, lng:-0.09, color:"red", radius:5};
-	UIC.addNode(node1);
-	UIC.addNode(node2);
+	var node1 = {id: "1", location:{lat:51.5, lng:-0.09}, color:"red", radius:5};
+	var node2 = {id: "2", location:{lat:51.8, lng:-0.09}, color:"red", radius:5};
+	this.addNode(node1);
+	this.addNode(node2);
 
 
 	var edge1 = {id: "1", from: "1", to:"2", color:"red"};
-	UIC.addEdge(edge1);
+	this.addEdge(edge1);
 
 	//console.log(this.markers);
 	//this.removeNode(node1);
@@ -93,6 +93,8 @@ mapElement.prototype.load = function () {
 
 	var layers = new L.control.layers(baseLayers, null, {collapsed: true, position: 'topright'});
 	layers.addTo(this.layout);
+
+	this.test();
 
 };
 

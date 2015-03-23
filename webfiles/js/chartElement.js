@@ -96,7 +96,7 @@ chartElement.prototype.changeLayoutType = function (id){
 	if(id=='labelChartRadioAll'){
 
 		//jQuery("#charts").attr("style", "display:visible");
-		jQuery("#charts").css({opacity: 0.25, display: "visible"}).animate({opacity: 1}, 200);
+		//jQuery("#charts").css({opacity: 0.25, display: "visible"}).animate({opacity: 1}, 200);
 
 		jQuery("#chartlayout1").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
 		jQuery("#chartlayout2").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
@@ -112,18 +112,19 @@ chartElement.prototype.changeLayoutType = function (id){
 
 		this.loadCharts();
 	}else{
-		jQuery("#chartlayout1").css({opacity: 0.25, display: "none"}).animate({opacity: 0}, 200);
-		jQuery("#chartlayout2").css({opacity: 0.25, display: "none"}).animate({opacity: 0}, 200);
-		jQuery("#chartlayout3").css({opacity: 0.25, display: "none"}).animate({opacity: 0}, 200);
-		jQuery("#chartlayout4").css({opacity: 0.25, display: "none"}).animate({opacity: 0}, 200);
-		jQuery("#chartlayout5").css({opacity: 0.25, display: "none"}).animate({opacity: 0}, 200);
+		jQuery("#chartlayout1").css({opacity: 0, display: "none"})
+		jQuery("#chartlayout2").css({opacity: 0, display: "none"})
+		jQuery("#chartlayout3").css({opacity: 0, display: "none"})
+		jQuery("#chartlayout4").css({opacity: 0, display: "none"})
+		jQuery("#chartlayout5").css({opacity: 0, display: "none"})
 
 		/*jQuery("#layout1").css({opacity: 0.25,width:"0%", height: "0%"});
 		jQuery("#layout2").css({opacity: 0.25,width:"0%", height: "0%"});
 		jQuery("#layout3").css({opacity: 0.25,width:"0%", height: "0%"});
 		jQuery("#layout4").css({opacity: 0.25,width:"0%", height: "0%"});
 		jQuery("#layout5").css({opacity: 0.25,width:"0%", height: "0%"});*/
-		jQuery("#layout"+id.slice(-1)).css({opacity: 0.25,top: "0%", left: "0%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
+		
+		//jQuery("#layout"+id.slice(-1)).css({opacity: 0.25,top: "0%", left: "0%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
 
 		jQuery("#chartlayout"+id.slice(-1)).css({display: "visible", opacity: 0.25, margin: "5%", width:"75%", height: "75%"}).animate({opacity: 1}, 200);
 		
@@ -251,8 +252,8 @@ chartElement.prototype.data2 = function(id,data) {
 	var svg = d3.select("#layout"+id)
 		//.append("svg:svg")
 		.datum(data)
-		//.transition()
-		//.duration(500)
+		.transition()
+		.duration(500)
 		//.attr("width", "500px")
       		//.attr("height", "500px")
 		.call(chart);
@@ -357,6 +358,7 @@ chartElement.prototype.data5 = function(id,data) {
  */
 chartElement.prototype.addChartData = function (data){
 	this.data.push(data);
+	this.loadCharts();
 }
 
 /**
@@ -371,7 +373,7 @@ chartElement.prototype.removeChartData = function (id){
 			data.length = data.length-1;
 		}
 	});
-
+	this.loadCharts();
 }
 
 /**
@@ -385,6 +387,7 @@ chartElement.prototype.addSerieData = function (id,dataSerie){
 			data[i].values.push(dataSerie);
 		}
 	});
+	this.loadCharts();
 }
 
 /**
@@ -399,6 +402,6 @@ chartElement.prototype.removeSerieData = function (id,indexData){
 			data[i].values.length = data[i].values.length-1;
 		}
 	});
-
+	this.loadCharts();
 }
 
