@@ -3,10 +3,11 @@ from itertools import izip
 
 class Chart(DataStruct):
 	TYPES={'bar':'Bar','scatter':'Scatter','line':'Line','stack':'Stack'}
+	SHAPES=set(['circle', 'cross', 'triangle-up', 'triangle-down', 'diamond', 'square'])
 	def __init__(self,name=None,type='line'):
 		assert type in Chart.TYPES
 		DataStruct.__init__(self,name)
-		self.chartype=type
+		self.chartype=Chart.TYPES[type]
 		self.data={}
 
 	def _refresh(self):
@@ -25,9 +26,9 @@ class Chart(DataStruct):
 		if sizes:
 			values=[]
 			for _x,_y,_sh,_sz in izip(x,y,shapes,sizes):
-				if _sh not in Chart.TYPES:
+				if _sh not in Chart.SHAPES:
 					raise Exception('shape must be a valid id!')
-				values.append({"x":str(_x),"y":str(_y),'shape':Chart.TYPES[_sh],'size':_sz})
+				values.append({"x":str(_x),"y":str(_y),'shape':_sh,'size':_sz})
 			dataset={"key":seriesName,"values":values}
 			self.data[seriesName]=dataset
 		elif x:
@@ -41,13 +42,13 @@ class Chart(DataStruct):
 				if len(i)==3:
 					sh='circle'
 					sz=0.5
-					if i[2] in Chart.TYPES: sh=Chart.TYPES[i[2]]
+					if i[2] in Chart.SHAPES: sh=i[2]
 					else: sz=i[2]
 					values.append({"x":str(i[0]),"y":str(i[1]),'shape':sh,'size':sz})
 				elif len(i)==4:
 					sh='circle'
 					sz=0.5
-					if i[2] in Chart.TYPES: sh,sz=Chart.TYPES[i[2]],i[3]
+					if i[2] in Chart.SHAPES: sh,sz=i[2],i[3]
 					else: sh,sz=i[3],i[2]
 					values.append({"x":str(i[0]),"y":str(i[1]),'shape':sh,'size':sz})
 				else:
@@ -75,6 +76,6 @@ class Chart(DataStruct):
 
 	def changeType(self,type):
 		assert type in Chart.TYPES
-		self.chartype=type
-		self._update("setChartType",type)
+		self.chartype=Chart.TYPES[type]
+		self._update("setChartType",self.chartype)
 
