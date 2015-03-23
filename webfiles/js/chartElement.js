@@ -1,6 +1,7 @@
 function chartElement() {
 	this.data;
 	this.ex;
+	this.layoutType = "All";
 };
 
 chartElement.prototype = new element();
@@ -45,44 +46,44 @@ chartElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'label', to:'#optionsNetwork', id:'labelChart1', text:'Stacked/Grouped Multi-Bar Chart'};
+	tag = {tag:'label', to:'#optionsNetwork', id:'labelChartBar', text:'Stacked/Grouped Multi-Bar Chart'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelChartRadio1', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
-	this.loadHtmlTag(tag);
-	tag = {tag:'br', to:'#optionsNetwork'};
-	this.loadHtmlTag(tag);
-
-	tag = {tag:'label', to:'#optionsNetwork', id:'labelChart2', text:'Scatter / Bubble Chart'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelChartRadio2', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'Bar', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'label', to:'#optionsNetwork', id:'labelChart3', text:'Line Chart with View Finder'};
+	tag = {tag:'label', to:'#optionsNetwork', id:'labelChartScatter', text:'Scatter / Bubble Chart'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelChartRadio3', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
-	this.loadHtmlTag(tag);
-	tag = {tag:'br', to:'#optionsNetwork'};
-	this.loadHtmlTag(tag);
-
-	tag = {tag:'label', to:'#optionsNetwork', id:'labelChart4', text:'Stacked Area Chart'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelChartRadio4', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'Scatter', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'label', to:'#optionsNetwork', id:'labelChart5', text:'Pie Chart'};
+	tag = {tag:'label', to:'#optionsNetwork', id:'labelChartLine', text:'Line Chart with View Finder'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelChartRadio5', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'Line', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id:'labelChartStack', text:'Stacked Area Chart'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'Stack', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id:'labelChartPie', text:'Pie Chart'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'Pie', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id:'labelChartAll', text:'All Charts'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'labelChartRadioAll', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: true};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'All', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: true};
 	this.loadHtmlTag(tag);
 
 };
@@ -93,42 +94,31 @@ chartElement.prototype.loadHtml = function () {
  */
 chartElement.prototype.changeLayoutType = function (id){
 
-	if(id=='labelChartRadioAll'){
+	//Bar, Scatter, Line, Stack, Pie, All
 
-		//jQuery("#charts").attr("style", "display:visible");
-		//jQuery("#charts").css({opacity: 0.25, display: "visible"}).animate({opacity: 1}, 200);
+	this.layoutType = id;
 
-		jQuery("#chartlayout1").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
-		jQuery("#chartlayout2").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
-		jQuery("#chartlayout3").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
-		jQuery("#chartlayout4").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
-		jQuery("#chartlayout5").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
+	if(id=='All'){
 
-		/*jQuery("#layout1").css({opacity: 0.25,top: "0%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
-		jQuery("#layout2").css({opacity: 0.25,top: "0%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
-		jQuery("#layout3").css({opacity: 0.25,top: "0%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
-		jQuery("#layout4").css({opacity: 0.25,top: "50%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
-		jQuery("#layout5").css({opacity: 0.25,top: "50%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);*/
+		jQuery("#chartlayoutBar").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
+		jQuery("#chartlayoutScatter").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
+		jQuery("#chartlayoutLine").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
+		jQuery("#chartlayoutStack").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
+		jQuery("#chartlayoutPie").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
 
 		this.loadCharts();
 	}else{
-		jQuery("#chartlayout1").css({opacity: 0, display: "none"})
-		jQuery("#chartlayout2").css({opacity: 0, display: "none"})
-		jQuery("#chartlayout3").css({opacity: 0, display: "none"})
-		jQuery("#chartlayout4").css({opacity: 0, display: "none"})
-		jQuery("#chartlayout5").css({opacity: 0, display: "none"})
+		jQuery("#chartlayoutBar").css({opacity: 0, display: "none"})
+		jQuery("#chartlayoutScatter").css({opacity: 0, display: "none"})
+		jQuery("#chartlayoutLine").css({opacity: 0, display: "none"})
+		jQuery("#chartlayoutStack").css({opacity: 0, display: "none"})
+		jQuery("#chartlayoutPie").css({opacity: 0, display: "none"})
 
-		/*jQuery("#layout1").css({opacity: 0.25,width:"0%", height: "0%"});
-		jQuery("#layout2").css({opacity: 0.25,width:"0%", height: "0%"});
-		jQuery("#layout3").css({opacity: 0.25,width:"0%", height: "0%"});
-		jQuery("#layout4").css({opacity: 0.25,width:"0%", height: "0%"});
-		jQuery("#layout5").css({opacity: 0.25,width:"0%", height: "0%"});*/
-		
-		//jQuery("#layout"+id.slice(-1)).css({opacity: 0.25,top: "0%", left: "0%", width:"100%", height: "100%"}).animate({opacity: 1}, 200);
+		console.log("#chartlayout"+id)
 
-		jQuery("#chartlayout"+id.slice(-1)).css({display: "visible", opacity: 0.25, margin: "5%", width:"75%", height: "75%"}).animate({opacity: 1}, 200);
+		jQuery("#chartlayout"+id).css({display: "visible", opacity: 0.25, margin: "5%", width:"75%", height: "75%"}).animate({opacity: 1}, 200);
 		
-		this.loadChart(id.slice(-1));
+		this.loadChart(id);
 	}
 };
 
@@ -138,20 +128,20 @@ chartElement.prototype.changeLayoutType = function (id){
 chartElement.prototype.loadChart = function (id) {
 
 	switch(id) {
-		case "1":
-			var char = element.data1(id,this.data);
+		case "Bar":
+			var char = element.data1(1,this.data);
 			break;
-		case "2":
-			var char = element.data2(id,this.data);
+		case "Scatter":
+			var char = element.data2(2,this.data);
 			break;
-		case "3":
-			var char = element.data3(id,this.data);
+		case "Line":
+			var char = element.data3(3,this.data);
 			break;
-		case "4":
-			var char = element.data4(id,this.data);
+		case "Stack":
+			var char = element.data4(4,this.data);
 			break;
-		case "5":
-			var char = element.data5(id,this.data);
+		case "Pie":
+			var char = element.data5(5,this.data);
 			break;
 	}
 
@@ -161,26 +151,11 @@ chartElement.prototype.loadChart = function (id) {
  * Load graph on layout div html page
  */
 chartElement.prototype.load = function () {
-
 	//Get data
-    	//data = [{"key": "key1", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '1', "shape": "circle", "size":"0.5"},{"x": '3', "y": '1', "shape": "circle", "size":"0.5"}]},{"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '3', "y": '2', "shape": "circle", "size":"0.5"}]}]; 
     	this.data = []; 
+	this.changeLayoutType(this.layoutType);
 
-	var serie1 = {"key": "key1", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '1', "shape": "circle", "size":"0.5"},{"x": '3', "y": '1', "shape": "circle", "size":"0.5"}]};
-	this.addChartData(serie1);
-	//var serie2 = {"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '3', "y": '2', "shape": "circle", "size":"0.5"}]};
-	var serie2 = {"key": "key2", "values": [{"x": '1', "y": '2', "shape": "circle", "size":"0.5"}, {"x": '2', "y": '2', "shape": "circle", "size":"0.5"}]};
-	serie2Data = {"x": '3', "y": '2', "shape": "circle", "size":"0.5"};
-
-	this.addChartData(serie2);
-	this.addSerieData("key2",serie2Data);
-	this.addSerieData("key2",serie2Data);
-
-	this.removeSerieData("key2",4);
-
-	//this.removeData("key2");
-	this.loadCharts();
-
+	console.log(this.layoutType)
 };
 
 /**
@@ -326,7 +301,6 @@ chartElement.prototype.data4 = function(id,data) {
  * Set layout Pie Chart
  */
 chartElement.prototype.data5 = function(id,data) {
-
 	var chart = nv.models.pieChart()
 		//.x(function(d) { return d.label })
 		//.y(function(d) { return d.value })
@@ -358,7 +332,7 @@ chartElement.prototype.data5 = function(id,data) {
  */
 chartElement.prototype.addChartData = function (data){
 	this.data.push(data);
-	this.loadCharts();
+	this.changeLayoutType(this.layoutType);
 }
 
 /**
@@ -373,7 +347,7 @@ chartElement.prototype.removeChartData = function (id){
 			data.length = data.length-1;
 		}
 	});
-	this.loadCharts();
+	this.changeLayoutType(this.layoutType);
 }
 
 /**
@@ -387,7 +361,7 @@ chartElement.prototype.addSerieData = function (id,dataSerie){
 			data[i].values.push(dataSerie);
 		}
 	});
-	this.loadCharts();
+	this.changeLayoutType(this.layoutType);
 }
 
 /**
@@ -402,6 +376,6 @@ chartElement.prototype.removeSerieData = function (id,indexData){
 			data[i].values.length = data[i].values.length-1;
 		}
 	});
-	this.loadCharts();
+	this.changeLayoutType(this.layoutType);f
 }
 

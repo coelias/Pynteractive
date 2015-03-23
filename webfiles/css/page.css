@@ -65,7 +65,7 @@ body, html {
 	height: 100%;
 }
 
-#chartlayout1,#chartlayout2, #chartlayout3, #chartlayout4, #chartlayout5 {
+#chartlayoutBar,#chartlayoutScatter, #chartlayoutLine, #chartlayoutStack, #chartlayoutPie {
 	float: left;
 	width: 33%;
 	height: 50%;

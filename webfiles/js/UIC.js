@@ -101,6 +101,10 @@ addSeriesData: function(idSerie,data){
 removeSeriesData: function(idSerie,index){
 			element.removeSerieData(idSerie,index);
 		},
+
+setChartType: function(type){
+			element.changeLayoutType(type);
+		},
 }
 
 
