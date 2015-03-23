@@ -6,7 +6,7 @@ class Chart(DataStruct):
 
 	def addSeries(self,seriesName,x=[],y=[]):
 		assert len(x)==len(y)
-		dataset=[{"key":seriesName,"values":[{"x":str(x),"y":str(y)} for x,y in zip(x,y)]}]
+		dataset={"key":seriesName,"values":[{"x":str(x),"y":str(y)} for x,y in zip(x,y)]}
 		self._update("addChartData",dataset)
 
 	def delSeries(self,seriesName):
