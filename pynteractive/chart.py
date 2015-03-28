@@ -28,6 +28,22 @@ class Chart(DataStruct):
 		return data
 
 	def addSeries(self,seriesName,x=[],y=[],sizes=[],shapes=[],data=[],csv=None):
+		'''Adds a series of data. A series of data has to have a name and a collection of (x,y) pairs that can be either integers or floats
+		if the chart is a scatter you can add as well sizes and or shapes. 
+
+		The available shapes are: 'circle', 'cross', 'triangle-up', 'triangle-down', 'diamond', 'square'
+
+		There are several ways of adding data:
+
+.. code:: python
+
+		a=Chart()
+		a.addSeries('dataset1',[1,2,3],[4,5,6])
+		a.addSeries('dataset2',[1,2,3],[4,5,6],sizes=[.5,.5,.2],shapes=['circle','cross','square'])
+		a.addSeries('dataset3',data=[[1,4],[2,5],[3,6]])
+		a.addSeries('dataset4',data=[[1,4,.5,'circle'],[2,5,.5,'cross'],[3,6,.2,'square']])
+		a.addSeries('dataset5',csv='file.csv') # The format has to the same as we pass it to data parameter
+		'''
 		assert seriesName not in self.data
 		assert (not data and not csv and x) or (not x and not csv and data) or (not data and not x and csv)
 		assert len(x)==len(y)
@@ -71,20 +87,22 @@ class Chart(DataStruct):
 
 
 	def delSeries(self,seriesName):
+		'''Deletes a series from the graph'''
 		del self.data[seriesName]
 		self._update("removeChartData",seriesName)
 
 	def addValue(self,idSeries,x,y,**kwargs):
+		'''Ads a value into a series, extra parameters can be size=N and shape='XXX' '''
 		assert not set(kwargs)-set(["size","shape"])
-		data=dict({"x":str(x),"y":str(y)}.items()+kwargs.items())
-		self._update("addSeriesData",idSeries,data)
-		self.data[idSeries].append(data)
+		self._update("addSeriesData",idSeries,self._addValue(x,y,**kwargs))
 
 	def delValue(self,idSeries,x):
+		'''Deletes a value from a series'''
 		self._update("removeSeriesData",idSeries,x)
 		self.data[idSeries]=[i for i in self.data[idSeries] if i['x']!=x]
 
 	def changeType(self,type):
+		'''Changes the chart type in the view, the following types are available: 'bar','scatter','line','stack' '''
 		assert type in Chart.TYPES
 		self.chartype=Chart.TYPES[type]
 		self._update("setChartType",self.chartype)
