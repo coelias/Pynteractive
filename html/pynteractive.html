@@ -473,35 +473,50 @@ and if label is None it will get the same value as the node_id</p>
 <dt id="pynteractive.map.Map">
 <em class="property">class </em><code class="descclassname">pynteractive.map.</code><code class="descname">Map</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pynteractive.Network.Network" title="pynteractive.Network.Network"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.Network.Network</span></code></a></p>
+<p>The Map class allows to plot data in an OpenStreet Map. The user can plot points of different sizes and colors
+as well as linking them with edges. In order to specify the location coordinates or places (eg. postcode) can be used.</p>
 <dl class="method">
 <dt id="pynteractive.map.Map.addEdge">
 <code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>color</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.addEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Ads and edge between two points given a color tag</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.map.Map.addNode">
 <code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id</em>, <em>radius=5</em>, <em>color='red'</em>, <em>lng=None</em>, <em>lat=None</em>, <em>place=None</em>, <em>country=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.addNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Adds a node to the map:</p>
+<ul class="simple">
+<li>node_id: identification of the node, if not specified it will be randomly generated</li>
+<li>radius: radius of the spot</li>
+<li>color: color name or html code (eg: red, #FF0000)</li>
+<li>lng,lat: you can provide longitude and latitude to place the spot in a geographical area</li>
+<li>place,country: If you don&#8217;t use coordinates, you can specify a word the describes the place (eg, POSTCODE) and if you are worried that thare can be a comflict with another country you can use the country parameter that has to ISO 3166-1alpha2 compliant</li>
+</ul>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.map.Map.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.clear" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes all the information plotted in the map</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.map.Map.delEdge">
 <code class="descname">delEdge</code><span class="sig-paren">(</span><em>eid</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.delEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes an edge given an egde ID</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.map.Map.delNode">
 <code class="descname">delNode</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.delNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes a node from the map</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.map.Map.focusNode">
-<code class="descname">focusNode</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.focusNode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">focusNode</code><span class="sig-paren">(</span><em>node_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.focusNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zooms into a given node</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -544,27 +559,61 @@ and if label is None it will get the same value as the node_id</p>
 <span id="pynteractive-chart-module"></span><h2>pynteractive.chart module<a class="headerlink" href="#module-pynteractive.chart" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pynteractive.chart.Chart">
-<em class="property">class </em><code class="descclassname">pynteractive.chart.</code><code class="descname">Chart</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pynteractive.chart.</code><code class="descname">Chart</code><span class="sig-paren">(</span><em>name=None</em>, <em>type='line'</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pynteractive.datastruct.DataStruct" title="pynteractive.datastruct.DataStruct"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.datastruct.DataStruct</span></code></a></p>
+<dl class="attribute">
+<dt id="pynteractive.chart.Chart.SHAPES">
+<code class="descname">SHAPES</code><em class="property"> = set(['triangle-down', 'diamond', 'cross', 'triangle-up', 'square', 'circle'])</em><a class="headerlink" href="#pynteractive.chart.Chart.SHAPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pynteractive.chart.Chart.TYPES">
+<code class="descname">TYPES</code><em class="property"> = {'line': 'Line', 'bar': 'Bar', 'scatter': 'Scatter', 'stack': 'Stack'}</em><a class="headerlink" href="#pynteractive.chart.Chart.TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="pynteractive.chart.Chart.addSeries">
-<code class="descname">addSeries</code><span class="sig-paren">(</span><em>seriesName</em>, <em>x=[]</em>, <em>y=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart.addSeries" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">addSeries</code><span class="sig-paren">(</span><em>seriesName</em>, <em>x=[]</em>, <em>y=[]</em>, <em>sizes=[]</em>, <em>shapes=[]</em>, <em>data=[]</em>, <em>csv=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart.addSeries" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Adds a series of data. A series of data has to have a name and a collection of (x,y) pairs that can be either integers or floats</dt>
+<dd><p class="first">if the chart is a scatter you can add as well sizes and or shapes.</p>
+<p>The available shapes are: &#8216;circle&#8217;, &#8216;cross&#8217;, &#8216;triangle-up&#8217;, &#8216;triangle-down&#8217;, &#8216;diamond&#8217;, &#8216;square&#8217;</p>
+<p class="last">There are several ways of adding data:</p>
+</dd>
+</dl>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">=</span><span class="n">Chart</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">addSeries</span><span class="p">(</span><span class="s">&#39;dataset1&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="n">a</span><span class="o">.</span><span class="n">addSeries</span><span class="p">(</span><span class="s">&#39;dataset2&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span><span class="n">sizes</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">],</span><span class="n">shapes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;circle&#39;</span><span class="p">,</span><span class="s">&#39;cross&#39;</span><span class="p">,</span><span class="s">&#39;square&#39;</span><span class="p">])</span>
+<span class="n">a</span><span class="o">.</span><span class="n">addSeries</span><span class="p">(</span><span class="s">&#39;dataset3&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
+<span class="n">a</span><span class="o">.</span><span class="n">addSeries</span><span class="p">(</span><span class="s">&#39;dataset4&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="s">&#39;circle&#39;</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="s">&#39;cross&#39;</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;square&#39;</span><span class="p">]])</span>
+<span class="n">a</span><span class="o">.</span><span class="n">addSeries</span><span class="p">(</span><span class="s">&#39;dataset5&#39;</span><span class="p">,</span><span class="n">csv</span><span class="o">=</span><span class="s">&#39;file.csv&#39;</span><span class="p">)</span> <span class="c"># The format has to the same as we pass it to data parameter</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.chart.Chart.addValue">
 <code class="descname">addValue</code><span class="sig-paren">(</span><em>idSeries</em>, <em>x</em>, <em>y</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart.addValue" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Ads a value into a series</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.chart.Chart.changeType">
+<code class="descname">changeType</code><span class="sig-paren">(</span><em>type</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart.changeType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the chart type in the view, the following types are available: &#8216;bar&#8217;,&#8217;scatter&#8217;,&#8217;line&#8217;,&#8217;stack&#8217;</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.chart.Chart.delSeries">
 <code class="descname">delSeries</code><span class="sig-paren">(</span><em>seriesName</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart.delSeries" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes a series from the graph</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.chart.Chart.delValue">
 <code class="descname">delValue</code><span class="sig-paren">(</span><em>idSeries</em>, <em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.chart.Chart.delValue" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes a value from a series</p>
+</dd></dl>
 
 </dd></dl>
 
