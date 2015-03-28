@@ -87,6 +87,7 @@ addAction: function(id,name){
 		},
 
 addChartData: function(data){
+			console.log(data);
 			element.addChartData(data);
 		},
 

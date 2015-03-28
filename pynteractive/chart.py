@@ -15,47 +15,57 @@ class Chart(DataStruct):
 		for seriesName,values in self.data.items():
 			dataset={"key":seriesName,"values":values}
 			self._update("addChartData",dataset)
-		
 
-	def addSeries(self,seriesName,x=[],y=[],sizes=[],shapes=[],data=[]):
-		assert (x and not data) or (data and not x)
+	def _addValue(self,series,x,y,**kwargs):
+		assert not set(kwargs)-set(["size","shape"])
+		if 'size' in kwargs:
+			if type(kwargs['size'])==str: kwargs['size']=int(kwargs['size']) if kwargs['size'].isdigit() else float(kwargs['size'].replace(',','.'))
+		if type(x)==str: x=int(x) if x.isdigit() else float(x.replace(',','.'))
+		if type(y)==str: y=int(y) if y.isdigit() else float(y.replace(',','.'))
+
+		data=dict({"x":x,"y":y}.items()+kwargs.items())
+		self.data[series].append(data)
+		return data
+
+	def addSeries(self,seriesName,x=[],y=[],sizes=[],shapes=[],data=[],csv=None):
+		assert seriesName not in self.data
+		assert (not data and not csv and x) or (not x and not csv and data) or (not data and not x and csv)
 		assert len(x)==len(y)
 		assert not sizes or (sizes and len(sizes)==len(x)==len(shapes))
 		assert len(set([len(i) for i in data]))<2
+
+		self.data[seriesName]=[]
 
 		if sizes:
 			values=[]
 			for _x,_y,_sh,_sz in izip(x,y,shapes,sizes):
 				if _sh not in Chart.SHAPES:
 					raise Exception('shape must be a valid id!')
-				values.append({"x":str(_x),"y":str(_y),'shape':_sh,'size':_sz})
-			dataset={"key":seriesName,"values":values}
-			self.data[seriesName]=dataset
+				self._addValue(_x,_y,shape=_sh,size=_sz)
 		elif x:
-			dataset={"key":seriesName,"values":[{"x":str(_x),"y":str(_y)} for _x,_y in izip(x,y)]}
-			self.data[seriesName]=dataset
+			for _x,_y in izip(x,y):
+				self._addValue(seriesName,_x,_y)
 		else:
-			values=[]
+			if csv:
+				data=self.readCsv(csv)
 			for i in data:
-				if len(data)<2 or len(data)>4: raise Exception('You need at least 2 values in the data vector and not more than 4')
-				if type(i[0]) not in [float,int] or type(i[1]) not in [float,int]: raise Exception('Bad format for X/Y')
+				if len(i)<2 or len(i)>4: raise Exception('You need at least 2 values in the data vector and not more than 4')
 				if len(i)==3:
 					sh='circle'
 					sz=0.5
 					if i[2] in Chart.SHAPES: sh=i[2]
 					else: sz=i[2]
-					values.append({"x":str(i[0]),"y":str(i[1]),'shape':sh,'size':sz})
+					self._addValue(seriesName,i[0],i[1],shape=sh,size=sz)
 				elif len(i)==4:
 					sh='circle'
 					sz=0.5
 					if i[2] in Chart.SHAPES: sh,sz=i[2],i[3]
 					else: sh,sz=i[3],i[2]
-					values.append({"x":str(i[0]),"y":str(i[1]),'shape':sh,'size':sz})
+					self._addValue(seriesName,i[0],i[1],shape=sh,size=sz)
 				else:
-					values.append({"x":str(i[0]),"y":str(i[1])})
-			dataset={"key":seriesName,"values":values}
-			self.data[seriesName]=dataset
+					self._addValue(seriesName,i[0],i[1])
 
+		dataset={"key":seriesName,"values":self.data[seriesName]}
 
 		self._update("addChartData",dataset)
 

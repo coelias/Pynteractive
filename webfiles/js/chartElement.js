@@ -100,6 +100,8 @@ chartElement.prototype.changeLayoutType = function (id){
 	this.layoutType = id;
 	jQuery("#"+id).attr("checked",true);
 
+	jQuery("#charts").css({opacity: 0.25, display: "visible"}).animate({opacity: 1}, 200);
+
 	if(id=='All'){
 
 		jQuery("#chartlayoutBar").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
@@ -165,7 +167,6 @@ chartElement.prototype.load = function () {
  */
 chartElement.prototype.loadCharts = function () {
 
-	jQuery("#charts").css({opacity: 0.25, display: "visible"}).animate({opacity: 1}, 200);
 
 	var char1 = element.data1(1,this.data);
 	var char2 = element.data2(2,this.data);
@@ -333,6 +334,7 @@ chartElement.prototype.data5 = function(id,data) {
  * add data for chart
  */
 chartElement.prototype.addChartData = function (data){
+	console.log(data);
 	this.data.push(data);
 	this.changeLayoutType(this.layoutType);
 }

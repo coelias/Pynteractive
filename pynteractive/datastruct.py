@@ -1,6 +1,7 @@
 import random 
 import webbrowser
 import pynteractive.globals as pyn_globals
+from collections import Counter
 
 class DataStruct:
 	'''DataStruct is the basic data structure aimed to abstract any data set that will be represented in Pynteractive Web GUI. All
