@@ -106,7 +106,13 @@ removeSeriesData: function(idSerie,index){
 setChartType: function(type){
 			element.changeLayoutType(type);
 		},
+
+setNetwick: function(data){
+			element.setData(data);
+		},
+
 }
+
 
 
 
