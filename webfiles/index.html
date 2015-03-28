@@ -24,17 +24,19 @@
 
   <!-- Charts wth nvd3 -->
   <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet">-->
-  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet">
+
+  <!-- Phylpogenetic with Netwick -->
+  <script src="http://www.jasondavies.com/tree-of-life/newick.js"></script>
 
   <!-- CSS -->
   <link rel="stylesheet" href="../css/page.css" />
   <link rel="stylesheet" href="../css/leftOptions.css" /> 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
- <link href="http://nvd3.org/assets/css/common.css" rel="stylesheet">
+  <link href="http://nvd3.org/assets/css/common.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://www.jasondavies.com/tree-of-life/life.css">
 
 </head>
 <body>
@@ -81,16 +83,12 @@ $(document).ready(function() {
             <span class="bar"></span>
             <span class="bar"></span>
         </a>
-
-	<!-- <div id="layout" class="content"> -->
 	<div id="layout" class="content">
 		<div id="charts" style="display:none">
 		<div>
 		<div id="chartlayoutBar" class="span4" style="display:visible"><svg id="layout1" class="nvd3.svg"></svg></div>
 		<div id="chartlayoutScatter" class="span4" style="display:visible"><svg id="layout2" class="nvd3.svg"></svg></div>
-			<div id="chartlayoutLine" class="span4" style="display:visible">
-				<svg id="layout3" class="nvd3.svg"></svg>
-			</div>
+		<div id="chartlayoutLine" class="span4" style="display:visible"><svg id="layout3" class="nvd3.svg"></svg></div>
 		</div>
 		<div>
 		<div id="chartlayoutStack" class="span4" style="display:visible"><svg id="layout4" class="nvd3.svg"></svg></div>
@@ -103,6 +101,11 @@ $(document).ready(function() {
 	</div>
     </div>
 </div>
+
+<form id="svgform" method="post" action="download.pl">
+ <input type="hidden" id="output_format" name="output_format" value="png">
+ <input type="hidden" id="data" name="data" value="<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;360&quot; height=&quot;180&quot;><circle class=&quot;little&quot; cx=&quot;288.18660037592053&quot; cy=&quot;126.90136504825205&quot; r=&quot;12&quot; fill=&quot;#b8beb4&quot;/><circle class=&quot;little&quot; cx=&quot;321.06833880767226&quot; cy=&quot;161.5925364755094&quot; r=&quot;12&quot; fill=&quot;#923a16&quot;/><circle class=&quot;little&quot; cx=&quot;267.26538254879415&quot; cy=&quot;9.897822788916528&quot; r=&quot;12&quot; fill=&quot;#cf31f3&quot;/></svg>">
+</form>
 
 </body>
 </html>

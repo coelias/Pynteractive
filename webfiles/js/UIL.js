@@ -22,6 +22,9 @@ $(function () {
 		case "Chart":
 			loadChartVisualization();
 			break;
+		case "Phylo":
+			loadPhyloVisualization();
+			break;
 	}
 
 });
@@ -56,5 +59,13 @@ function loadChartVisualization(){
 	jQuery('head').append('<script src="js/chartElement.js"></script>');
 
 	element = new chartElement();
+	element.loadInstance();
+}
+
+function loadPhyloVisualization(){
+	//load specific  element
+	jQuery('head').append('<script src="js/phyloElement.js"></script>');
+
+	element = new phyloElement();
 	element.loadInstance();
 }
