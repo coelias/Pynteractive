@@ -22,7 +22,7 @@ $(function () {
 		case "Chart":
 			loadChartVisualization();
 			break;
-		case "Phylo":
+		case "PhyloTree":
 			loadPhyloVisualization();
 			break;
 	}

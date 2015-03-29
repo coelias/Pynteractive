@@ -94,7 +94,7 @@ class Chart(DataStruct):
 	def addValue(self,idSeries,x,y,**kwargs):
 		'''Ads a value into a series, extra parameters can be size=N and shape='XXX' '''
 		assert not set(kwargs)-set(["size","shape"])
-		self._update("addSeriesData",idSeries,self._addValue(x,y,**kwargs))
+		self._update("addSeriesData",idSeries,self._addValue(idSeries,x,y,**kwargs))
 
 	def delValue(self,idSeries,x):
 		'''Deletes a value from a series'''

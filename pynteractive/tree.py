@@ -1,8 +1,8 @@
-from pynteractive.visNetwork import *
+from pynteractive.Network import *
 import os
 import re
 
-class Tree(VisNetwork):
+class Tree(Network):
 	releaf=re.compile("([^:]+)?(:[0-9.]+)?")
 	def __init__(self,name=None,directed=None):
 		self.nodenames=set()
