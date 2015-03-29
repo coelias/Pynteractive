@@ -1,7 +1,10 @@
 function chartElement() {
+	this.rawData;
 	this.data;
 	this.ex;
 	this.layoutType = "Line";
+	this.step = 1000;
+	this.maxdata = 1000;
 };
 
 chartElement.prototype = new element();
@@ -86,6 +89,26 @@ chartElement.prototype.loadHtml = function () {
 	tag = {tag:'input', to:'#optionsNetwork', id: 'All', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: true};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id:'minx', text:'MinX'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'spinbox1', name: 'spinboxselect1', type: 'number', value: '0', onchange: 'element.checkChangeSpinBox(this);', min:"0", step:element.step};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id:'maxx', text:'MaxX'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'spinbox2', name: 'spinboxselect2', type: 'number', value: '1000', onchange: 'element.checkChangeSpinBox(this);', min:"1000", step:element.step};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'filterData', type: 'button', onclick: 'element.filterData();'};
+	this.loadHtmlTag(tag);
+
 };
 
 /**
@@ -117,8 +140,6 @@ chartElement.prototype.changeLayoutType = function (id){
 		jQuery("#chartlayoutLine").css({opacity: 0, display: "none"})
 		jQuery("#chartlayoutStack").css({opacity: 0, display: "none"})
 		jQuery("#chartlayoutPie").css({opacity: 0, display: "none"})
-
-		console.log("#chartlayout"+id)
 
 		jQuery("#chartlayout"+id).css({display: "visible", opacity: 0.25, margin: "5%", width:"75%", height: "75%"}).animate({opacity: 1}, 200);
 		
@@ -157,16 +178,14 @@ chartElement.prototype.loadChart = function (id) {
 chartElement.prototype.load = function () {
 	//Get data
     	this.data = []; 
+    	this.dataRaw = []; 
 	this.changeLayoutType(this.layoutType);
-
-	console.log(this.layoutType)
 };
 
 /**
  * Load graph on layout div html page
  */
 chartElement.prototype.loadCharts = function () {
-
 
 	var char1 = element.data1(1,this.data);
 	var char2 = element.data2(2,this.data);
@@ -192,6 +211,8 @@ chartElement.prototype.data1 = function(id,data) {
 
 	chart.yAxis
 		.tickFormat(d3.format(',.1f'));
+
+	jQuery("#layout"+id).empty();
 
 	d3.select("#layout"+id)
 		//.append("svg:svg")
@@ -226,7 +247,8 @@ chartElement.prototype.data2 = function(id,data) {
 	chart.xAxis.tickFormat(d3.format('.02f'));
 	chart.yAxis.tickFormat(d3.format('.02f'));
 
-	//var svg = d3.select("#chartlayout"+id+" svg")
+	jQuery("#layout"+id).empty();
+
 	var svg = d3.select("#layout"+id)
 		//.append("svg:svg")
 		.datum(data)
@@ -256,6 +278,8 @@ chartElement.prototype.data3 = function(id, data) {
 
 	chart.y2Axis
 		.tickFormat(d3.format(',.2f'));
+
+	jQuery("#layout"+id).empty();
 
 	d3.select("#layout"+id)
 		//.append("svg:svg")
@@ -290,6 +314,8 @@ chartElement.prototype.data4 = function(id,data) {
 
 	chart.yAxis.tickFormat(d3.format(',.2f'));
 
+	jQuery("#layout"+id).empty();
+
 	var svg = d3.select("#layout"+id)
 		//.append("svg:svg")
 		.datum(data)
@@ -318,6 +344,8 @@ chartElement.prototype.data5 = function(id,data) {
 		}
 	}
 
+	jQuery("#layout"+id).empty();
+
 	d3.select("#layout"+id)
 		//.append("svg:svg")
 		.datum(dataAux)
@@ -334,8 +362,11 @@ chartElement.prototype.data5 = function(id,data) {
  * add data for chart
  */
 chartElement.prototype.addChartData = function (data){
-	console.log(data);
-	this.data.push(data);
+	//this.data.push(data);
+	this.dataRaw.push(data);
+
+	this.filterData(this.dataRaw);
+
 	this.changeLayoutType(this.layoutType);
 }
 
@@ -343,7 +374,8 @@ chartElement.prototype.addChartData = function (data){
  * remove data for chart
  */
 chartElement.prototype.removeChartData = function (id){
-	var data = this.data;
+	//var data = this.data;
+	var data = this.dataRaw;
 	jQuery.each(data, function(i, val) {
 		if(val.key == id)
 		{
@@ -351,20 +383,35 @@ chartElement.prototype.removeChartData = function (id){
 			data.length = data.length-1;
 		}
 	});
+
+	this.filterData(this.dataRaw);
+
 	this.changeLayoutType(this.layoutType);
+}
+
+/**
+ * sort two values by x param
+ */
+function sortX(value1, value2){
+ 	return value1.x-value2.x;
 }
 
 /**
  * add data in a serie for chart
  */
 chartElement.prototype.addSerieData = function (id,dataSerie){
-	var data = this.data;
+	//var data = this.data;
+	var data = this.dataRaw;
 	jQuery.each(data, function(i, val) {
 		if(val.key == id)
 		{
-			data[i].values.push(dataSerie);
+			data[i].values.push(dataSerie);	
+			data[i].values.sort(sortX);
 		}
 	});
+
+	this.filterData(this.dataRaw);
+
 	this.changeLayoutType(this.layoutType);
 }
 
@@ -372,7 +419,8 @@ chartElement.prototype.addSerieData = function (id,dataSerie){
  * remove data in a serie for chart
  */
 chartElement.prototype.removeSerieData = function (id,indexData){
-	var data = this.data;
+	//var data = this.data;
+	var data = this.dataRaw;
 	jQuery.each(data, function(i, val) {
 		if(val.key == id)
 		{
@@ -380,6 +428,112 @@ chartElement.prototype.removeSerieData = function (id,indexData){
 			data[i].values.length = data[i].values.length-1;
 		}
 	});
-	this.changeLayoutType(this.layoutType);f
+
+	his.filterData(this.dataRaw);
+
+	this.changeLayoutType(this.layoutType);
+}
+
+/**
+ * check min max values
+ */
+chartElement.prototype.checkChangeSpinBox = function (e){
+	//check values
+	if(!parseInt(e.value)){
+		e.value = e.min;
+	}else if(e.value % this.step != 0){
+		e.value -= e.value % this.step;
+	}
+
+	//check spinbox1 is not greather than spinbox2
+	switch(e.id){	
+		case "spinbox1":
+			if(e.value>=jQuery('#spinbox2').val()){
+				e.value = parseInt(jQuery('#spinbox2').val()) - parseInt(element.step);
+			}
+			break;
+		case "spinbox2":
+			if(e.value<=jQuery('#spinbox1').val()){
+				e.value = parseInt(jQuery('#spinbox1').val()) + parseInt(element.step);
+			}
+			break;
+	}	
+}
+
+/**
+ * filter data
+ */
+chartElement.prototype.filterData = function (e){
+
+	var value1 = jQuery('#spinbox1').val();
+	var value2 = jQuery('#spinbox2').val();
+	element.maxdata = value2 - value1;
+
+	var dataFiltered = [];
+	for (serie = 0; serie < element.dataRaw.length; serie++) { 
+		var idSerie = element.dataRaw[serie].key;
+		dataFiltered.push({key:idSerie,values:[]})
+		for (i = 0; i < element.dataRaw[serie].values.length; i++) { 
+			if(value1 <= element.dataRaw[serie].values[i].x && element.dataRaw[serie].values[i].x <= value2){
+				value = {x:element.dataRaw[serie].values[i].x,y:element.dataRaw[serie].values[i].y};
+				dataFiltered[serie].values.push(value);
+			}
+		}
+		//delete serie of doesn't have values
+		if(dataFiltered[serie].values.length == 0){
+			dataFiltered.pop();
+		}
+	}
+
+	this.smoothData(dataFiltered);
+
+
+	this.changeLayoutType(this.layoutType);
+}
+
+/**
+ * smooth data
+ */
+chartElement.prototype.smoothData = function (dataRaw){
+
+	element.data = [];
+	for (serie = 0; serie < dataRaw.length; serie++) { 
+		var idSerie = dataRaw[serie].key;
+	
+		var size = dataRaw[serie].values.length;
+		if(size > element.maxdata) {
+			//create serie
+			element.data.push({key:idSerie,values:[]})
+
+			for (i = 0; i < element.maxdata; i++) { 
+			 	elemi = parseInt((size*i)/element.maxdata);
+			 	elemii = parseInt((size*(i+1))/element.maxdata);
+
+				average = 0;
+				count = 0
+				for (j = elemi; j < Math.min(elemii,size); j++) { 
+					average += dataRaw[serie].values[j].y;
+					count++;
+				}
+				value = {x:i+1,y:average / count}
+
+				//add values to serie
+				element.data[serie].values.push(value);
+			}
+		}else{
+			var found = false;
+			//search if the series is in data
+			for (seriedata = 0; seriedata < element.data.length; seriedata++) { 
+				if(element.data[seriedata].key == idSerie){
+					found = true;
+					break;	
+				}
+			}
+			if(found == false){
+				element.data.push(dataRaw[serie]);
+			}
+		}
+	}
+
 }
 

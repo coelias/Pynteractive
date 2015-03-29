@@ -108,6 +108,7 @@ setChartType: function(type){
 		},
 
 setNetwick: function(data){
+			element.initParams();
 			element.setData(data);
 		},
 
