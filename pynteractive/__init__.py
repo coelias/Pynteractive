@@ -5,8 +5,10 @@ from pynteractive.graph import *
 from pynteractive.tree import *
 from pynteractive.map import *
 from pynteractive.chart import *
+from pynteractive.phylotree import *
 import atexit
 from webserver import *
+
 
 class WebServices:
 	SERVERS_ON=False

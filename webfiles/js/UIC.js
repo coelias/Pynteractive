@@ -107,7 +107,7 @@ setChartType: function(type){
 			element.changeLayoutType(type);
 		},
 
-setNetwick: function(data){
+setNewick: function(data){
 			element.initParams();
 			element.setData(data);
 		},
