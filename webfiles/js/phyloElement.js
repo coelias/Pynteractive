@@ -53,7 +53,7 @@ phyloElement.prototype.load = function () {
 	this.initParams();
 	element.setData(polla);
 
-	polla='(pedos:0.3,(hola:0.2,adiss:0.3):0.4):1.23e-2';
+	polla='(pedos:0.3,(hola:0.2,adiss:0.3):0.4):1.5e-1';
 	element.initParams();
 	element.setData(polla);
 
@@ -140,8 +140,8 @@ phyloElement.prototype.initParams = function () {
 				}
 			});
 
-		/*d3.select("#save").on("click", function(){
-		//d3.select(window).on("click", function(){
+		//d3.select("#save").on("click", function(){
+		/*d3.select(window).on("click", function(){
 			  var html = d3.select("#layout svg")
 				.attr("version", 1.1)
 				.attr("xmlns", "http://www.w3.org/2000/svg")
@@ -161,7 +161,7 @@ phyloElement.prototype.initParams = function () {
 				  context.drawImage(image, 0, 0);
 
 				  //save and serve it as an actual filename
-			    	  //binaryblob();
+			    	  binaryblob();
 
 				  var a = document.createElement("a");
 				  a.download = "sample.png";
@@ -173,6 +173,52 @@ phyloElement.prototype.initParams = function () {
 				  a.click();
 				};
 
+			});*/
+
+
+
+		/*d3.select(window).on("click", function(){
+			var html = d3.select("#layout svg")
+				.attr("title", "test")
+				.attr("version", 1.1)
+				.attr("xmlns", "http://www.w3.org/2000/svg")
+
+				/*"<style type=\"text/css\" >
+				      <![CDATA[
+
+					.node circle {
+					  fill: #fff;
+					  stroke: steelblue;
+					  stroke-width: 1.5px;
+					}
+
+					.node, text {
+					  font: 10px sans-serif;
+					}
+
+					.link {
+					  fill: none;
+					  stroke: #ccc;
+					  stroke-width: 1.5px;
+					}
+
+					text {
+					  fill: #000;
+					}
+
+				      ]]>
+				</style>"*/
+				/*svg = jQuery(html)[0][0];
+				jQuery(svg).append("<style></style>")
+
+				.node().parentNode.innerHTML;
+
+
+
+			d3.select("body").append("div")
+				.attr("id", "download")
+				.append("img")
+				.attr("src", "data:image/svg+xml;base64,"+ btoa(html));
 			});*/
 
 	});
@@ -296,7 +342,17 @@ function dot(a, b) {
 */
 function submit_download_form(output_format)
 {
+/*console.log("hio")
+var html = d3.select("#layout svg")
+        .attr("title", "test")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .node().parentNode.innerHTML;
 
+d3.select("body").append("div")
+        .attr("id", "download")
+        .append("img")
+        .attr("src", "data:image/svg+xml;base64,"+ btoa(html));*/
 
 }
 

@@ -91,22 +91,23 @@ chartElement.prototype.loadHtml = function () {
 
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'br', to:'#optionsNetwork'};
-	this.loadHtmlTag(tag);
+
 
 	tag = {tag:'label', to:'#optionsNetwork', id:'minx', text:'MinX'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'spinbox1', name: 'spinboxselect1', type: 'number', value: '0', onchange: 'element.checkChangeSpinBox(this);', min:"0", step:element.step};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'spinbox1Chart', name: 'spinboxselect1', type: 'number', value: '0', onchange: 'element.checkChangeSpinBox(this);', min:"0", step:element.step};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id:'maxx', text:'MaxX'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'spinbox2', name: 'spinboxselect2', type: 'number', value: '1000', onchange: 'element.checkChangeSpinBox(this);', min:"1000", step:element.step};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'spinbox2Chart', name: 'spinboxselect2', type: 'number', value: '1000', onchange: 'element.checkChangeSpinBox(this);', min:"1000", step:element.step};
 	this.loadHtmlTag(tag);
-
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'filterData', type: 'button', onclick: 'element.filterData();'};
+
+	tag = {tag:'button', to:'#optionsNetwork', id: 'filterDataChart', text: "Apply", type: 'button', onclick: 'element.filterData();'};
 	this.loadHtmlTag(tag);
 
 };
@@ -429,7 +430,7 @@ chartElement.prototype.removeSerieData = function (id,indexData){
 		}
 	});
 
-	his.filterData(this.dataRaw);
+	this.filterData(this.dataRaw);
 
 	this.changeLayoutType(this.layoutType);
 }
@@ -447,14 +448,14 @@ chartElement.prototype.checkChangeSpinBox = function (e){
 
 	//check spinbox1 is not greather than spinbox2
 	switch(e.id){	
-		case "spinbox1":
-			if(e.value>=jQuery('#spinbox2').val()){
-				e.value = parseInt(jQuery('#spinbox2').val()) - parseInt(element.step);
+		case "spinbox1Chart":
+			if(e.value>=jQuery('#spinbox2Chart').val()){
+				e.value = parseInt(jQuery('#spinbox2Chart').val()) - parseInt(element.step);
 			}
 			break;
-		case "spinbox2":
-			if(e.value<=jQuery('#spinbox1').val()){
-				e.value = parseInt(jQuery('#spinbox1').val()) + parseInt(element.step);
+		case "spinbox2Chart":
+			if(e.value<=jQuery('#spinbox1Chart').val()){
+				e.value = parseInt(jQuery('#spinbox1Chart').val()) + parseInt(element.step);
 			}
 			break;
 	}	
@@ -465,8 +466,8 @@ chartElement.prototype.checkChangeSpinBox = function (e){
  */
 chartElement.prototype.filterData = function (e){
 
-	var value1 = jQuery('#spinbox1').val();
-	var value2 = jQuery('#spinbox2').val();
+	var value1 = jQuery('#spinbox1Chart').val();
+	var value2 = jQuery('#spinbox2Chart').val();
 	element.maxdata = value2 - value1;
 
 	var dataFiltered = [];

@@ -3,40 +3,52 @@
 <head>
   <title>Pynteractive</title>
 
-  <script type='text/javascript' src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+  <!-- <script type='text/javascript' src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
   <script type='text/javascript' src="https://code.jquery.com/jquery-2.1.0.js"></script>  
   <script type='text/javascript' src="https://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">-->
+  <script type='text/javascript' src="../libs/jquery-2.1.0.min.js"></script>
+  <script type='text/javascript' src="../libs/jquery-2.1.0.js"></script>  
+  <script type='text/javascript' src="../libs/jquery-ui.js"></script>
 
   <!-- JS libraries -->
   <!-- Network and Trees with Vis -->
-  <script type="text/javascript" src="http://visjs.org/dist/vis.js"></script> 
-  <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" /> 
+  <!--<script type="text/javascript" src="http://visjs.org/dist/vis.js"></script> 
+  <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" /> -->
+  <script type="text/javascript" src="../libs/vis.js"></script> 
+  <link href="../libs/vis.css" rel="stylesheet" type="text/css" />
  
   <!-- Map with leaflet -->
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>-->
+  <link rel="stylesheet" href="../libs/leaflet.css" />
+  <script src="../libs/leaflet.js"></script>
 
   <!-- GeoSearch with geosearch -->
-  <script src="http://smeijer.github.io/GeoSearch/js/l.control.geosearch.js"></script>
-  <script src="http://smeijer.github.io/GeoSearch/js/l.geosearch.provider.openstreetmap.js"></script>
-  <link rel="stylesheet" href="http://smeijer.github.io/GeoSearch/css/l.geosearch.css" />
+  <!--<script src="http://smeijer.github.io/GeoSearch/js/l.control.geosearch.js"></script>-->
+  <script src="../libs/l.control.geosearch.js"></script>
+  <!--<script src="http://smeijer.github.io/GeoSearch/js/l.geosearch.provider.openstreetmap.js"></script>-->
+  <script src="../libs/l.geosearch.provider.openstreetmap.js"></script>
+   <!--<link rel="stylesheet" href="http://smeijer.github.io/GeoSearch/css/l.geosearch.css" />-->
+  <link rel="stylesheet" href="../libs/l.geosearch.css" />
 
   <!-- Charts wth nvd3 -->
   <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet">-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet">
-
-  <!-- Phylpogenetic with Netwick -->
-  <script src="http://www.jasondavies.com/tree-of-life/newick.js"></script>
+   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>-->
+  <script src="../libs/d3.min.js"></script>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet"> -->
+  <script src="../libs/nv.d3.js"></script>
+  <link href="../libs/nv.d3.css" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="../css/page.css" />
   <link rel="stylesheet" href="../css/leftOptions.css" /> 
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-  <link href="http://nvd3.org/assets/css/common.css" rel="stylesheet">
-  <link rel="stylesheet" href="http://www.jasondavies.com/tree-of-life/life.css">
+  <!--<link rel="stylesheet" href="http//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">-->
+  <link rel="stylesheet" href="../libs/jquery-ui.css">
+  <!-- <link href="http://nvd3.org/assets/css/common.css" rel="stylesheet"> -->
+   <!-- <link rel="stylesheet" href="http://www.jasondavies.com/tree-of-life/life.css"> -->
+   <link rel="stylesheet" href="../libs/life.css">
 
 </head>
 <body>
@@ -101,10 +113,6 @@ $(document).ready(function() {
 	</div>
     </div>
 </div>
-
-<button id="save">Save as Image</button>
-<canvas id="canvas"></canvas>
-<div id="pngdataurl"></div>
 
 </body>
 </html>
