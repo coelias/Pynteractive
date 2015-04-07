@@ -6,6 +6,9 @@ function phyloElement() {
 	this.start;
 	this.rotate;
 	this.div;
+	this.radius = 100;
+   	this.minrange = 0.1;  
+   	this.maxrange = 1;
 };
 
 phyloElement.prototype = new element();
@@ -50,10 +53,10 @@ phyloElement.prototype.load = function () {
 	jQuery("#layout").css({	overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25, left: "10%", width:"90%", height: "100%"}).animate({opacity: 1}, 200);
 
 	polla='(pedo:0.1,(hola:0.2,adios:0.3):0.4):0.5';
-	this.initParams();
-	element.setData(polla);
+	//this.initParams();
+	//element.setData(polla);*/
 
-	polla='(pedos:0.3,(hola:0.2,adiss:0.3):0.4):1.5e-1';
+	polla='(((C00005743:4.55552e-06,C00008301:2.65737e-06)NODE_194:0.00435055,((C00001508:1.09357e-05,(C00004405:7.21354e-06,(C00005012:1.13898e-05,(C00007805:2.65754e-06,(C00004992:5.31512e-06,C00004984:4.55582e-06)NODE_190:1e-07)NODE_191:1.13897e-06)NODE_192:1e-07)NODE_193:9.79498e-07)NODE_195:0.00236006,((C00005792:7.59293e-07,((C00005868:2.27778e-06,(C00005765:1.13894e-06,C00004811:1.51858e-06)NODE_172:7.59292e-07)NODE_173:3.79645e-07,((C00005840:1e-07,C00005831:1e-07)NODE_170:7.59295e-07,((C00005766:1e-07,C00000052:1e-07)NODE_161:3.79645e-07,(C00000154:1e-07,(C00005801:1e-07,(C00005805:1e-07,(C00005782:3.79638e-07,(C00005763:7.59291e-07,(C00005816:1e-07,(C00005865:1e-07,(C00004876:1e-07,C00006372:1e-07)NODE_162:1e-07)NODE_163:1e-07)NODE_164:1e-07)NODE_165:1e-07)NODE_166:1e-07)NODE_167:1e-07)NODE_168:1e-07)NODE_169:1e-07)NODE_171:1.13894e-06)NODE_174:3.79642e-07)NODE_175:1e-07)NODE_176:0.00229934,(C00005739:0.00110922,((((((C00005934:7.97285e-06,C00005965:4.55581e-06)NODE_123:1e-07,(C00005993:1.13897e-06,(C00001462:1.51862e-06,(C00004888:7.59314e-07,C00009925:1e-07)NODE_120:1e-07)NODE_121:1e-07)NODE_122:7.21353e-06)NODE_124:0.00052385,(C00002888:1.21492e-05,(C00008097:7.21356e-06,((C00001464:3.79653e-06,C00002886:2.27785e-06)NODE_141:4.17618e-06,(C00002826:1.17695e-05,(C00002509:2.65755e-06,C00008284:2.65755e-06)NODE_140:7.59322e-06)NODE_142:1e-07)NODE_143:1e-07)NODE_144:1e-07)NODE_145:0.000683383)NODE_178:8.92519e-05,((C00002881:7.59304e-07,(C00002818:1e-07,(C00000498:3.79651e-07,C00000504:1e-07)NODE_115:1e-07)NODE_116:1.13897e-06)NODE_117:0.000838029,(C00008104:3.79652e-06,C00004352:5.31512e-06)NODE_127:0.00076656)NODE_181:0.000151713)NODE_183:5.13889e-05,(((C00004354:2.65754e-06,C00004359:3.41686e-06)NODE_155:2.65754e-06,(C00004330:3.79655e-07,(C00008047:6.07442e-06,C00004207:3.03722e-06)NODE_154:1e-07)NODE_156:1e-07)NODE_157:8.41747e-06,((C00005725:4.17618e-06,(C00005736:8.73223e-06,(C00004181:2.65756e-06,C00000564:1.13898e-06)NODE_119:9.17618e-06)NODE_133:1e-07)NODE_134:1.06235e-05,((C00000217:1.89829e-06,C00008299:3.03724e-06)NODE_150:4.55584e-06,((C00010630:2.65755e-06,((C00005970:3.41687e-06,(C00006409:3.79655e-07,C00006414:1e-07)NODE_135:1e-07)NODE_136:3.41687e-06,(C00006412:1.8983e-06,C00006306:1.8983e-06)NODE_137:3.03722e-06)NODE_138:7.59315e-07)NODE_139:2.38306e-06,(C00006255:1.89828e-06,(C00008320:1e-07,C00005964:3.79656e-07)NODE_148:1.8983e-06)NODE_149:7.59324e-06)NODE_151:1e-07)NODE_152:3.68995e-06)NODE_153:1.48527e-06)NODE_158:0.000788024)NODE_186:8.38653e-05,(((C00008287:0.000982518,(C00000521:0.000438605,C00004392:0.000539553)NODE_159:0.000245243)NODE_180:0.000152472,((C00004346:1.3401e-05,(C00008308:3.7965e-06,(C00004322:6.0744e-06,C00004324:3.41685e-06)NODE_113:1e-07)NODE_114:4.7646e-05)NODE_147:0.000850367,((C00008279:1.02506e-05,C00006419:6.4541e-06)NODE_126:0.000956074,(C00002475:1e-07,C00002474:1e-07)NODE_128:0.000799849)NODE_179:0.00011546)NODE_182:4.29127e-05)NODE_185:4.40792e-05,((C00008143:9.26462e-05,(C00008001:1.51864e-05,(C00005005:1.36678e-05,(C00004385:4.93547e-06,(C00004370:1.51862e-06,C00008136:2.27785e-06)NODE_129:5.69478e-06)NODE_130:1.36678e-05)NODE_131:1.51863e-06)NODE_132:0.000111917)NODE_177:0.000152659,(C00004172:0.000757308,(C00002877:2.7446e-05,((C00008290:5.69484e-06,(C00001558:3.79657e-06,(C00001567:1.8983e-06,(C00008258:1.51864e-06,(C00002876:1.8983e-06,C00008142:3.03726e-06)NODE_108:1.13899e-06)NODE_109:3.79661e-07)NODE_110:1e-07)NODE_111:3.03726e-06)NODE_112:0.000101975,(C00004138:3.14339e-05,(C00000041:9.49153e-06,((C00002745:2.27785e-06,C00008121:1.51864e-06)NODE_104:1e-07,(C00002758:1.51863e-06,(C00002771:2.27785e-06,C00006233:2.27785e-06)NODE_103:1.51862e-06)NODE_105:1e-07)NODE_106:6.45424e-06)NODE_107:1.42856e-05)NODE_118:6.30206e-07)NODE_125:1.16126e-05)NODE_146:0.000277109)NODE_160:0.000307995)NODE_184:5.81746e-05)NODE_187:6.31626e-05)NODE_188:0.000146871)NODE_189:0.000738761)NODE_196:0.00164399)NODE_197:0.000774253)NODE_198:1e-07,(C00003949:3.7967e-07,(C00003942:3.79669e-07,C00001518:3.79672e-07)NODE_101:1e-07)NODE_102:0.0210353)NODE_199';
 	element.initParams();
 	element.setData(polla);
 
@@ -247,7 +250,10 @@ function binaryblob(){
 phyloElement.prototype.setData = function (data) {
 
 	element.data = data;
+	//newick.normalize(element.data);
 	var x = newick.parse(element.data);
+
+	var y = element.normalize(x);
 
 	var nodes = element.cluster.nodes(x);
 	phylo(nodes[0], 0);
@@ -305,7 +311,8 @@ function mouse(e) {
  * Process phylogenetic tree
  */
 function phylo(n, offset) {
-	if (n.length != null) offset += n.length * 115;
+	//if (n.length != null) offset += n.length * 115;
+	if (n.length != null) offset += n.length * element.radius;
 	n.y = offset;
 	if (n.children)
 		n.children.forEach(function(n) {
@@ -416,6 +423,9 @@ d3.select("body").append("div")
  * }
  */
 (function(exports) {
+    var min = 1000000;
+    var max = 0;
+
   exports.parse = function(s) {
     var ancestors = [];
     var tree = {};
@@ -444,12 +454,45 @@ d3.select("body").append("div")
           if (x == ')' || x == '(' || x == ',') {
             tree.name = token;
           } else if (x == ':') {
-            tree.length = Number(token);
+	    //normalize with value
+	    //norm = (element.maxrange-element.minrange)/(max-min)*(Number(token)-max)+element.maxrange
+	    norm = token
+            tree.length = norm;
           }
       }
     }
     return tree;
   };
+
+  exports.normalize = function(s) {
+    min = 1000000;
+    max = 0;
+    var ancestors = [];
+    var tree = {};
+    var tokens = s.split(/\s*(;|\(|\)|,|:)\s*/);
+    for (var i=0; i<tokens.length; i++) {
+      var token = tokens[i];
+      switch (token) {
+        case '(': // new branchset
+          break;
+        case ',': // another branch
+          break;
+        case ')': // optional name next
+          break;
+        case ':': // optional length next
+          break;
+        default:
+          var x = tokens[i-1];
+          if (x == ':') {
+	    if(Number(token)<min) min=Number(token);
+	    if(Number(token)>max) max=Number(token);
+          }
+      }
+    }
+    normvalue = max-min;
+  };
+
+
 })(
   // exports will be set in any commonjs platform; use it if it's available
   typeof exports !== "undefined" ?
@@ -458,4 +501,18 @@ d3.select("body").append("div")
   // "this" will always be "window" in a browser, even in strict mode.
   this.newick = {}
 );
+
+
+/**
+ * Change Data and Plot it
+ */
+phyloElement.prototype.normalize = function (tree,0) {
+
+	console.log(tree)
+
+	
+
+ 
+
+}
 

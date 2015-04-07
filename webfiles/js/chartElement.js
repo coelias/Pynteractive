@@ -468,7 +468,7 @@ chartElement.prototype.filterData = function (e){
 
 	var value1 = jQuery('#spinbox1Chart').val();
 	var value2 = jQuery('#spinbox2Chart').val();
-	element.maxdata = value2 - value1;
+	//element.maxdata = value2 - value1;
 
 	var dataFiltered = [];
 	for (serie = 0; serie < element.dataRaw.length; serie++) { 
