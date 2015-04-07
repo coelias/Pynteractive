@@ -32,7 +32,6 @@ button {
 	height: 13px;
 	background: #0E78AD;
     	right:3px;
-
 }
 
 /*input[type="radio"]{
@@ -181,6 +180,36 @@ button {
 	margin-top: 5px;
 	right: 0%;
 }
+
+#filterDataChart{
+	position:absolute;
+	margin-top: 3px;
+
+    	right:3px;
+
+    	width:90px;
+    	height:16px;
+
+	color: #ccccff;
+	font-weight: bold;
+	font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	padding: 0px;
+}
+
+#spinbox1Chart, #spinbox2Chart {
+	position:absolute;
+    	width:125px;
+    	height:16px;
+	color: #ccccff;
+    	right:3px;
+	border-radius: 5px;
+  	border: 1px #0D6C9B solid; 
+	background: #0E78AD;
+	color: #ccccff;
+	font-weight: bold;
+	font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
 
 hr {
 	border-color: #0E78AD;
