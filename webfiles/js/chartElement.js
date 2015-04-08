@@ -1,10 +1,11 @@
 function chartElement() {
-	this.rawData;
+	this.dataRaw;
 	this.data;
 	this.ex;
 	this.layoutType = "Line";
 	this.step = 1000;
 	this.maxdata = 1000;
+	this.maxsize = 0;
 };
 
 chartElement.prototype = new element();
@@ -363,6 +364,9 @@ chartElement.prototype.data5 = function(id,data) {
  * add data for chart
  */
 chartElement.prototype.addChartData = function (data){
+
+	if(data.values.length > this.maxsize) this.maxsize = data.values.length
+
 	//this.data.push(data);
 	this.dataRaw.push(data);
 
@@ -386,6 +390,12 @@ chartElement.prototype.removeChartData = function (id){
 	});
 
 	this.filterData(this.dataRaw);
+
+	//size of all series	
+	var maxsize = 0;
+	for (serie = 0; serie < this.dataRaw.length; serie++) { 
+		if(this.dataRaw[serie].length > this.maxsize) this.maxsize = this.dataRaw[serie].length;
+	}
 
 	this.changeLayoutType(this.layoutType);
 }
@@ -454,9 +464,15 @@ chartElement.prototype.checkChangeSpinBox = function (e){
 			}
 			break;
 		case "spinbox2Chart":
+			
 			if(e.value<=jQuery('#spinbox1Chart').val()){
 				e.value = parseInt(jQuery('#spinbox1Chart').val()) + parseInt(element.step);
 			}
+
+			if(e.value>this.maxsize){
+				e.value = this.maxsize;
+			}
+
 			break;
 	}	
 }
@@ -469,6 +485,8 @@ chartElement.prototype.filterData = function (e){
 	var value1 = jQuery('#spinbox1Chart').val();
 	var value2 = jQuery('#spinbox2Chart').val();
 	//element.maxdata = value2 - value1;
+
+	console.log("min: "+value1+" max: "+value2)
 
 	var dataFiltered = [];
 	for (serie = 0; serie < element.dataRaw.length; serie++) { 
@@ -495,7 +513,10 @@ chartElement.prototype.filterData = function (e){
 /**
  * smooth data
  */
-chartElement.prototype.smoothData = function (dataRaw){
+chartElement.prototype.smoothData = function (dataRaw, value1){
+
+	var value1 = jQuery('#spinbox1Chart').val();
+	var value2 = jQuery('#spinbox2Chart').val();
 
 	element.data = [];
 	for (serie = 0; serie < dataRaw.length; serie++) { 
@@ -516,7 +537,10 @@ chartElement.prototype.smoothData = function (dataRaw){
 					average += dataRaw[serie].values[j].y;
 					count++;
 				}
-				value = {x:i+1,y:average / count}
+				//value = {x:i+1,y:average / count}
+				var xx = Number(value1)+elemi;
+				console.log()
+				value = {x: xx,y:average / count}
 
 				//add values to serie
 				element.data[serie].values.push(value);
