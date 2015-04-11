@@ -60,6 +60,13 @@ element.prototype.loadHtmlTag = function (tag) {
 	delete tag.to;
 	jQuery('<'+type+'/>', tag).appendTo(to);
 };
+element.prototype.loadHtmlTagBefore = function (tag) {
+	var type = tag.tag;
+	var to = tag.to;
+	delete tag.tag;
+	delete tag.to;
+	jQuery('<'+type+'/>', tag).insertBefore(to);
+};
 
 /**
  * Load html page

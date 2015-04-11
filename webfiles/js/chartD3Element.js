@@ -39,6 +39,20 @@ chartD3Element.prototype.loadHtml = function () {
  */
 chartD3Element.prototype.load = function () {
 
+$( "<p>Test</p>" ).insertBefore( ".inner" );
+
+
+	tag = {tag:'div', to:'#sidebar-toggle', id: 'sidebarLegend'};
+	this.loadHtmlTagBefore(tag);
+	tag = {tag:'input', to:'#sidebarLegend', id: 'togglelegend', type:'checkbox'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'label', to:'#sidebarLegend', text:' Legend'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#sidebarLegend'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'div', to:'#sidebarLegend', id: 'legend', style:'visibility: hidden;'};
+	this.loadHtmlTag(tag);
+
 	data = JSON.parse('{"name": "carlos","children": [{"name": "chupame","children": [{"name": "los cojones"}, {"name": "el ojete"}]},{"name": "hazme","children": [{"name": "rico"}, {"name": "tuyo"}]}]}');
 	element.chart(data);
 

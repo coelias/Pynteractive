@@ -10,7 +10,7 @@ treeD3Element.prototype.constructor = treeD3Element;
 ////////////////////    FUNCTIONS    ///////////////////////
 ////////////////////////////////////////////////////////////
 
-//altre exemplehttps://mohansun-canvas.herokuapp.com/content/training/
+//altre exemple https://mohansun-canvas.herokuapp.com/content/training/
 
 /**
  * Load html page
