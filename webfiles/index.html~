@@ -101,7 +101,7 @@ $(document).ready(function() {
             <span class="bar"></span>
         </a>
 
-	<div id="sidebarLegend">
+	<div id="sidebar2">
 		<input type="checkbox" id="togglelegend"> Legend<br>
 		<div id="legend" style="visibility: hidden;"></div>
 	</div>

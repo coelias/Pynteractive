@@ -90,7 +90,7 @@ stroke: #fff;
 }
 
 #sidebarLegend {
-  float: right;
+  float: left;
   width: 100px;
 }
 

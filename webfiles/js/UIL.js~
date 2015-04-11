@@ -99,6 +99,6 @@ function loadChartD3Visualization(){
 	//load specific  element
 	jQuery('head').append('<script src="js/chartD3Element.js"></script>');
 
-	element = new chartD3Element();
+	element = new treeD3Element();
 	element.loadInstance();
 }
