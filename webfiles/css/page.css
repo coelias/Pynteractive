@@ -89,6 +89,7 @@ body, html {
 }
 
 #sidebarLegend {
+  visibility: hidden;
   float: right;
   width: 100px;
 }

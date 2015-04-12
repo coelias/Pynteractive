@@ -94,11 +94,15 @@ $(document).ready(function() {
 <!-- basic structure -->
 <div id="tools" class="container">
     <div id="sidebar"></div>
-	<div id="sidebarLegend">
-		<input type="checkbox" id="togglelegend"> Legend<br>
-		<div id="legend" style="visibility: hidden;"></div>
-	</div>
+
     <div id="main-content" class="main-content">
+
+		<div id="sidebarLegend" style="visibility: hidden;">
+			<input type="checkbox" id="togglelegend"> 
+			<label>Legend</label>
+			<br>
+			<div id="legend" style="visibility: hidden;"></div>
+		</div>
 
         <a id="sidebar-toggle" href="javascript:void(0);" data-toggle=".container">
             <span class="bar"></span>
@@ -107,11 +111,12 @@ $(document).ready(function() {
         </a>
 
 	<div id="sequence" class="content"></div>
-
-	<div id="layout" class="content">
 		<div id="explanation" style="visibility; hidden;">
 			<span id="percentage"></span>
 		</div>
+	<div id="layout" class="content">
+
+
 
 		<div id="charts" style="display:none">
 		<div>

@@ -571,6 +571,7 @@ phyloElement.prototype.parsenormalize = function (tree) {
 		//tree[i].length = (tree[i].length-element.minpath)/(element.maxpath-element.minpath);
 		tree[i].length = (tree[i].length)/(element.maxpath);
 		element.normalize(tree[i].branchset);
+		//element.parsenormalize(tree[i].branchset);
 	}
 }
 

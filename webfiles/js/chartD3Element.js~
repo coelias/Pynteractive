@@ -39,10 +39,7 @@ chartD3Element.prototype.loadHtml = function () {
  */
 chartD3Element.prototype.load = function () {
 
-$( "<p>Test</p>" ).insertBefore( ".inner" );
-
-
-	tag = {tag:'div', to:'#sidebar-toggle', id: 'sidebarLegend'};
+	/*tag = {tag:'div', to:'#sidebar-toggle', id: 'sidebarLegend'};
 	this.loadHtmlTagBefore(tag);
 	tag = {tag:'input', to:'#sidebarLegend', id: 'togglelegend', type:'checkbox'};
 	this.loadHtmlTag(tag);
@@ -51,14 +48,11 @@ $( "<p>Test</p>" ).insertBefore( ".inner" );
 	tag = {tag:'br', to:'#sidebarLegend'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'div', to:'#sidebarLegend', id: 'legend', style:'visibility: hidden;'};
-	this.loadHtmlTag(tag);
+	this.loadHtmlTag(tag);*/
 
-	/*<div id="sidebarLegend">
-		<input type="checkbox" id="togglelegend"> Legend<br>
-		<div id="legend" style="visibility: hidden;"></div>
-	</div>*/
+	jQuery("#sidebarLegend").css("visibility","visible");
 
-	data = JSON.parse('{"name": "carlos","children": [{"name": "chupame","children": [{"name": "los cojones"}, {"name": "el ojete"}]},{"name": "hazme","children": [{"name": "rico"}, {"name": "tuyo"}]}]}');
+	data = JSON.parse('{"name": "carlos","children": [{"name": "chupame","children": [{"name": "los cojones","size":100}, {"name": "el ojete","size":100}]},{"name": "hazme","children": [{"name": "rico", "size":100}, {"name": "tuyo","size":100}]}]}');
 	element.chart(data);
 
 	this.repaint();
@@ -75,7 +69,7 @@ chartD3Element.prototype.repaintEnd = function (){
 /**
  * Load and create Tree
  */
-chartD3Element.prototype.chart = function () {
+chartD3Element.prototype.chart = function (data) {
 
     jQuery("#layout").empty();
 
@@ -90,14 +84,45 @@ var b = {
 };
 
 // Mapping of step names to colors.
-var colors = {
-  "home": "#5687d1",
-  "product": "#7b615c",
-  "search": "#de783b",
-  "account": "#6ab975",
-  "other": "#a173d1",
-  "end": "#bbbbbb"
-};
+var colors = new Object();
+/*var colors = {
+  "tuyo": "#5687d1",
+  "chupame": "#7b615c",
+  "los cojones": "#de783b",
+  "el ojete": "#6ab975",
+  "hazme": "#a173d1",
+  "rico": "#bbbbbb"
+};*/
+
+
+function getKeys (tree) {
+
+	//caso base
+	if(tree == undefined){
+		return 0;
+	}
+	if(tree.children == undefined){
+		return 0;
+	}
+	if(tree.children.length == 'undefined'){
+		return 0;
+	}
+
+	//caso recursivo
+	var size = tree.children.length;
+	for(var i = 0; i<size; i++){
+		var key = tree.children[i].name
+
+		//number
+		var colour = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
+
+		colors[key] = colour;
+		getKeys(tree.children[i]);
+	}
+	return 0;
+}
+
+getKeys(data);
 
 // Total size of all segments; we set this later, after loading the data.
 var totalSize = 0; 
@@ -121,13 +146,17 @@ var arc = d3.svg.arc()
 
 // Use d3.text and d3.csv.parseRows so that we do not need to have a header
 // row, and can receive the csv as an array of arrays.
-d3.text("js/visit-sequences.csv", function(text) {
-  var csv = d3.csv.parseRows(text);
-  var json = buildHierarchy(csv);
-	console.log(csv)
-	console.log(json)
+/*d3.text("js/visit-sequences.csv", function(text) {
+  //var csv = d3.csv.parseRows(text);
+
+  //var json = buildHierarchy(csv);
+  //console.log(csv)
+  //console.log(json)
+
   createVisualization(json);
-});
+});*/
+
+createVisualization(data);
 
 // Main function to draw and set up the visualization, once we have the data.
 function createVisualization(json) {

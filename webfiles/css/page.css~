@@ -65,7 +65,6 @@ body, html {
 	height: 100%;
 	/*width: 500px;
 	height: 500px;*/
-stroke: #fff;
 }
 
 #chartlayoutBar,#chartlayoutScatter, #chartlayoutLine, #chartlayoutStack, #chartlayoutPie {
@@ -90,21 +89,10 @@ stroke: #fff;
 }
 
 #sidebarLegend {
+  visibility: hidden;
   float: right;
   width: 100px;
 }
 
-#explanation {
-  position: absolute;
-  top: 350px;
-  left: 360px;
-  width: 140px;
-  text-align: center;
-  color: #666;
-  z-index: -1;
-}
 
-#percentage {
-  font-size: 2.5em;
-}
 

@@ -72,8 +72,6 @@ phyloElement.prototype.load = function () {
 	element.initParams();
 	element.setData(data);
 
-	element.initParams();
-	element.setData(data);
 	//submit_download_form("png");
 };
 
