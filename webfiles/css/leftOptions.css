@@ -210,6 +210,12 @@ button {
 	font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
+#sliderTension, #sliderRadius{
+	position:absolute;
+	right: 0%;
+    	width:125px;
+	margin-top: -1px;
+}
 
 hr {
 	border-color: #0E78AD;

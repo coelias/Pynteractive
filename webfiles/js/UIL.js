@@ -83,7 +83,7 @@ function loadGraphD3Visualization(){
 	//load specific  element
 	jQuery('head').append('<script src="js/graphD3Element.js"></script>');
 
-	element = new phyloElement();
+	element = new graphD3Element();
 	element.loadInstance();
 }
 

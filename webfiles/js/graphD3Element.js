@@ -1,25 +1,62 @@
-function phyloElement() {
-	this.r;
-	this.cluster;
-	this.data;
-	this.wrap;
-	this.start;
-	this.rotate;
-	this.div;
-	this.radius = 100;
-   	this.minrange = 0.01;  
-   	this.maxrange = 1;
-	this.maxpath = 0;
+function graphD3Element() {
+	this.tension = 0.85;
 };
 
-phyloElement.prototype = new element();
-phyloElement.prototype.constructor = phyloElement;
+graphD3Element.prototype = new element();
+graphD3Element.prototype.constructor = graphD3Element;
 
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////    FUNCTIONS    ///////////////////////
 ////////////////////////////////////////////////////////////
 
+/**
+ * Load html page
+ */
+graphD3Element.prototype.loadHtml = function () {
+	
+	//create tools
+	var tag = {};
+
+	tag = {tag:'div', to:'#sidebar', id:'containerNetwork'};
+	this.loadHtmlTag(tag);
+	
+	tag = {tag:'div', to:'#containerNetwork', id:'optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLog', text: 'Enable/Disable Log'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'enableLog', type: 'checkbox', checked: this.enabledLog, onclick: 'element.changeEnabledLog();'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelTension', text: 'Tension'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderTension', type:"range", min:"0", max:"100", value:"85"};
+	this.loadHtmlTag(tag);
+
+};
+
+/**
+ * Load graph on layout div html page
+ */
+graphD3Element.prototype.load = function () {
+
+
+	data = JSON.parse('[{"name":"father.Carlos","size":350,"imports":["father.Gay","mother.Huevos"]},{"name":"father.Gay","size":50,"imports":["mother.Huevos"]},{"name":"mother.Huevos","size":125,"imports":[]}]');
+	element.chart(data);
+
+};
+
+graphD3Element.prototype.chart = function (data) {
+
+jQuery("#layout").empty();
 
 var w = 1280,
     h = 800,
@@ -38,14 +75,14 @@ var bundle = d3.layout.bundle();
 
 var line = d3.svg.line.radial()
     .interpolate("bundle")
-    .tension(.85)
+    .tension(element.tension)
     .radius(function(d) { return d.y; })
     .angle(function(d) { return d.x / 180 * Math.PI; });
 
 // Chrome 15 bug: <http://code.google.com/p/chromium/issues/detail?id=98951>
-var div = d3.select("body").insert("div", "h2")
-    .style("top", "-80px")
-    .style("left", "-160px")
+var div = d3.select("#layout").insert("div", "h2")
+    .style("top", "50px")
+    .style("left", "160px")
     .style("width", w + "px")
     .style("height", w + "px")
     .style("position", "absolute")
@@ -62,7 +99,9 @@ svg.append("svg:path")
     .attr("d", d3.svg.arc().outerRadius(ry - 120).innerRadius(0).startAngle(0).endAngle(2 * Math.PI))
     .on("mousedown", mousedown);
 
-d3.json("js/flare-imports.json", function(classes) {
+
+  classes = data;
+
   var nodes = cluster.nodes(packages.root(classes)),
       links = packages.imports(nodes),
       splines = bundle(links);
@@ -88,11 +127,11 @@ d3.json("js/flare-imports.json", function(classes) {
       .on("mouseover", mouseover)
       .on("mouseout", mouseout);
 
-  d3.select("input[type=range]").on("change", function() {
+  //d3.select("input[type=range]").on("change", function() {
+  d3.select("#sliderTension").on("change", function() {
     line.tension(this.value / 100);
     path.attr("d", function(d, i) { return line(splines[i]); });
   });
-});
 
 d3.select(window)
     .on("mousemove", mousemove)
@@ -171,3 +210,4 @@ function dot(a, b) {
   return a[0] * b[0] + a[1] * b[1];
 }
 
+};

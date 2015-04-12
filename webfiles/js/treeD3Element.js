@@ -200,11 +200,27 @@ treeD3Element.prototype.tree = function (treeData) {
     }
 
     // define the baseSvg, attaching a class for styling and the zoomListener
-    var baseSvg = d3.select("#layout").append("svg")
+
+    var viewerWidth = $(document).width();
+    var viewerHeight = $(document).height();
+
+    var div = d3.select("#layout").insert("div", "h2")
+    //.style("top", (0)+"px")
+    //.style("left", (0)+"px")
+    .style("position", "absolute")
+    .style("-webkit-backface-visibility", "hidden");
+
+    var baseSvg = div.append("svg")
         .attr("width", viewerWidth)
         .attr("height", viewerHeight)
         .attr("class", "overlay")
         .call(zoomListener);
+
+    /*var baseSvg = d3.select("#layout").append("svg")
+        .attr("width", viewerWidth)
+        .attr("height", viewerHeight)
+        .attr("class", "overlay")
+        .call(zoomListener);*/
 
 
     // Define the drag listeners for drag/drop behaviour of nodes.
@@ -464,7 +480,7 @@ treeD3Element.prototype.tree = function (treeData) {
             .attr('class', 'ghostCircle')
             .attr("r", 5)
             .attr("opacity", 0.2) // change this to zero to hide the target area
-        .style("fill", "blue")
+        .style("fill", "white")
             .attr('pointer-events', 'mouseover')
             .on("mouseover", function(node) {
                 overCircle(node);

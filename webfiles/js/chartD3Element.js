@@ -51,6 +51,7 @@ chartD3Element.prototype.load = function () {
 	this.loadHtmlTag(tag);*/
 
 	jQuery("#sidebarLegend").css("visibility","visible");
+	jQuery("#layout").css("width","750px");
 
 	data = JSON.parse('{"name": "carlos","children": [{"name": "chupame","children": [{"name": "los cojones","size":100}, {"name": "el ojete","size":100}]},{"name": "hazme","children": [{"name": "rico", "size":100}, {"name": "tuyo","size":100}]}]}');
 	element.chart(data);
@@ -127,12 +128,32 @@ getKeys(data);
 // Total size of all segments; we set this later, after loading the data.
 var totalSize = 0; 
 
-var vis = d3.select("#layout").append("svg:svg")
+    var viewerWidth = $(document).width();
+    var viewerHeight = $(document).height();
+
+    var div = d3.select("#layout").insert("div", "h2")
+    .style("top", ((viewerHeight-height)/2)+"px")
+    .style("left", ((viewerWidth-width)/2)+"px")
+    .style("width", width)
+    .style("height", height)
+    .style("position", "absolute")
+    .style("-webkit-backface-visibility", "hidden");
+
+var vis = div
+    .append("svg:svg")
     .attr("width", width)
     .attr("height", height)
     .append("svg:g")
     .attr("id", "container")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+/*var vis = d3.select("#layout")
+    .append("svg:svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("svg:g")
+    .attr("id", "container")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");*/
 
 var partition = d3.layout.partition()
     .size([2 * Math.PI, radius * radius])
@@ -208,6 +229,8 @@ function mouseover(d) {
       .text(percentageString);
 
   d3.select("#explanation")
+      .style("top", ((viewerHeight)/2 - 25)+"px")
+      .style("left", ((viewerWidth)/2 - 50)+"px")
       .style("visibility", "");
 
   var sequenceArray = getAncestors(d);

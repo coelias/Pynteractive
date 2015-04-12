@@ -44,18 +44,21 @@ phyloElement.prototype.loadHtml = function () {
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'button', to:'#optionsNetwork', id: 'filterDataChart', text: "Apply", type: 'button', onclick: 'element.test();'};
-	this.loadHtmlTag(tag);
+	//tag = {tag:'button', to:'#optionsNetwork', id: 'filterDataChart', text: "Apply", type: 'button', onclick: 'element.test();'};
+	//this.loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelRadius', text: 'Radius'};
+	this.loadHtmlTag(tag);
+
 	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderRadius', type: 'range', value: this.radius, min: '50', max: '300', step: '5', onclick: 'element.changeRadius(value)'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderMinRange', type: 'range', value: this.minrange, min: '0.001', max: '0.3', step: '0.001', onclick: 'element.changeMinRange(value)'};
-	this.loadHtmlTag(tag);
+	//tag = {tag:'input', to:'#optionsNetwork', id: 'sliderMinRange', type: 'range', value: this.minrange, min: '0.001', max: '0.3', step: '0.001', onclick: 'element.changeMinRange(value)'};
+	//this.loadHtmlTag(tag);
 
 };
 
@@ -65,7 +68,9 @@ phyloElement.prototype.loadHtml = function () {
  */
 phyloElement.prototype.load = function () {
 
-	jQuery("#layout").css({	overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25, left: "10%", width:"90%", height: "100%"}).animate({opacity: 1}, 200);
+	jQuery("#layout").css({	overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25, left: "15%", width:"90%", height: "100%", top:"-100px"}).animate({opacity: 1}, 200);
+
+	//jQuery("#layout").css({	overflow: "auto", display: "visible", opacity: 0.25,}).animate({opacity: 1}, 200);
 
 	data='(pedo:0.1,(hola:0.2,adios:0.3)xx:0.4)yy:0.5';
 	
@@ -85,11 +90,36 @@ phyloElement.prototype.initParams = function () {
 
 	this.r = 920 / 2;
 
-	this.wrap = d3.select("#layout")
+	var width = element.r * 2;
+	var height = element.r * 2;
+
+    var viewerWidth = $(document).width();
+    var viewerHeight = $(document).height();
+
+    /*var w = element.r * 2;
+    var h = element.r * 2;*/
+    var w = element.r * 2;
+    var h = element.r * 2;
+
+    var div = d3.select("#layout");//.insert("div", "h2")
+    //.style("top", ((viewerHeight)/2)+"px")
+    //.style("left", ((viewerWidth)/2)+"px")
+    //.style("width", width)
+    //.style("height", height)
+    //.style("position", "absolute")
+    //.style("-webkit-backface-visibility", "hidden");
+
+	this.wrap = div
+			.append("svg")
+			.attr("width", w)
+			.attr("height", h)
+			.style("-webkit-backface-visibility", "hidden");
+
+	/*this.wrap = d3.select("#layout")
 			.append("svg")
 			.attr("width", element.r * 2)
 			.attr("height", element.r * 2)
-			.style("-webkit-backface-visibility", "hidden");
+			.style("-webkit-backface-visibility", "hidden");*/
 
 	this.cluster = d3.layout.cluster()
 		.size([360, 1])
@@ -106,12 +136,12 @@ phyloElement.prototype.initParams = function () {
 
 	// Catch mouse events in Safari.
 	this.wrap.append("rect")
-		.attr("width", element.r * 2)
-		.attr("height", element.r * 2)
+		.attr("width", w)
+		.attr("height", h)
 		.attr("fill", "none")
 
 	this.layout = this.wrap.append("g")
-		.attr("transform", "translate(" + element.r + "," + element.r + ")");
+		.attr("transform", "translate(" + w/2 + "," + h/2 + ")");
 
 	this.start = null,
 	this.rotate = 0,
@@ -240,12 +270,12 @@ phyloElement.prototype.initParams = function () {
 
 }
 
-phyloElement.prototype.test = function (){
+/*phyloElement.prototype.test = function (){
 	//newick.normalize(element.data);
 	var x = newick.parse(element.data);
 
 	element.normalize(x.branchset,0,x.length);
-}
+}*/
 
 function binaryblob(){
 	var byteString = atob(document.querySelector("canvas").toDataURL().replace(/^data:image\/(png|jpg);base64,/, "")); //wtf is atob?? https://developer.mozilla.org/en-US/docs/Web/API/Window.atob

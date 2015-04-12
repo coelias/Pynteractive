@@ -63,8 +63,6 @@ body, html {
 #layout, #layout1,#layout2,#layout3,#layout4,#layout5, #download{
 	width: 100%;
 	height: 100%;
-	/*width: 500px;
-	height: 500px;*/
 }
 
 #chartlayoutBar,#chartlayoutScatter, #chartlayoutLine, #chartlayoutStack, #chartlayoutPie {
@@ -90,9 +88,17 @@ body, html {
 
 #sidebarLegend {
   visibility: hidden;
-  float: right;
-  width: 100px;
+	float: right;
 }
 
+#explanation {
+  position: absolute;
+  width: 140px;
+  text-align: center;
+  color: #666;
+  z-index: -1;
+}
 
-
+#percentage {
+  font-size: 2.5em;
+}
