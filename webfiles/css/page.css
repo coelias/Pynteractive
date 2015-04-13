@@ -73,32 +73,35 @@ body, html {
 }
 
 #sequence {
-  width: 600px;
-  height: 70px;
+  	position: absolute;
+	top: 10px;
+	left: 10px;
+  	width: 600px;
+  	height: 70px;
 }
 
 #legend {
-  padding: 10px 0 0 3px;
+  	padding: 10px 0 0 3px;
 }
 
 #sequence text, #legend text {
-  font-weight: 600;
-  fill: #fff;
+  	font-weight: 600;
+  	fill: #fff;
 }
 
 #sidebarLegend {
-  visibility: hidden;
-  float: right;
+  	visibility: hidden;
+	float: right;
 }
 
 #explanation {
-  position: absolute;
-  width: 140px;
-  text-align: center;
-  color: #666;
-  z-index: -1;
+	  position: absolute;
+	  width: 140px;
+	  text-align: center;
+	  color: #666;
+	  z-index: -1;
 }
 
 #percentage {
-  font-size: 2.5em;
+  	font-size: 2.5em;
 }
