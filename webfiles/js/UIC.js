@@ -110,6 +110,7 @@ setChartType: function(type){
 setNewick: function(data){
 			element.initParams();
 			element.setData(data);
+			element.drawData();
 		},
 
 }

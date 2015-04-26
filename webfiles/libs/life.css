@@ -5,8 +5,8 @@
 }
 
 .selectednode circle {
-  fill: #f00;
-  stroke: steelblue;
+  fill: steelblue;
+  stroke: #335E82;
   stroke-width: 1.5px;
 }
 
@@ -15,7 +15,8 @@
 }
 
 .selectednode {
-  font: bold 11px sans-serif;
+  font: bold 12px sans-serif;
+  background-color: #ff0000;
 }
 
 
