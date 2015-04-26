@@ -16,6 +16,12 @@ class PhyloTree(DataStruct):
 		self._update('setNewick',self.newick)
 
 	def nodeClick(self,nid):
-		print nid
+		pass
+
+	def selectTips(self,tips):
+		self._update('selectNewickNodes',tips)
+
+	def clearSelection(self):
+		self._update('clearNewickSelection')
 		
 

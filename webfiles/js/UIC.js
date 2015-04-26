@@ -113,6 +113,14 @@ setNewick: function(data){
 			element.drawData();
 		},
 
+selectNewickNodes: function(data){
+	element.selectNodes(data);
+		},
+
+clearNewickSelection: function(data){
+	element.clearSelection();
+		},
+
 }
 
 

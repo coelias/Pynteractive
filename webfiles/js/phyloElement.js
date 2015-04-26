@@ -15,6 +15,7 @@ function phyloElement() {
 	this.resolution = 960;
 	this.circularLabel = false;
 	this.selectionList=new Set();
+	this.treeNodes=[];
 };
 
 phyloElement.prototype = new element();
@@ -81,6 +82,16 @@ phyloElement.prototype.clearNodeSelection = function (n){
 		d3.select(n.label).attr("class",null);
 		element.selectionList.delete(n);
 }
+
+
+phyloElement.prototype.selectNodes = function (nl){
+	nl=new Set(nl);
+	for (var i in this.treeNodes)
+	{
+		if (nl.has(this.treeNodes[i].name)){element.selectNode(this.treeNodes[i])}
+	}
+}
+
 
 phyloElement.prototype.selectNode = function(n) {
 	if (n.branchset)
@@ -371,17 +382,17 @@ phyloElement.prototype.drawData = function () {
 
 	element.parsenormalize(element.tree);
 
-	var nodes = element.cluster.nodes(element.tree);
-	phylo(nodes[0], 0);
+	element.treeNodes = element.cluster.nodes(element.tree);
+	phylo(element.treeNodes[0], 0);
 
 	var link = element.layout.selectAll("path.link")
-			.data(element.cluster.links(nodes))
+			.data(element.cluster.links(element.treeNodes))
 			.enter().append("path")
 			.attr("class", "link")
 			.attr("d", step);
 
 	var node = element.layout.selectAll("g.node")
-			.data(nodes.filter(function(n) { return n.x !== undefined; }))
+			.data(element.treeNodes.filter(function(n) { return n.x !== undefined; }))
 			.enter().append("g")
 			.attr("class", "node")
 			.attr("transform", function(d) { d.circle=this; return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
@@ -392,7 +403,7 @@ phyloElement.prototype.drawData = function () {
 
 	if(element.circularLabel == true){
 		var label = element.layout.selectAll("text")
-				.data(nodes.filter(function(d) { return d.x !== undefined && !d.children; }))
+				.data(element.treeNodes.filter(function(d) { return d.x !== undefined && !d.children; }))
 				.enter().append("text")
 				.attr("dy", ".31em")
 				.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
@@ -401,7 +412,7 @@ phyloElement.prototype.drawData = function () {
 				.text(function(d) { return d.name.replace(/_/g, ' '); });
 	}else{
 		var label = element.layout.selectAll("text")
-			.data(nodes.filter(function(d) { return d.x !== undefined && !d.children; }))
+			.data(element.treeNodes.filter(function(d) { return d.x !== undefined && !d.children; }))
 			.enter().append("text")
 			.attr("dy", ".31em")
 			.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
@@ -713,5 +724,7 @@ phyloElement.prototype.changeResolution = function (value) {
  */
 phyloElement.prototype.action = function (e){
 	var id = jQuery(e).attr("idaction");
-	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
+	selectednodes=[];
+	element.selectionList.forEach(function(d){selectednodes.push(d.name)})
+	PYCON.send('performAction',{n:id,selectedNodes:selectednodes});
 };
