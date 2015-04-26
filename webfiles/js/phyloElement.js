@@ -14,6 +14,7 @@ function phyloElement() {
 	this.tree;
 	this.resolution = 960;
 	this.circularLabel = false;
+	this.selectionList=[];
 };
 
 phyloElement.prototype = new element();
@@ -70,6 +71,31 @@ phyloElement.prototype.loadHtml = function () {
 	this.loadHtmlTag(tag);
 
 };
+
+phyloElement.prototype.clearSelection = function() {
+	for (var i in element.selectionList)
+	{
+		d3.select(element.selectionList[i].circle).attr("class","node");
+		d3.select(element.selectionList[i].label).attr("class",null);
+	}
+	element.selectionList=[];
+}
+
+phyloElement.prototype.selectNode = function(n) {
+	if (n.branchset)
+	{
+		for (var i in n.branchset)
+		{
+			element.selectNode(n.branchset[i])
+		}
+	}
+	else
+	{
+		d3.select(n.circle).attr("class","selectednode");
+		d3.select(n.label).attr("class","selectednode");
+		element.selectionList.push(n);
+	}
+}
 
 
 /**
@@ -338,8 +364,8 @@ phyloElement.prototype.setData = function (data) {
 			.data(nodes.filter(function(n) { return n.x !== undefined; }))
 			.enter().append("g")
 			.attr("class", "node")
-			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
-			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name});})
+			.attr("transform", function(d) { d.circle=this; return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); element.clearSelection(); element.selectNode(d);})
 
 	node.append("circle")
 			.attr("r", 2.5);
@@ -358,8 +384,8 @@ phyloElement.prototype.setData = function (data) {
 			.enter().append("text")
 			.attr("dy", ".31em")
 			.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")"; })
-			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name});})
+			.attr("transform", function(d) { d.label=this; return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")";})
+			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); element.clearSelection(); element.selectNode(d)})
 			.text(function(d) { return d.name.replace(/_/g, ' '); });
 	}
 }
