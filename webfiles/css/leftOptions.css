@@ -40,6 +40,12 @@ button {
 	font-weight: bold;
 }*/
 
+input[type="checkbox"]{
+	position:absolute;
+	right: 0%;
+	font-weight: bold;
+}
+
 #labelBarnesHutRadio, #labelRepulsionRadio, #labelHierarchicalRepulsionRadio, #Bar, #Scatter, #Line, #Stack, #All, #Pie {
 	position:absolute;
 	right: 0%;
