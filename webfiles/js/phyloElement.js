@@ -8,9 +8,11 @@ function phyloElement() {
 	this.div;
 	this.radius = 115;
    	this.minrange = 0.01;  
-   	this.maxrange = 1;
+   	this.maxrange = 2.7;
 	this.maxpath = 0;
 	this.minpath = 1000;
+	this.tree;
+	this.resolution = 960;
 };
 
 phyloElement.prototype = new element();
@@ -52,7 +54,7 @@ phyloElement.prototype.loadHtml = function () {
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelRadius', text: 'Radius'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderRadius', type: 'range', value: this.radius, min: '50', max: '300', step: '5', onclick: 'element.changeRadius(value)'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderRadius', type: 'range', value: this.resolution, min: '960', max: '4096', step: '8', onclick: 'element.changeResolution(value)'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -68,14 +70,16 @@ phyloElement.prototype.loadHtml = function () {
  */
 phyloElement.prototype.load = function () {
 
-	jQuery("#layout").css({	overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25, left: "15%", width:"90%", height: "100%", top:"-100px"}).animate({opacity: 1}, 200);
+	jQuery("#layout").css({	overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25, left: "5%", width:"90%", height: "100%", top:"-90px"}).animate({opacity: 1}, 200);
 
 	//jQuery("#layout").css({	overflow: "auto", display: "visible", opacity: 0.25,}).animate({opacity: 1}, 200);
 
-	data='(pedo:0.1,(hola:0.2,adios:0.3)xx:0.4)yy:0.5';
+	element.data='(pedo:2.7,(hola:0.2,adios:0.3)xx:0.4)yy:10';
 	
-	element.initParams();
-	element.setData(data);
+	if(!jQuery.isEmptyObject(element.data)){
+		element.initParams();
+		element.setData(element.data);
+	}
 
 	//submit_download_form("png");
 };
@@ -88,7 +92,7 @@ phyloElement.prototype.initParams = function () {
 
 	jQuery("#layout").empty();
 
-	this.r = 920 / 2;
+	this.r = element.resolution / 2;
 
 	var width = element.r * 2;
 	var height = element.r * 2;
@@ -300,14 +304,16 @@ phyloElement.prototype.setData = function (data) {
 
 	element.data = data;
 	//newick.normalize(element.data);
-	var x = newick.parse(element.data);
+	element.tree = newick.parse(element.data);
+	console.log(element.tree )
+	element.normalize(element.tree.branchset,0,element.tree .length);
 
-	element.normalize(x.branchset,0,x.length);
-	element.parsenormalize(x.branchset);
+	element.parsenormalize(element.tree);
 	console.log(element.maxpath)
 	console.log(element.minpath)
+	console.log(element.tree)
 
-	var nodes = element.cluster.nodes(x);
+	var nodes = element.cluster.nodes(element.tree);
 	phylo(nodes[0], 0);
 
 	var link = element.layout.selectAll("path.link")
@@ -587,22 +593,34 @@ phyloElement.prototype.normalize = function (tree,depth,length) {
  */
 phyloElement.prototype.parsenormalize = function (tree) {
 
+	tree.length = (tree.length)*(element.maxrange/element.maxpath);
+
 	//caso base
-	if(tree == undefined){
-		return 0;
-	}
-	if(tree.branchset == 'undefined'){
+	if(tree.branchset == undefined){
+
 		return 0;
 	}
 
 	//caso recursivo
-	var size = tree.length;
+	var treeBranch = tree.branchset;
+	var size = treeBranch.length;
 	for(var i = 0; i<size; i++){
 		//tree[i].length = (tree[i].length-element.minpath)/(element.maxpath-element.minpath);
-		tree[i].length = (tree[i].length)/(element.maxpath);
-		element.normalize(tree[i].branchset);
-		//element.parsenormalize(tree[i].branchset);
+		//tree[i].length = (tree[i].length)/(element.maxpath); GOOD
+
+		//treeBranch[i].length = (treeBranch[i].length)*(element.maxrange/element.maxpath);
+		//treeBranch[i].length = (treeBranch[i].length)/(element.maxrange/element.maxpath);
+		element.parsenormalize(treeBranch[i]);
 	}
+}
+
+/**
+ * 
+ */
+phyloElement.prototype.changeResolution = function (value) {
+	element.resolution = value;
+	element.maxrange = 2.7+((value-960)*0.0043);
+	element.load()
 }
 
 /**
