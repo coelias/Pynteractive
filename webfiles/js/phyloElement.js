@@ -71,6 +71,11 @@ phyloElement.prototype.loadHtml = function () {
 	tag = {tag:'input', to:'#optionsNetwork', id: 'enableCircularLabel', type: 'checkbox', checked: this.circularLabel, onclick: 'element.changeCircularLabel();'};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
 };
 
 phyloElement.prototype.clearSelection = function() {
@@ -127,7 +132,6 @@ phyloElement.prototype.refreshSelection = function() {
  * Load graph on layout div html page
  */
 phyloElement.prototype.load = function () {
-
 	jQuery("#layout").css({	overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25, left: "5%", width:"90%", height: "100%", top:"-90px"}).animate({opacity: 1}, 200);
 
 	//jQuery("#layout").css({	overflow: "auto", display: "visible", opacity: 0.25,}).animate({opacity: 1}, 200);
@@ -141,7 +145,7 @@ phyloElement.prototype.load = function () {
 //		element.refreshSelection();
 	}
 
-	//submit_download_form("png");
+	//submit_download_form("png");	
 };
 
 

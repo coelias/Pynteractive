@@ -106,7 +106,7 @@ body, html {
   	font-size: 2.5em;
 }
 
-#load,#loadBackground {
+#load {
 	position: absolute;
 	z-index: 1000;
 	height: 100%;
@@ -119,6 +119,11 @@ body, html {
 #loadBackground {
 	opacity: 0.75;
 	background: grey;
+	z-index: 1000;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+	left: 0px;
 }
 
 .ajax-loader {
