@@ -602,7 +602,7 @@ d3.select("body").append("div")
 	    //norm = (element.maxrange-element.minrange)/(max-min)*(Number(token)-max)+element.maxrange
 	    //norm = (element.maxrange-element.minrange)/(element.maxpath)*(Number(token)-element.maxpath)+element.maxrange
 	    norm = token
-            tree.length = norm;
+            tree.origlength=tree.length = norm;
           }
       }
     }
@@ -666,7 +666,7 @@ phyloElement.prototype.normalize = function (tree,depth,length) {
 	//caso recursivo
 	var size = tree.length;
 	for(var i = 0; i<size; i++){
-		var sum = Number(length)+Number(tree[i].length);
+		var sum = Number(length)+Number(tree[i].origlength);
 		if(sum > element.maxpath) element.maxpath = sum;
 
 		//element.normalize(tree[i].branchset,sum);
@@ -679,10 +679,10 @@ phyloElement.prototype.normalize = function (tree,depth,length) {
  */
 phyloElement.prototype.parsenormalize = function (tree) {
 
-	if(tree.length == undefined){
-		tree.length = 0;
+	if(tree.origlength == undefined){
+		tree.origlength = 0;
 	}
-	tree.length = (tree.length)*(element.maxrange/element.maxpath);
+	tree.length = (tree.origlength)*(element.maxrange/element.maxpath);
 
 	//caso base
 	if(tree.branchset == undefined){
