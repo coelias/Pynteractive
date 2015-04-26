@@ -338,3 +338,11 @@ graphElement.prototype.removeNode = function (node){
 graphElement.prototype.removeEdge = function (edge){
 	element.edgesMap.remove(edge.id);
 };
+
+/**
+ * execute action
+ */
+graphElement.prototype.action = function (e){
+	var id = jQuery(e).attr("idaction");
+	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
+};

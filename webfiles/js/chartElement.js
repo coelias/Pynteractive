@@ -562,3 +562,11 @@ chartElement.prototype.smoothData = function (dataRaw, value1){
 
 }
 
+/**
+ * execute action
+ */
+chartElement.prototype.action = function (e){
+	var id = jQuery(e).attr("idaction");
+	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
+};
+

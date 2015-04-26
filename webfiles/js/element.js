@@ -293,22 +293,22 @@ element.prototype.changeEnabledLog = function (){
 };
 
 /**
- * execute action
- */
-element.prototype.action = function (e){
-	var id = jQuery(e).attr("idaction");
-	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
-};
-
-/**
  * search by id
  */
 element.prototype.searchNodeById = function (id){
 	
 };
 
+
 /**
- * search by id
+ * execute action
+ */
+element.prototype.action = function (e){
+
+};
+
+/**
+ * execute action
  */
 element.prototype.addAction  = function (id, name){
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction'+id, text: name};
@@ -318,6 +318,7 @@ element.prototype.addAction  = function (id, name){
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 };
+
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 //////////////////    UIC WRAPPER    ///////////////////////
@@ -395,3 +396,21 @@ element.prototype.addData = function (data){
 
 }
 
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+//////////////////////    LOADING    ///////////////////////
+////////////////////////////////////////////////////////////
+
+/**
+ * 
+ */
+element.prototype.addLoad = function (){
+	jQuery("loading").css("display", "hidden");
+}
+
+/**
+ * 
+ */
+element.prototype.deleteLoad = function (){
+	jQuery("loading").css("display", "none");
+}

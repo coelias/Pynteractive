@@ -344,7 +344,6 @@ treeElement.prototype.updateNode = function (node){
 
 };
 
-
 /**
  * update Edge
  */
@@ -377,3 +376,11 @@ treeElement.prototype.removeNode = function (node){
 treeElement.prototype.removeEdge = function (edge){
 	element.edgesMap.remove(edge.id);
 }
+
+/**
+ * execute action
+ */
+treeElement.prototype.action = function (e){
+	var id = jQuery(e).attr("idaction");
+	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
+};

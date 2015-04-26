@@ -74,8 +74,8 @@ body, html {
 
 #sequence {
   	position: absolute;
-	top: 15px;
-	left: 15px;
+	top: 10px;
+	left: 10px;
   	width: 600px;
   	height: 70px;
 }
@@ -104,4 +104,42 @@ body, html {
 
 #percentage {
   	font-size: 2.5em;
+}
+
+#load,#loadBackground {
+	position: absolute;
+	z-index: 1000;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	display: nonel
+}
+
+#loadBackground {
+	opacity: 0.75;
+	background: grey;
+}
+
+.ajax-loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -32px; /* -1 * image width / 2 */
+	margin-top: -32px; /* -1 * image height / 2 */
+	height: 5%;
+	width: 2.5%;
+}
+
+#loading {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -45px; /* -1 * image width / 2 */
+	margin-top: 25px; /* -1 * image height / 2 */
+	height: 5%;
+	width: 2.5%;
+	color: black;
+	font-weight: bold;
+	font: 22px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }

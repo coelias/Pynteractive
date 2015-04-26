@@ -238,3 +238,11 @@ mapElement.prototype.clickNode = function (node){
 mapElement.prototype.clickEdge = function (edge){
 	console.log(edge.target.options.id);
 }
+
+/**
+ * execute action
+ */
+mapElement.prototype.action = function (e){
+	var id = jQuery(e).attr("idaction");
+	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
+};

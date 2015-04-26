@@ -708,4 +708,10 @@ phyloElement.prototype.changeResolution = function (value) {
 	element.refreshSelection();
 }
 
-
+/**
+ * execute action
+ */
+phyloElement.prototype.action = function (e){
+	var id = jQuery(e).attr("idaction");
+	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
+};
