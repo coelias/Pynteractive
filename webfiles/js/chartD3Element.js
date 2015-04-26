@@ -1,5 +1,5 @@
 function chartD3Element() {
-
+	this.data;
 };
 
 chartD3Element.prototype = new element();
@@ -53,10 +53,12 @@ chartD3Element.prototype.load = function () {
 	jQuery("#sidebarLegend").css("visibility","visible");
 	jQuery("#layout").css("width","750px");
 
-	data = JSON.parse('{"name": "carlos","children": [{"name": "chupame","children": [{"name": "los cojones","size":100}, {"name": "el ojete","size":100}]},{"name": "hazme","children": [{"name": "rico", "size":100}, {"name": "tuyo","size":100}]}]}');
-	element.chart(data);
+	element.data = JSON.parse('{"name": "carlos","children": [{"name": "chupame","children": [{"name": "los cojones","size":100}, {"name": "el ojete","size":100}]},{"name": "hazme","children": [{"name": "rico", "size":100}, {"name": "tuyo","size":100}]}]}');
 
-	this.repaint();
+	if(!jQuery.isEmptyObject(element.data)){
+		element.chart(data);
+		this.repaint();
+	}
 };
 
 /**

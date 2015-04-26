@@ -1,5 +1,6 @@
 function graphD3Element() {
 	this.tension = 0.85;
+	this.data;
 };
 
 graphD3Element.prototype = new element();
@@ -49,8 +50,11 @@ graphD3Element.prototype.loadHtml = function () {
 graphD3Element.prototype.load = function () {
 
 
-	data = JSON.parse('[{"name":"father.Carlos","size":350,"imports":["father.Gay","mother.Huevos"]},{"name":"father.Gay","size":50,"imports":["mother.Huevos"]},{"name":"mother.Huevos","size":125,"imports":[]}]');
-	element.chart(data);
+	element.data = JSON.parse('[{"name":"father.Carlos","size":350,"imports":["father.Gay","mother.Huevos"]},{"name":"father.Gay","size":50,"imports":["mother.Huevos"]},{"name":"mother.Huevos","size":125,"imports":[]}]');
+
+	if(!jQuery.isEmptyObject(element.data)){
+		element.chart(element.data);
+	}
 
 };
 

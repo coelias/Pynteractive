@@ -1,5 +1,5 @@
 function treeD3Element() {
-
+	this.data;
 };
 
 treeD3Element.prototype = new element();
@@ -39,10 +39,13 @@ treeD3Element.prototype.loadHtml = function () {
  */
 treeD3Element.prototype.load = function () {
 
-	data = JSON.parse('{"name": "carlos","children": [{"name": "chupame","children": [{"name": "los cojones"}, {"name": "el ojete"}]},{"name": "hazme","children": [{"name": "rico"}, {"name": "tuyo"}]}]}');
-	element.tree(data);
+	element.data = JSON.parse('{"name": "carlos", "children": [{"name": "chupame","children": [{"name": "los cojones","size": 1}, {"name": "el ojete","size": 1}]},{"name": "hazme","children": [{"name": "rico","size": 1}, {"name": "tuyo","size": 1}]}]}');
 
-	this.repaint();
+
+	if(!jQuery.isEmptyObject(element.data)){
+		element.tree(element.data);
+		this.repaint();
+	}
 };
 
 /**
@@ -157,7 +160,7 @@ treeD3Element.prototype.tree = function (treeData) {
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
-    function initiateDrag(d, domNode) {
+    /*function initiateDrag(d, domNode) {
         draggingNode = d;
         d3.select(domNode).select('.ghostCircle').attr('pointer-events', 'none');
         d3.selectAll('.ghostCircle').attr('class', 'ghostCircle show');
@@ -197,7 +200,7 @@ treeD3Element.prototype.tree = function (treeData) {
         }).remove();
 
         dragStarted = null;
-    }
+    }*/
 
     // define the baseSvg, attaching a class for styling and the zoomListener
 
@@ -224,7 +227,7 @@ treeD3Element.prototype.tree = function (treeData) {
 
 
     // Define the drag listeners for drag/drop behaviour of nodes.
-    dragListener = d3.behavior.drag()
+    /*dragListener = d3.behavior.drag()
         .on("dragstart", function(d) {
             if (d == root) {
                 return;
@@ -313,7 +316,7 @@ treeD3Element.prototype.tree = function (treeData) {
             centerNode(draggingNode);
             draggingNode = null;
         }
-    }
+    }*/
 
     // Helper functions for collapsing and expanding nodes.
 
@@ -343,7 +346,7 @@ treeD3Element.prototype.tree = function (treeData) {
     };
 
     // Function to update the temporary connector indicating dragging affiliation
-    var updateTempConnector = function() {
+    /*var updateTempConnector = function() {
         var data = [];
         if (draggingNode !== null && selectedNode !== null) {
             // have to flip the source coordinates since we did this for the existing connectors on the original tree
@@ -368,7 +371,7 @@ treeD3Element.prototype.tree = function (treeData) {
         link.attr("d", d3.svg.diagonal());
 
         link.exit().remove();
-    };
+    };*/
 
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
@@ -447,7 +450,7 @@ treeD3Element.prototype.tree = function (treeData) {
 
         // Enter any new nodes at the parent's previous position.
         var nodeEnter = node.enter().append("g")
-            .call(dragListener)
+            //.call(dragListener)
             .attr("class", "node")
             .attr("transform", function(d) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";

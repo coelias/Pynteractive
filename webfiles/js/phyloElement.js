@@ -74,7 +74,7 @@ phyloElement.prototype.load = function () {
 
 	//jQuery("#layout").css({	overflow: "auto", display: "visible", opacity: 0.25,}).animate({opacity: 1}, 200);
 
-	element.data='(pedo:2.7,(hola:0.2,adios:0.3)xx:0.4)yy:10';
+	//element.data='(pedo:2.7,(hola:0.2,adios:0.3)xx:0.4)yy:10';
 	
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
