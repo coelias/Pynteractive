@@ -121,6 +121,9 @@ class JSCom(WebSocket):
 		if nodes:
 			DataStruct._OBJECTS[self.dataId].doubleClick(nodes[0].encode())
 
+	def treeNodeClick(self,node):
+		DataStruct._OBJECTS[self.dataId].nodeClick(node.encode())
+
 	def performAction(self,n,selectedNodes):
 		selectedNodes=[i.encode() for i in selectedNodes]
 		DataStruct._OBJECTS[self.dataId]._performAction(n,selectedNodes)

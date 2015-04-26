@@ -339,6 +339,7 @@ phyloElement.prototype.setData = function (data) {
 			.enter().append("g")
 			.attr("class", "node")
 			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name});})
 
 	node.append("circle")
 			.attr("r", 2.5);
@@ -358,6 +359,7 @@ phyloElement.prototype.setData = function (data) {
 			.attr("dy", ".31em")
 			.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
 			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")"; })
+			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name});})
 			.text(function(d) { return d.name.replace(/_/g, ' '); });
 	}
 }
