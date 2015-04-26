@@ -405,12 +405,12 @@ element.prototype.addData = function (data){
  * 
  */
 element.prototype.addLoad = function (){
-	jQuery("loading").css("display", "hidden");
+	document.getElementById("load").style.display = "block";
 }
 
 /**
  * 
  */
 element.prototype.deleteLoad = function (){
-	jQuery("loading").css("display", "none");
+	document.getElementById("load").style.display = "none";
 }
