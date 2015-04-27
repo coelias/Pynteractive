@@ -164,6 +164,8 @@ mapElement.prototype.addNode = function (node){
 		});
 
 	markerAux.options.id = node.id;
+	markerAux.options.radius = node.radius;
+	markerAux.options.fillcolor = node.color;
 	markerAux.on('click', this.clickNode);
 
 	this.markers[node.id] = markerAux;
@@ -187,7 +189,7 @@ mapElement.prototype.addEdge = function (edge){
 	var polyline = L.polyline(pointList, {color: edge.color});
 
 	polyline.options.id = edge.id;
-	polyline.on('click', this.clickEdge);
+	//polyline.on('click', this.clickEdge);
 
 	this.lines[edge.id] = polyline;
 	this.layout.addLayer(this.lines[edge.id]);
@@ -229,14 +231,19 @@ mapElement.prototype.searchNodeById = function (id){
  * click node
  */
 mapElement.prototype.clickNode = function (node){
-	console.log(node.target.options.id);
+
+	if(!element.shiftpress){
+		element.clearSelection();	
+	}
+
+	mapElement.prototype.selectNode(Number(node.target.options.id));
 }
 
 /**
  * click Edge
  */
 mapElement.prototype.clickEdge = function (edge){
-	console.log(edge.target.options.id);
+	console.log(edge.target.options.id,false);
 }
 
 /**
@@ -244,5 +251,76 @@ mapElement.prototype.clickEdge = function (edge){
  */
 mapElement.prototype.action = function (e){
 	var id = jQuery(e).attr("idaction");
-	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
+
+	var keys = [];
+	element.selectionList.forEach(
+		function(v){keys.push(v)}
+	);
+	console.log(keys)
+
+	PYCON.send('performAction',{n:id,selectedNodes:keys});
 };
+
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////    SELECTIONS    //////////////////////
+////////////////////////////////////////////////////////////
+
+mapElement.prototype.clearSelection = function() {
+	element.selectionList.forEach(
+		function(v){element.clearNodeSelection(v)}
+	);
+}
+
+mapElement.prototype.clearNodeSelection = function (id){
+
+	element.selectNode(id,false);
+}
+
+mapElement.prototype.selectNodes = function (nl){
+	/*nl = new Set(nl);
+	for (var i in this.treeNodes)
+	{
+		if (nl.has(this.treeNodes[i].name)){element.selectNode(this.treeNodes[i])}
+	}*/
+}
+
+
+mapElement.prototype.selectNode = function(id,refresh) {
+
+	var paint = element.selectionList.has(id);
+	if(refresh){
+		paint = !paint;
+	}
+
+	if(paint){
+		//get nodemark and change radius 30% bigger
+		element.markers[id]._radius = element.markers[id].options.radius;
+		element.markers[id]._fillcolor = element.markers[id].options.color;
+
+		//remove from list and insert again
+		element.layout.removeLayer(element.markers[id]);
+		element.layout.addLayer(element.markers[id]);
+
+		element.selectionList.delete(id);
+	}else{
+		//get nodemark and change radius 30% bigger
+		element.markers[id]._radius = element.markers[id].options.radius*1.5;
+		element.markers[id]._fillcolor = "blue";
+		element.markers[id]._color = "blue";
+
+		//remove from list and insert again
+		element.layout.removeLayer(element.markers[id]);
+		element.layout.addLayer(element.markers[id]);
+
+		element.selectionList.add(id);
+	}
+
+}
+
+mapElement.prototype.refreshSelection = function() {
+	element.selectionList.forEach(function(v){
+		element.selectNode(v,true);
+	});
+}

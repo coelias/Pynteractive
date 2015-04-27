@@ -58,6 +58,8 @@
 </head>
 <body>
 
+<!--<body onmousedown="isKeyPressed(event)">-->
+
 <script type="text/javascript" src="js/UIL.js"></script>
 <script type="text/javascript" src="js/UIC.js"></script>
 <script type="text/javascript" src="js/wscom.js"></script>
@@ -117,7 +119,7 @@ $(document).ready(function() {
             <span class="bar"></span>
         </a>
 
-	<div id="layout" class="content">
+	<div id="layout" class="content" onmousedown="isKeyPressed(event)">
 
 		<div id="charts" style="display:none">
 		<div>

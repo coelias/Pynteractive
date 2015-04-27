@@ -14,7 +14,7 @@ function phyloElement() {
 	this.tree;
 	this.resolution = 960;
 	this.circularLabel = false;
-	this.selectionList=new Set();
+
 	this.treeNodes=[];
 };
 
@@ -77,56 +77,6 @@ phyloElement.prototype.loadHtml = function () {
 	this.loadHtmlTag(tag);
 
 };
-
-phyloElement.prototype.clearSelection = function() {
-		element.selectionList.forEach(function(v){element.clearNodeSelection(v)});
-}
-
-phyloElement.prototype.clearNodeSelection = function (n){
-		d3.select(n.circle).attr("class","node").select('circle').attr('r',"2.5");
-		d3.select(n.label).attr("class",null);
-		element.selectionList.delete(n);
-}
-
-
-phyloElement.prototype.selectNodes = function (nl){
-	nl=new Set(nl);
-	for (var i in this.treeNodes)
-	{
-		if (nl.has(this.treeNodes[i].name)){element.selectNode(this.treeNodes[i])}
-	}
-}
-
-
-phyloElement.prototype.selectNode = function(n) {
-	if (n.branchset)
-	{
-		for (var i in n.branchset)
-		{
-			element.selectNode(n.branchset[i])
-		}
-	}
-	else
-	{
-		if (element.selectionList.has(n))
-		{
-			element.clearNodeSelection(n);
-			return;
-		}
-		element.clearNodeSelection(n)
-		d3.select(n.circle).attr("class","selectednode").select('circle').attr('r',"3.2");
-		d3.select(n.label).attr("class","selectednode");
-		element.selectionList.add(n);
-	}
-}
-
-phyloElement.prototype.refreshSelection = function() {
-		element.selectionList.forEach(function(v){
-		d3.select(v.circle).attr("class","selectednode").select('circle').attr('r',"3.2");
-		d3.select(v.label).attr("class","selectednode");
-													});
-}
-
 
 /**
  * Load graph on layout div html page
@@ -732,3 +682,57 @@ phyloElement.prototype.action = function (e){
 	element.selectionList.forEach(function(d){selectednodes.push(d.name)})
 	PYCON.send('performAction',{n:id,selectedNodes:selectednodes});
 };
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////    SELECTIONS    //////////////////////
+////////////////////////////////////////////////////////////
+
+phyloElement.prototype.clearSelection = function() {
+	element.selectionList.forEach(function(v){element.clearNodeSelection(v)});
+}
+
+phyloElement.prototype.clearNodeSelection = function (n){
+	d3.select(n.circle).attr("class","node").select('circle').attr('r',"2.5");
+	d3.select(n.label).attr("class",null);
+	element.selectionList.delete(n);
+}
+
+
+phyloElement.prototype.selectNodes = function (nl){
+	nl=new Set(nl);
+	for (var i in this.treeNodes)
+	{
+		if (nl.has(this.treeNodes[i].name)){element.selectNode(this.treeNodes[i])}
+	}
+}
+
+
+phyloElement.prototype.selectNode = function(n) {
+	if (n.branchset)
+	{
+		for (var i in n.branchset)
+		{
+			element.selectNode(n.branchset[i])
+		}
+	}
+	else
+	{
+		if (element.selectionList.has(n))
+		{
+			element.clearNodeSelection(n);
+			return;
+		}
+		element.clearNodeSelection(n)
+		d3.select(n.circle).attr("class","selectednode").select('circle').attr('r',"3.2");
+		d3.select(n.label).attr("class","selectednode");
+		element.selectionList.add(n);
+	}
+}
+
+phyloElement.prototype.refreshSelection = function() {
+	element.selectionList.forEach(function(v){
+		d3.select(v.circle).attr("class","selectednode").select('circle').attr('r',"3.2");
+		d3.select(v.label).attr("class","selectednode");
+	});
+}

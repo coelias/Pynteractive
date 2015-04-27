@@ -33,6 +33,9 @@ function element() {
 
 	//log
 	this.enabledLog = false;
+
+	//seleccion nodes
+	this.selectionList = new Set();
 };
 
 
@@ -413,4 +416,47 @@ element.prototype.addLoad = function (){
  */
 element.prototype.deleteLoad = function (){
 	document.getElementById("load").style.display = "none";
+}
+
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////    SELECTIONS    //////////////////////
+////////////////////////////////////////////////////////////
+
+function isKeyPressed(event) {
+    if (event.ctrlKey) {
+        element.shiftpress = true;
+    } else {
+        element.shiftpress = false;
+    }
+}
+
+element.prototype.keyboardPress = function() {
+	element.shiftpress = true;
+}
+
+element.prototype.keyboardUp = function (n){
+	element.shiftpress = false;
+}
+
+element.prototype.clearSelection = function() {
+
+}
+
+element.prototype.clearNodeSelection = function (n){
+
+}
+
+
+element.prototype.selectNodes = function (nl){
+
+}
+
+
+element.prototype.selectNode = function(n) {
+
+}
+
+element.prototype.refreshSelection = function() {
+
 }
