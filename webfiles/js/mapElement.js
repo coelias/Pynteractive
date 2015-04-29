@@ -94,6 +94,9 @@ mapElement.prototype.load = function () {
 	var layers = new L.control.layers(baseLayers, null, {collapsed: true, position: 'topright'});
 	layers.addTo(this.layout);
 
+	//disable zoom
+	this.layout.doubleClickZoom.disable();
+
 	this.test();
 
 };
@@ -153,7 +156,6 @@ mapElement.prototype.getLatLngNode = function (node){
  * add Node
  */
 mapElement.prototype.addNode = function (node){
-
 	var markerAux = new L.CircleMarker(new L.LatLng(node.location.lat,  node.location.lng), {
 		    radius: node.radius,
 		    fillColor: node.color,
@@ -167,6 +169,7 @@ mapElement.prototype.addNode = function (node){
 	markerAux.options.radius = node.radius;
 	markerAux.options.fillcolor = node.color;
 	markerAux.on('click', this.clickNode);
+	markerAux.on('dblclick', this.dblClickNode);
 
 	this.markers[node.id] = markerAux;
 	this.layout.addLayer(this.markers[node.id]);
@@ -231,12 +234,20 @@ mapElement.prototype.searchNodeById = function (id){
  * click node
  */
 mapElement.prototype.clickNode = function (node){
+	//console.log("CLICK")
+}
 
+/**
+ * double click node
+ */
+mapElement.prototype.dblClickNode = function (node){
+	//console.log("DBLCLICK")
 	if(!element.shiftpress){
 		element.clearSelection();	
 	}
 
-	mapElement.prototype.selectNode(Number(node.target.options.id));
+	//mapElement.prototype.selectNode(Number(node.target.options.id));
+	mapElement.prototype.selectNode(node.target.options.id);
 }
 
 /**
@@ -295,7 +306,7 @@ mapElement.prototype.selectNode = function(id,refresh) {
 	}
 
 	if(paint){
-		//get nodemark and change radius 30% bigger
+		//get nodemark and change radius 
 		element.markers[id]._radius = element.markers[id].options.radius;
 		element.markers[id]._fillcolor = element.markers[id].options.color;
 
@@ -307,8 +318,6 @@ mapElement.prototype.selectNode = function(id,refresh) {
 	}else{
 		//get nodemark and change radius 30% bigger
 		element.markers[id]._radius = element.markers[id].options.radius*1.5;
-		element.markers[id]._fillcolor = "blue";
-		element.markers[id]._color = "blue";
 
 		//remove from list and insert again
 		element.layout.removeLayer(element.markers[id]);
