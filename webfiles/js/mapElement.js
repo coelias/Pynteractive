@@ -97,7 +97,7 @@ mapElement.prototype.load = function () {
 	//disable zoom i select area
 	this.layout.doubleClickZoom.disable();
 	this.layout.boxZoom.disable();
-	this.test();
+	//this.test();
 
 };
 

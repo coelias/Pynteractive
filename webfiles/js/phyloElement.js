@@ -14,7 +14,6 @@ function phyloElement() {
 	this.tree;
 	this.resolution = 960;
 	this.circularLabel = false;
-
 	this.treeNodes=[];
 };
 
@@ -57,7 +56,7 @@ phyloElement.prototype.loadHtml = function () {
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelRadius', text: 'Radius'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderRadius', type: 'range', value: this.resolution, min: '960', max: '4096', step: '8', onclick: 'element.changeResolution(value)'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderRadius', type: 'range', value: this.resolution, min: '960', max: '8192', step: '8', onclick: 'element.changeResolution(value)'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -333,6 +332,8 @@ phyloElement.prototype.drawData = function () {
 	if(element.tree.length == undefined){
 		element.tree.length = 0;
 	}
+
+	this.maxpath = 0;
 	element.normalize(element.tree.branchset,0,element.tree.length);
 
 	element.parsenormalize(element.tree);
