@@ -5,6 +5,11 @@ class Graph(VisNetwork):
 	def __init__(self,name=None,directed=False):
 		'''Creates a graph, It can be directed or not, if a name is not given it is created randomly'''
 		VisNetwork.__init__(self,name,directed)
+		self.dclickfunc=None
+
+	def setDoubleClick(self,f):
+		self.dclickfunc=f
+		
 
 	def _refresh(self):
 		'''DO NOT USE, is used for graphic representation, everytime a new window is opened'''
@@ -79,5 +84,6 @@ class Graph(VisNetwork):
 					if csv[i][j]!='0':
 						self.addEdge(rows[i],rows[j])
 
-	def doubleClick(self,node):
-		pass
+	def _doubleClick(self,node):
+		if self.dclickfunc:
+			self.dclickfunc(node)
