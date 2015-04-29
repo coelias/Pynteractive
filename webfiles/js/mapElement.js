@@ -30,7 +30,7 @@ mapElement.prototype.test = function () {
 	this.addNode(node2);
 
 
-	var edge1 = {id: "1", from: "1", to:"2", color:"red"};
+	var edge1 = {id: "1", from: "1", to:"2", color:"red", weight:1};
 	this.addEdge(edge1);
 
 	//console.log(this.markers);
@@ -162,7 +162,7 @@ mapElement.prototype.addNode = function (node){
 		    color: 'black',
 		    weight: 1,
 		    opacity: 1,
-		    fillOpacity: 0.7,
+		    fillOpacity: 0.5,
 		});
 
 	markerAux.options.id = node.id;
@@ -189,7 +189,7 @@ mapElement.prototype.addEdge = function (edge){
 	var pointList = [pointA, pointB];
 
 	// create a red polyline from an array of LatLng points
-	var polyline = L.polyline(pointList, {color: edge.color});
+	var polyline = L.polyline(pointList, {color: edge.color, weight: edge.weight});
 
 	polyline.options.id = edge.id;
 	//polyline.on('click', this.clickEdge);
@@ -299,7 +299,6 @@ mapElement.prototype.selectNodes = function (nl){
 	}*/
 }
 
-
 mapElement.prototype.selectNode = function(id,refresh) {
 
 	var paint = element.selectionList.has(id);
@@ -308,9 +307,11 @@ mapElement.prototype.selectNode = function(id,refresh) {
 	}
 
 	if(paint){
+		console.log(convertToHexColor(element.markers[id].options.fillcolor))
 		//get nodemark and change radius 
-		element.markers[id]._radius = element.markers[id].options.radius;
-		element.markers[id]._fillcolor = element.markers[id].options.color;
+		//element.markers[id]._radius = element.markers[id].options.radius;
+		//element.markers[id]._fillcolor = element.markers[id].options.color;
+		element.markers[id].setStyle({radius:(element.markers[id].options.radius*0.5).toFixed(1),fillOpacity:0.5});
 
 		//remove from list and insert again
 		element.layout.removeLayer(element.markers[id]);
@@ -318,8 +319,10 @@ mapElement.prototype.selectNode = function(id,refresh) {
 
 		element.selectionList.delete(id);
 	}else{
+		console.log(convertToHexColor(element.markers[id].options.fillcolor))
 		//get nodemark and change radius 30% bigger
-		element.markers[id]._radius = element.markers[id].options.radius*1.5;
+		//element.markers[id]._radius = element.markers[id].options.radius;
+		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2).toFixed(1),fillOpacity:0.85});
 
 		//remove from list and insert again
 		element.layout.removeLayer(element.markers[id]);

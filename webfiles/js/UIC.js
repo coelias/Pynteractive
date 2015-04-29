@@ -15,8 +15,8 @@ addNode: function (id, label, title, group, shape, color, radius, image, lng, la
 			element.addNode(n);
 		},
 
-addEdge: function (id, id1, id2, label, title, threshold, style, length, color){
-			var e = {"id":id,"from":id1,"to":id2, "style": style};
+addEdge: function (id, id1, id2, label, title, threshold, style, length, color, width){
+			var e = {"id":id,"from":id1,"to":id2, "style": style, "width": width};
 			if (label) e.label=label;
 			if (title) e.title=title;
 			if (threshold) e.value=threshold;
@@ -42,7 +42,7 @@ updateNode: function (id, label, title, group, shape, color, radius, image, lng,
 			element.updateNode(n);
 		},
 
-updateEdge: function (id, id1, id2, label, title, threshold, style, length, color){
+updateEdge: function (id, id1, id2, label, title, threshold, style, length, color, width){
 			var e = {"id":id};
 			if (id1) e.id1=id1;
 			if (id2) e.id2=id2;
@@ -52,6 +52,7 @@ updateEdge: function (id, id1, id2, label, title, threshold, style, length, colo
 			if (style) e.style=style;
 			if (length) e.length=length;
 			if (color) e.color=color;
+			if (width) e.width=width;
 			element.updateEdge(e);
 		},
 
