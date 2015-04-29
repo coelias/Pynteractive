@@ -423,18 +423,33 @@ element.prototype.deleteLoad = function (){
 ////////////////////    SELECTIONS    //////////////////////
 ////////////////////////////////////////////////////////////
 
-function isKeyPressed(event) {
-    if (event.ctrlKey) {
-        element.ctrlpress = true;
-    } else if (!event.ctrlKey){
-        element.ctrlpress = false;
-    }
+function doubleclick(el, onsingle, ondouble) {
+	if (el.getAttribute("data-dblclick") == null) {
+		el.setAttribute("data-dblclick", 1);
+		setTimeout(function () {
+		if (el.getAttribute("data-dblclick") == 1) {
+			onsingle();
+		}
+		el.removeAttribute("data-dblclick");
+	}, 300);
+	} else {
+		el.removeAttribute("data-dblclick");
+		ondouble();
+	}
+}
 
-    if (event.shiftKey) {
-        element.shiftpress = true;
-    } else if (!event.shiftKey){
-        element.shiftpress = false;
-    }
+function isKeyPressed(event) {
+	if (event.ctrlKey) {
+		element.ctrlpress = true;
+	} else if (!event.ctrlKey){
+		element.ctrlpress = false;
+	}
+
+	if (event.shiftKey) {
+		element.shiftpress = true;
+	} else if (!event.shiftKey){
+		element.shiftpress = false;
+	}
 }
 
 /*element.prototype.keyboardPress = function() {

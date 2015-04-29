@@ -97,7 +97,7 @@ mapElement.prototype.load = function () {
 	//disable zoom i select area
 	this.layout.doubleClickZoom.disable();
 	this.layout.boxZoom.disable();
-	this.test();
+	//this.test();
 
 };
 
@@ -308,24 +308,11 @@ mapElement.prototype.selectNode = function(id,refresh) {
 
 	if(paint){
 		//get nodemark and change radius 
-		//element.markers[id]._radius = element.markers[id].options.radius;
-		//element.markers[id]._fillcolor = element.markers[id].options.color;
 		element.markers[id].setStyle({radius:(element.markers[id].options.radius*0.5).toFixed(1),fillOpacity:0.5});
-
-		//remove from list and insert again
-		//element.layout.removeLayer(element.markers[id]);
-		//element.layout.addLayer(element.markers[id]);
-
 		element.selectionList.delete(id);
 	}else{
 		//get nodemark and change radius 30% bigger
-		//element.markers[id]._radius = element.markers[id].options.radius;
 		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2).toFixed(1),fillOpacity:0.85});
-
-		//remove from list and insert again
-		//element.layout.removeLayer(element.markers[id]);
-		//element.layout.addLayer(element.markers[id]);
-
 		element.selectionList.add(id);
 	}
 
