@@ -119,7 +119,7 @@ class JSCom(WebSocket):
 
 	def graphDblClick(self,nodes):
 		if nodes:
-			DataStruct._OBJECTS[self.dataId].doubleClick(nodes[0].encode())
+			DataStruct._OBJECTS[self.dataId]._doubleClick(nodes[0].encode())
 
 	def treeNodeClick(self,node):
 		DataStruct._OBJECTS[self.dataId].nodeClick(node.encode())
