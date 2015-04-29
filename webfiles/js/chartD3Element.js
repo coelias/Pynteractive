@@ -56,7 +56,7 @@ chartD3Element.prototype.load = function () {
 	element.data = JSON.parse('{"name": "carlos","children": [{"name": "chupame","children": [{"name": "los cojones","size":100}, {"name": "el ojete","size":100}]},{"name": "hazme","children": [{"name": "rico", "size":100}, {"name": "tuyo","size":100}]}]}');
 
 	if(!jQuery.isEmptyObject(element.data)){
-		element.chart(data);
+		element.chart(element.data);
 		this.repaint();
 	}
 };
