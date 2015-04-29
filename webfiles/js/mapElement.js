@@ -30,7 +30,7 @@ mapElement.prototype.test = function () {
 	this.addNode(node2);
 
 
-	var edge1 = {id: "1", from: "1", to:"2", color:"red", weight:1};
+	var edge1 = {id: "1", from: "1", to:"2", color:"red", width:1};
 	this.addEdge(edge1);
 
 	//console.log(this.markers);
@@ -97,7 +97,7 @@ mapElement.prototype.load = function () {
 	//disable zoom i select area
 	this.layout.doubleClickZoom.disable();
 	this.layout.boxZoom.disable();
-	//this.test();
+	this.test();
 
 };
 
@@ -189,7 +189,7 @@ mapElement.prototype.addEdge = function (edge){
 	var pointList = [pointA, pointB];
 
 	// create a red polyline from an array of LatLng points
-	var polyline = L.polyline(pointList, {color: edge.color, weight: edge.weight});
+	var polyline = L.polyline(pointList, {color: edge.color, weight: edge.width});
 
 	polyline.options.id = edge.id;
 	//polyline.on('click', this.clickEdge);
@@ -307,7 +307,6 @@ mapElement.prototype.selectNode = function(id,refresh) {
 	}
 
 	if(paint){
-		console.log(convertToHexColor(element.markers[id].options.fillcolor))
 		//get nodemark and change radius 
 		//element.markers[id]._radius = element.markers[id].options.radius;
 		//element.markers[id]._fillcolor = element.markers[id].options.color;
@@ -319,7 +318,6 @@ mapElement.prototype.selectNode = function(id,refresh) {
 
 		element.selectionList.delete(id);
 	}else{
-		console.log(convertToHexColor(element.markers[id].options.fillcolor))
 		//get nodemark and change radius 30% bigger
 		//element.markers[id]._radius = element.markers[id].options.radius;
 		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2).toFixed(1),fillOpacity:0.85});
