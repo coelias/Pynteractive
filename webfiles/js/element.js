@@ -425,19 +425,25 @@ element.prototype.deleteLoad = function (){
 
 function isKeyPressed(event) {
     if (event.ctrlKey) {
+        element.ctrlpress = true;
+    } else if (!event.ctrlKey){
+        element.ctrlpress = false;
+    }
+
+    if (event.shiftKey) {
         element.shiftpress = true;
-    } else {
+    } else if (!event.shiftKey){
         element.shiftpress = false;
     }
 }
 
-element.prototype.keyboardPress = function() {
+/*element.prototype.keyboardPress = function() {
 	element.shiftpress = true;
 }
 
 element.prototype.keyboardUp = function (n){
 	element.shiftpress = false;
-}
+}*/
 
 element.prototype.clearSelection = function() {
 

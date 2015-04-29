@@ -94,9 +94,9 @@ mapElement.prototype.load = function () {
 	var layers = new L.control.layers(baseLayers, null, {collapsed: true, position: 'topright'});
 	layers.addTo(this.layout);
 
-	//disable zoom
+	//disable zoom i select area
 	this.layout.doubleClickZoom.disable();
-
+	this.layout.boxZoom.disable();
 	this.test();
 
 };
@@ -235,6 +235,13 @@ mapElement.prototype.searchNodeById = function (id){
  */
 mapElement.prototype.clickNode = function (node){
 	//console.log("CLICK")
+	if(!element.shiftpress){
+	//if(!element.crtlpress){
+		element.clearSelection();	
+	}
+
+	//mapElement.prototype.selectNode(Number(node.target.options.id));
+	mapElement.prototype.selectNode(node.target.options.id);
 }
 
 /**
@@ -242,12 +249,7 @@ mapElement.prototype.clickNode = function (node){
  */
 mapElement.prototype.dblClickNode = function (node){
 	//console.log("DBLCLICK")
-	if(!element.shiftpress){
-		element.clearSelection();	
-	}
 
-	//mapElement.prototype.selectNode(Number(node.target.options.id));
-	mapElement.prototype.selectNode(node.target.options.id);
 }
 
 /**
