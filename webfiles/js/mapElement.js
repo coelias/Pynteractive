@@ -313,8 +313,8 @@ mapElement.prototype.selectNode = function(id,refresh) {
 		element.markers[id].setStyle({radius:(element.markers[id].options.radius*0.5).toFixed(1),fillOpacity:0.5});
 
 		//remove from list and insert again
-		element.layout.removeLayer(element.markers[id]);
-		element.layout.addLayer(element.markers[id]);
+		//element.layout.removeLayer(element.markers[id]);
+		//element.layout.addLayer(element.markers[id]);
 
 		element.selectionList.delete(id);
 	}else{
@@ -323,8 +323,8 @@ mapElement.prototype.selectNode = function(id,refresh) {
 		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2).toFixed(1),fillOpacity:0.85});
 
 		//remove from list and insert again
-		element.layout.removeLayer(element.markers[id]);
-		element.layout.addLayer(element.markers[id]);
+		//element.layout.removeLayer(element.markers[id]);
+		//element.layout.addLayer(element.markers[id]);
 
 		element.selectionList.add(id);
 	}
