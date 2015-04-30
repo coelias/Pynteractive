@@ -2,7 +2,7 @@ from pynteractive.datastruct import *
 import os
 
 class PhyloTree(DataStruct):
-	def __init__(self,name):
+	def __init__(self,name=None):
 		DataStruct.__init__(self,name)
 		self.newick=""
 

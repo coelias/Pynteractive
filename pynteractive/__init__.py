@@ -6,6 +6,7 @@ from pynteractive.tree import *
 from pynteractive.map import *
 from pynteractive.chart import *
 from pynteractive.phylotree import *
+from pynteractive.graphd3 import *
 import atexit
 from webserver import *
 

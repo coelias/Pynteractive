@@ -14,9 +14,9 @@ class Map(Network):
 		for i in self.vertices.values():
 			self._update("addNode",i["_id"],i["_label"],'','','',i["_color"],i["_radius"],'',i["_lng"],i["_lat"])
 		for i,j in self.edges.items():
-			self._update("addEdge",i,j["_n1"],j["_n2"],'','','','','',j["_color"])
+			self._update("addEdge",i,j["_n1"],j["_n2"],'','','','','',j["_color"],j["_width"])
 
-	def addNode(self,node_id,radius=5,color='red',lng=None,lat=None,place=None,country=None):
+	def addNode(self,node_id=None,radius=5,color='red',lng=None,lat=None,place=None,country=None):
 		'''Adds a node to the map:
 
 - node_id: identification of the node, if not specified it will be randomly generated
@@ -37,10 +37,10 @@ class Map(Network):
 		self._update("addNode",node_id,node_id,'','','',color,radius,'',lng,lat)
 		return _id,label
 
-	def addEdge(self,n1,n2,color):
+	def addEdge(self,n1,n2,color,width=2):
 		'''Ads and edge between two points given a color tag'''
-		_id,label=Network.addEdge(self,n1,n2,'',color=color)
-		self._update("addEdge",_id,n1,n2,'','','','','',color)
+		_id,label=Network.addEdge(self,n1,n2,'',color=color,width=width)
+		self._update("addEdge",_id,n1,n2,'','','','','',color,width)
 		return _id
 
 

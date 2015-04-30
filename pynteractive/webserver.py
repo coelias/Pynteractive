@@ -125,7 +125,7 @@ class JSCom(WebSocket):
 		DataStruct._OBJECTS[self.dataId].nodeClick(node.encode())
 
 	def performAction(self,n,selectedNodes):
-		selectedNodes=[i.encode() for i in selectedNodes]
+		selectedNodes=[str(i).encode() for i in selectedNodes]
 		DataStruct._OBJECTS[self.dataId]._performAction(n,selectedNodes)
 
 	def refresh(self,name):
