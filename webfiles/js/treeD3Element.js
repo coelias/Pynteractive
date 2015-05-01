@@ -39,7 +39,7 @@ treeD3Element.prototype.loadHtml = function () {
  */
 treeD3Element.prototype.load = function () {
 
-	element.data = JSON.parse('{"name": "carlos", "children": [{"name": "chupame","children": [{"name": "los cojones","size": 1}, {"name": "el ojete","size": 1}]},{"name": "hazme","children": [{"name": "rico","size": 1}, {"name": "tuyo","size": 1}]}]}');
+	element.data = JSON.parse('{"name": "name1", "children": [{"name": "name2","children": [{"name": "name3","size": 1}, {"name": "name4","size": 1}]},{"name": "name5","children": [{"name": "name6","size": 1}, {"name": "name7","size": 1}]}]}');
 
 
 	if(!jQuery.isEmptyObject(element.data)){

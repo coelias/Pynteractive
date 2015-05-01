@@ -224,12 +224,13 @@ graphElement.prototype.reDrawLayout = function (){
 	switch(this.enabledLayout) {
 		case 1: //smoothCurves: {dynamic:false, type: "continuous"}
 			this.options = {stabilize: false, smoothCurves: {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness: this.smoothCurves.roundness}, physics: {barnesHut: {enabled: false}, repulsion: {damping:0.09, nodeDistance: this.nodeDistanceValue, centralGravity: this.centralGravityValue}},hideEdgesOnDrag: this.hideEdgesOnDragLayout};
-			this.layout = new vis.Network(this.container, this.data, this.options);
 
+			this.layout = new vis.Network(this.container, this.data, this.options);
 			break;
 		case 2:
 			this.options = {stabilize: false, hierarchicalLayout: {layout: "directional"}, smoothCurves: {dynamic:this.smoothCurves.dynamic, type: this.smoothCurves.type, roundness: this.smoothCurves.roundness}, physics: {hierarchicalRepulsion: {nodeDistance: this.nodeDistanceValue}}, hideEdgesOnDrag: this.hideEdgesOnDragLayout};
 			this.layout = new vis.Network(this.container, this.data, this.options);
+
 			break;
 	}
 
