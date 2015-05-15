@@ -8,6 +8,7 @@ class Graph(VisNetwork):
 		self.dclickfunc=None
 
 	def setDoubleClick(self,f):
+		'''Sets a callback as a response to a double click event on a graph node'''
 		self.dclickfunc=f
 		
 

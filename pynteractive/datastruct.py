@@ -2,6 +2,7 @@ import random
 import webbrowser
 import pynteractive.globals as pyn_globals
 from collections import Counter
+import traceback
 
 class DataStruct:
 	'''DataStruct is the basic data structure aimed to abstract any data set that will be represented in Pynteractive Web GUI. All
@@ -33,6 +34,7 @@ class DataStruct:
 				return self.actions[fid][1](params)
 			except:
 				print "Error calling method",fid
+				print traceback.format_exc()
 
 
 	def _update(self,func,*pars):

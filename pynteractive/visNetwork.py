@@ -5,7 +5,7 @@ class VisNetwork(Network):
 		'''Implements a network for vis.js'''
 		Network.__init__(self,name,directed)
 
-	def addNode(self,node_id=None,label=None,title=None,group=None,shape=None,color=None,radius=None,image=None):
+	def addNode(self,node_id=None,label=None,title=None,group=None,shape='ellipse',color=None,radius=None,image=None):
 		'''Adds a node to the network:
 
 - node_id: identification of the node, if not specified it will be randomly generated
@@ -46,9 +46,9 @@ class VisNetwork(Network):
 		if not label: label=''
 
 		if self.directed:
-			style='arrow'
+			if not style: style='arrow'
 		else:
-			style='line'
+			if not style: style='line'
 
 		_id,label=Network.addEdge(self,n1,n2,label,title=title,width=width,style=style,length=length)
 		self._update("addEdge",_id,n1,n2,label,title,width,style,length)
