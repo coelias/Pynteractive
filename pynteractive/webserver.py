@@ -12,6 +12,7 @@ import StringIO
 from pynteractive.SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 import pynteractive.globals as pyn_globals
 from pynteractive.datastruct import DataStruct
+import re
 
 Pynteractive_ws_MUTEX=threading.Lock()
 
@@ -136,7 +137,8 @@ class SimpleWS(SimpleHTTPRequestHandler):
 
 	def do_GET(self):
 		if self.path.startswith("/?"): resource="webfiles/index.html"
-		else: resource=os.path.join(*(["webfiles"]+self.path.split("?")[0].split("/")))
+		else: resource='/'.join(["webfiles"]+self.path.split("?")[0].split("/"))
+		resource=re.sub("/+","/",resource)
 		if resource in SimpleWS.FILE_MGR:
 			self.send_response(200)
 			ext=self.path.split(".")[-1].lower()
