@@ -13,8 +13,6 @@ addNode: function (id, label, title, group, shape, color, radius, image, lng, la
 			if (image) n.image=image;
 			if (location) n.location={"lng":lng,"lat":lat};
 
-			console.log(n);
-
 			element.addNode(n);
 		},
 
@@ -26,8 +24,6 @@ addEdge: function (id, id1, id2, label, title, threshold, style, length, color, 
 			if (length) e.length=length;
 			if (color) e.color=color;
 			if (width) e.width=width;
-
-			console.log(e)
 
 			element.addEdge(e);
 		},
@@ -44,8 +40,6 @@ updateNode: function (id, label, title, group, shape, color, radius, image, lng,
 			if (image) n.image=image;
 			if (lng && lat) n.location={"lng":lng,"lat":lat};
 
-			console.log(n);
-
 			element.updateNode(n);
 		},
 
@@ -60,8 +54,6 @@ updateEdge: function (id, id1, id2, label, title, threshold, style, length, colo
 			if (length) e.length=length;
 			if (color) e.color=color;
 			if (width) e.width=width;
-
-			console.log(e)
 
 			element.updateEdge(e);
 		},
@@ -98,7 +90,6 @@ addAction: function(id,name){
 		},
 
 addChartData: function(data){
-			console.log(data);
 			element.addChartData(data);
 		},
 
