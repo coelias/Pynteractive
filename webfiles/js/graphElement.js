@@ -278,7 +278,6 @@ graphElement.prototype.addEdge = function (edge){
 
 	from = element.nodesMap.get(edge.to);
 	if (from.radius == undefined) from.radius = 10;
-	from.radius = from.radius + 100;
 	element.nodesMap.update(from);
 };
 
@@ -301,8 +300,6 @@ graphElement.prototype.updateNode = function (node){
 		element.nodesMap.update(nodeAux);
 		element.layout.redraw();
 	}
-
-
 
 };
 
