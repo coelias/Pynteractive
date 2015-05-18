@@ -48,7 +48,7 @@ $ pip install pynteractive
 
 ####Simple Graph usage
 
-[![Simple Graph usage (VIDEO)](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
+[![Simple Graph usage ](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
 
 ```python
 from pynteractive import *
@@ -88,6 +88,22 @@ def sumall(nodes
 a.addAction('Add node values',sumall)
 ```
 
+[![Simple Chart usage ](http://coelias.github.io/Pynteractive/imgs/ChartGif.gif)](https://vimeo.com/128177043)
+
+```python
+from pynteractive import *
+b=Chart()
+b.view()
+b.addSeries('Squirrels killed by humans',
+    [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    [200,240,300,313,317,380,360,320,503,460,510,600,550,500,460,490]) 
+b.addSeries('People killed by squirrels',
+    [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    [1,20,40,60,100,110,105,150,100,80,150,180,182,210,300,491])
+b.addSeries('Sharks killed by squirrels',
+    [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    [10,20,25,40,12,33,22,47,90,70,80,46,30,6,18,25])
+```
 ### Authors:
  - Carlos del Ojo
  - Oriol Mazariegos
