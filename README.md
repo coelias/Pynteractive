@@ -46,7 +46,7 @@ $ pip install pynteractive
 
 ## Examples
 
-####Simple Graph usage
+####Graph example
 
 [![Graph example](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
 
@@ -88,6 +88,8 @@ def sumall(nodes
 a.addAction('Add node values',sumall)
 ```
 
+####Chart example
+
 [![Chart example](http://coelias.github.io/Pynteractive/imgs/ChartGif.gif)](https://vimeo.com/128177043)
 
 ```python
@@ -105,6 +107,7 @@ b.addSeries('Sharks killed by squirrels',
     [10,20,25,40,12,33,22,47,90,70,80,46,30,6,18,25])
 ```
 
+####Map example
 [![Map example](http://coelias.github.io/Pynteractive/imgs/map.png)](http://coelias.github.io/Pynteractive/imgs/map.png)
 
 
