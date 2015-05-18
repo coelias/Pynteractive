@@ -23,7 +23,15 @@ class DataStruct:
 		self._ID=name
 		self.actions={}
 		self.actionid=1
+		self.dclickfunc=None
 	
+	def setDoubleClick(self,f):
+		'''Sets a callback as a response to a double click event on a graph node'''
+		self.dclickfunc=f
+
+	def _doubleClick(self,node):
+		if self.dclickfunc:
+			self.dclickfunc(node)
 
 	def _performAction(self,fid,params):
 		fid=int(fid)

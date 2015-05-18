@@ -46,7 +46,9 @@ $ pip install pynteractive
 
 ## Examples
 
-TODO
+####Simple Graph usage
+
+![Simple Graph usage](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
 
 ### Authors:
  - Carlos del Ojo

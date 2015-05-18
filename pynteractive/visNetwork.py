@@ -52,7 +52,6 @@ class VisNetwork(Network):
 
 		_id,label=Network.addEdge(self,n1,n2,label,title=title,width=width,style=style,length=length)
 		self._update("addEdge",_id,n1,n2,label,title,width,style,length)
-		print "addEdge",_id,n1,n2,label,title,width,style,length
 		return _id,label
 	
 	def delNode(self,node_id):
