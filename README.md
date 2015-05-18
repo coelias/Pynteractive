@@ -105,7 +105,7 @@ b.addSeries('Sharks killed by squirrels',
     [10,20,25,40,12,33,22,47,90,70,80,46,30,6,18,25])
 ```
 
-[![Map example ](http://coelias.github.io/Pynteractive/imgs/map.png =250x)](http://coelias.github.io/Pynteractive/imgs/map.png)
+[![Map example](http://coelias.github.io/Pynteractive/imgs/map.png =250x250)](http://coelias.github.io/Pynteractive/imgs/map.png)
 
 
 ```python
