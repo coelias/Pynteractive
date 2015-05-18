@@ -46,7 +46,7 @@ $ pip install pynteractive
 
 ## Examples
 
-####Graph example
+####Graph example (click to watch video)
 
 [![Graph example](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
 
@@ -88,7 +88,7 @@ def sumall(nodes
 a.addAction('Add node values',sumall)
 ```
 
-####Chart example
+####Chart example (click to watch video)
 
 [![Chart example](http://coelias.github.io/Pynteractive/imgs/ChartGif.gif)](https://vimeo.com/128177043)
 
@@ -122,6 +122,12 @@ m.addNode("ID3",place="08030",country="es")
 m.addNode('ID4',place='paris',radius=30,color='blue')
 m.addEdge('ID3','ID4',width=5,color='green')
 ```
+
+## Real World Examples
+
+[De Bruijn Graph Gene assembly using Pynteractive](https://vimeo.com/128206058)
+
+
 ### Authors:
  - Carlos del Ojo
  - Oriol Mazariegos
