@@ -48,7 +48,7 @@ $ pip install pynteractive
 
 ####Simple Graph usage
 
-[![Simple Graph usage ](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
+[![Graph example ](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
 
 ```python
 from pynteractive import *
@@ -88,7 +88,7 @@ def sumall(nodes
 a.addAction('Add node values',sumall)
 ```
 
-[![Simple Chart usage ](http://coelias.github.io/Pynteractive/imgs/ChartGif.gif)](https://vimeo.com/128177043)
+[![Chart example ](http://coelias.github.io/Pynteractive/imgs/ChartGif.gif)](https://vimeo.com/128177043)
 
 ```python
 from pynteractive import *
@@ -103,6 +103,21 @@ b.addSeries('People killed by squirrels',
 b.addSeries('Sharks killed by squirrels',
     [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
     [10,20,25,40,12,33,22,47,90,70,80,46,30,6,18,25])
+```
+
+[![Map example ](http://coelias.github.io/Pynteractive/imgs/map.png =250x)](http://coelias.github.io/Pynteractive/imgs/map.png)
+
+
+```python
+from pynteractive import *
+m=Map()
+m.view()
+m.addNode("ID1",place="london")
+m.addNode("ID2",place="ox3 8pp")
+m.addEdge("ID1","ID2")
+m.addNode("ID3",place="08030",country="es")
+m.addNode('ID4',place='paris',radius=30,color='blue')
+m.addEdge('ID3','ID4',width=5,color='green')
 ```
 ### Authors:
  - Carlos del Ojo

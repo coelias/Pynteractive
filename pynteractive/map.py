@@ -37,7 +37,7 @@ class Map(Network):
 		self._update("addNode",node_id,node_id,'','','',color,radius,'',lng,lat)
 		return _id,label
 
-	def addEdge(self,n1,n2,color,width=2):
+	def addEdge(self,n1,n2,color='red',width=2):
 		'''Ads and edge between two points given a color tag'''
 		_id,label=Network.addEdge(self,n1,n2,'',color=color,width=width)
 		self._update("addEdge",_id,n1,n2,'','','','','',color,width)

@@ -48,7 +48,7 @@ setup(
 	url='http://github.com/coelias/Pynteractive',
 
 	# Author details
-	author='Carlos del Ojo Elias, Oriol Marariegos',
+	author='Carlos del Ojo Elias, Oriol Mazariegos Canellas',
 	author_email='deepbit@gmail.com, mazeitor@gmail.com',
 
 	# Choose your license
