@@ -48,7 +48,7 @@ $ pip install pynteractive
 
 ####Simple Graph usage
 
-[![Graph example ](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
+[![Graph example](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
 
 ```python
 from pynteractive import *
@@ -105,7 +105,7 @@ b.addSeries('Sharks killed by squirrels',
     [10,20,25,40,12,33,22,47,90,70,80,46,30,6,18,25])
 ```
 
-[![Map example](http://coelias.github.io/Pynteractive/imgs/map.png)]
+[![Map example](http://coelias.github.io/Pynteractive/imgs/map.png)](http://coelias.github.io/Pynteractive/imgs/map.png)
 
 
 ```python
