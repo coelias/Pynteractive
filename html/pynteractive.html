@@ -108,6 +108,12 @@ can be defferent (eg. list of nodes, sample id, etc...)</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pynteractive.datastruct.DataStruct.setDoubleClick">
+<code class="descname">setDoubleClick</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.setDoubleClick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a callback as a response to a double click event on a graph node</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.view">
 <code class="descname">view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.view" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method opens the default web browser in the system showing the web visualization associated to the data</p>
@@ -187,7 +193,7 @@ and if label is None it will get the same value as the node_id</p>
 
 <dl class="method">
 <dt id="pynteractive.visNetwork.VisNetwork.addNode">
-<code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id=None</em>, <em>label=None</em>, <em>title=None</em>, <em>group=None</em>, <em>shape=None</em>, <em>color=None</em>, <em>radius=None</em>, <em>image=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.addNode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addNode</code><span class="sig-paren">(</span><em>node_id=None</em>, <em>label=None</em>, <em>title=None</em>, <em>group=None</em>, <em>shape='ellipse'</em>, <em>color=None</em>, <em>radius=None</em>, <em>image=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.visNetwork.VisNetwork.addNode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a node to the network:</p>
 <ul class="simple">
 <li>node_id: identification of the node, if not specified it will be randomly generated</li>
@@ -459,11 +465,6 @@ and if label is None it will get the same value as the node_id</p>
 <dd><p>Creates a random Graph containing <em>nn</em> nodes and <em>ne</em> edges</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pynteractive.graph.Graph.setDoubleClick">
-<code class="descname">setDoubleClick</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.graph.Graph.setDoubleClick" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div>
@@ -477,7 +478,7 @@ and if label is None it will get the same value as the node_id</p>
 as well as linking them with edges. In order to specify the location coordinates or places (eg. postcode) can be used.</p>
 <dl class="method">
 <dt id="pynteractive.map.Map.addEdge">
-<code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>color</em>, <em>width=2</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.addEdge" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addEdge</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>color='red'</em>, <em>width=2</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.map.Map.addEdge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ads and edge between two points given a color tag</p>
 </dd></dl>
 
