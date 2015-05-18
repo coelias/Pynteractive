@@ -60,3 +60,11 @@ pynteractive.chart module
     :undoc-members:
     :show-inheritance:
 
+pynteractive.phylotree module
+-------------------------
+
+.. automodule:: pynteractive.phylotree
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
