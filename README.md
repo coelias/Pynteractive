@@ -93,7 +93,7 @@ a.log('Hello world')
 a.log('<h1>header</h1>')
 a.log('<code>code</code>')
 
-# Defining callbacks to take actions after events in the GUI
+# Defining callbacks to perform actions after events in the GUI
 def Multiply_by2(node):
     a.log(str( int(node)*2)+"<br>")
 a.setDoubleClick(Multiply_by2)
