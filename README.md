@@ -1,15 +1,32 @@
 # Pynteractive: Interactive plots in python
-Pynterative is a python library aimed to create interative visualizations provided by several HTML5 JavaScript libraries like [vis.js](http://visjs.org/) or [d3.js](http://d3js.org/).
+Pynterative is a python library aimed to create interative visualizations provided by several HTML5 JavaScript libraries like [vis.js](http://visjs.org/), [d3.js](http://d3js.org/) and many more.
 
-It was motivated by the need of using HTML5 plots in biomedical research, (bioinformatics to be specific), however different charts and plots are being introduced as they are requested/needed. 
+Its main feature is the real time communication python<->webbrowser via websockets, that allows us realtime interaction from python to the browser and from the browser to python. It means that the code you  write in python affects the isualization in real time and mouse/keyboard events happening in the web browser can be connected to python callbacks creating a bidirectional communication. 
 
-It is designed to implement a very simple API allowing bidirectional communications. (Python<-->webbrowser)
+We wanted to create a very simple [API](http://coelias.github.io/Pynteractive/html/) that, although reduces flexibility, it is extremely easy to learn and start creating web GUI's.
+
+Pynteractive IN NOT a framework to develop: 
+* Web applications: the graphic interfaces are supposed to be local. That is the main idea, not dealing with web at all, being able to use cool JS frameworks without messing with any web technology.
+* Production systems: it is intended to help developers/data scientists plotting data very quickly. You've got data, you need to plot it, you need to play with it, that is what pynteractive is aimed for, do not expect more.
+
+Pynteractive is in constant development, all feedback/suggestions/bugreports are very wellcome. It was motivated by the need of using HTML5 plots in biomedical research, (bioinformatics specifically), however different charts and plots are being introduced as they are requested/needed. 
+
+
 
 ## Current features
 
 * Networks: graphs and digraphs provided by the vis.js framework
 * Trees: Using different engines (d3.js, vis.js)
 * Maps: provided by leaflet (openstreet maps)
+* Phylogenetic trees
+* Charts: using NVD3.js
+
+## TODO
+
+* Annotation in phylogenetic trees + different layouts 
+* Integrating Circos and making it interactive
+* Extra plots extracted from D3.js
+* Interactive scatter plots with selection
 
 ## Compatibility
 
@@ -154,6 +171,8 @@ a.setNewick('myco.newick')
 [De Bruijn Graph Gene assembly using Pynteractive](https://vimeo.com/128206058)
 [![De Bruijn Graph Gene assembly using Pynteractive](http://coelias.github.io/Pynteractive/imgs/debruijn.gif)](https://vimeo.com/128206058)
 
+[Mixing maps and phylogenetics](https://vimeo.com/128260245)
+[![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/128260245)
 
 ### Authors:
  - Carlos del Ojo
