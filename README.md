@@ -138,6 +138,17 @@ m.addNode('ID4',place='paris',radius=30,color='blue')
 m.addEdge('ID3','ID4',width=5,color='green')
 ```
 
+####Phylogenetic tree example
+[![Phylo example](http://coelias.github.io/Pynteractive/imgs/phylo.png)](http://coelias.github.io/Pynteractive/imgs/phylo.png)
+
+
+```python
+from pynteractive import *
+a=PhyloTree()
+a.setNewick('a.newick')
+a.view()
+a.setNewick('myco.newick')
+```
 ## Real World Examples
 
 [De Bruijn Graph Gene assembly using Pynteractive](https://vimeo.com/128206058)
