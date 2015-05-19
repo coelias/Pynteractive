@@ -94,11 +94,11 @@ a.log('<h1>header</h1>')
 a.log('<code>code</code>')
 
 # Defining callbacks to take actions after events in the GUI
-def Multiply_by2(node
+def Multiply_by2(node):
     a.log(str( int(node)*2)+"<br>")
 a.setDoubleClick(Multiply_by2)
 
-def sumall(nodes
+def sumall(nodes):
     a.log(str( sum([int(i) for i in nodes]))+"<br>")
 a.addAction('Add node values',sumall)
 ```
