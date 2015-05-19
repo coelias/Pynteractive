@@ -141,6 +141,7 @@ m.addEdge('ID3','ID4',width=5,color='green')
 ## Real World Examples
 
 [De Bruijn Graph Gene assembly using Pynteractive](https://vimeo.com/128206058)
+[![De Bruijn Graph Gene assembly using Pynteractive](http://coelias.github.io/Pynteractive/imgs/debruijn.gif)](https://vimeo.com/128206058)
 
 
 ### Authors:
