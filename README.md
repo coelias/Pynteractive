@@ -7,7 +7,7 @@ We wanted to create a very simple [API](http://coelias.github.io/Pynteractive/ht
 
 Pynteractive IS NOT a framework to develop: 
 * Web applications: the graphic interfaces are supposed to be local. That is the main idea, not dealing with web at all, being able to use cool JS frameworks without messing with any web technology.
-* Production systems: it is intended to help developers/data scientists plotting data very quickly. You've got data, you need to plot it, you need to play with it, that is what pynteractive is aimed for, do not expect more.
+* Production software: it is intended to help developers/data scientists plotting data very quickly. You've got data, you need to plot it, you need to play with it, that is what pynteractive is aimed for, do not expect more.
 
 Pynteractive is in constant development, all feedback/suggestions/bugreports are very wellcome. It was motivated by the need of using HTML5 plots in biomedical research, (bioinformatics specifically), however different charts and plots are being introduced as they are requested/needed. 
 
@@ -169,9 +169,11 @@ a.setNewick('myco.newick')
 ## Real World Examples
 
 [De Bruijn Graph Gene assembly using Pynteractive](https://vimeo.com/128206058)
+
 [![De Bruijn Graph Gene assembly using Pynteractive](http://coelias.github.io/Pynteractive/imgs/debruijn.gif)](https://vimeo.com/128206058)
 
 [Mixing maps and phylogenetics](https://vimeo.com/128260245)
+
 [![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/128260245)
 
 ### Authors:
