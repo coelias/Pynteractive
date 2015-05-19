@@ -170,9 +170,13 @@ a.setNewick('myco.newick')
 
 [De Bruijn Graph Gene assembly using Pynteractive](https://vimeo.com/128206058)
 
+Being able to debug graphically gene assembly while coding was very helpful. This tool motivated pynteractive development.
+
 [![De Bruijn Graph Gene assembly using Pynteractive](http://coelias.github.io/Pynteractive/imgs/debruijn.gif)](https://vimeo.com/128206058)
 
 [Mixing maps and phylogenetics](https://vimeo.com/128260245)
+
+In our work it's very important to relate samples geographically in order to detect potential outbreaks and study bacterial transmission.
 
 [![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/128260245)
 
