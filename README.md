@@ -1,7 +1,7 @@
 # Pynteractive: Interactive plots in python
 Pynterative is a python library aimed to create interative visualizations provided by several HTML5 JavaScript libraries like [vis.js](http://visjs.org/), [d3.js](http://d3js.org/) and many more.
 
-Its main feature is the real time communication python<->webbrowser via websockets, that allows us realtime interaction from python to the browser and from the browser to python. It means that the code you  write in python affects the isualization in real time and mouse/keyboard events happening in the web browser can be connected to python callbacks creating a bidirectional communication. 
+Its main feature is the real time communication python<->webbrowser via websockets, that allows us realtime interaction from python to the browser and from the browser to python. It means that the code you  write in python affects the visualization in real time and mouse/keyboard events happening in the web browser can be connected to python callbacks creating a bidirectional communication. 
 
 We wanted to create a very simple [API](http://coelias.github.io/Pynteractive/html/) that, although reduces flexibility, it is extremely easy to learn and start creating web GUI's.
 
@@ -9,7 +9,7 @@ Pynteractive IS NOT a framework to develop:
 * Web applications: the graphic interfaces are supposed to be local. That is the main idea, not dealing with web at all, being able to use cool JS frameworks without messing with any web technology.
 * Production software: it is intended to help developers/data scientists plotting data very quickly. You've got data, you need to plot it, you need to play with it, that is what pynteractive is aimed for, do not expect more.
 
-Pynteractive is in constant development, all feedback/suggestions/bugreports are very wellcome. It was motivated by the need of using HTML5 plots in biomedical research, (bioinformatics specifically), however different charts and plots are being introduced as they are requested/needed. 
+Pynteractive is in constant development, all feedback/suggestions/bugreports are very wellcome. It was motivated by the need to use HTML5 plots in biomedical research, (bioinformatics specifically), however different charts and plots are being introduced as they are requested/needed. 
 
 
 
@@ -176,7 +176,7 @@ Being able to debug graphically gene assembly while coding was very helpful. Thi
 
 [Mixing maps and phylogenetics](https://vimeo.com/128260245)
 
-In our work it's very important to relate samples geographically in order to detect potential outbreaks and study bacterial transmission.
+In our work it's very important to relate samples geographically in order to detect potential outbreaks and study bacterial transmission. (Dataset shown is randomly generated)
 
 [![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/128260245)
 
