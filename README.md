@@ -5,7 +5,7 @@ Its main feature is the real time communication python<->webbrowser via websocke
 
 We wanted to create a very simple [API](http://coelias.github.io/Pynteractive/html/) that, although reduces flexibility, it is extremely easy to learn and start creating web GUI's.
 
-Pynteractive IN NOT a framework to develop: 
+Pynteractive IS NOT a framework to develop: 
 * Web applications: the graphic interfaces are supposed to be local. That is the main idea, not dealing with web at all, being able to use cool JS frameworks without messing with any web technology.
 * Production systems: it is intended to help developers/data scientists plotting data very quickly. You've got data, you need to plot it, you need to play with it, that is what pynteractive is aimed for, do not expect more.
 
