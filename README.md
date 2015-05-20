@@ -11,7 +11,10 @@ Pynteractive IS NOT a framework to develop:
 
 Pynteractive is in constant development, all feedback/suggestions/bugreports are very wellcome. It was motivated by the need to use HTML5 plots in biomedical research, (bioinformatics specifically), however different charts and plots are being introduced as they are requested/needed. 
 
+## Demos
 
+[![De Bruijn Graph Gene assembly using Pynteractive](http://coelias.github.io/Pynteractive/imgs/debruijn.gif)](https://vimeo.com/128206058)
+[![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/128260245)
 
 ## Current features
 
