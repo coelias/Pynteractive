@@ -109,10 +109,10 @@ setChartType: function(type){
 			element.changeLayoutType(type);
 		},
 
-setNewick: function(data){
+setData: function(data){
 			element.initParams();
 			element.setData(data);
-			element.drawData();
+			element.repaint()
 		},
 
 selectNewickNodes: function(data){

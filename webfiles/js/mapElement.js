@@ -32,10 +32,6 @@ mapElement.prototype.test = function () {
 
 	var edge1 = {id: "1", from: "1", to:"2", color:"red", width:1};
 	this.addEdge(edge1);
-
-	//console.log(this.markers);
-	//this.removeNode(node1);
-	//this.removeEdge(edge1);
 }
 
 /**
@@ -97,8 +93,6 @@ mapElement.prototype.load = function () {
 	//disable zoom i select area
 	this.layout.doubleClickZoom.disable();
 	this.layout.boxZoom.disable();
-	//this.test();
-
 };
 
 /**
@@ -192,13 +186,9 @@ mapElement.prototype.addEdge = function (edge){
 	var polyline = L.polyline(pointList, {color: edge.color, weight: edge.width});
 
 	polyline.options.id = edge.id;
-	//polyline.on('click', this.clickEdge);
 
 	this.lines[edge.id] = polyline;
 	this.layout.addLayer(this.lines[edge.id]);
-
-	// zoom the map to the polyline
-	//this.layout.fitBounds(polyline.getBounds());
 }
 
 /**
@@ -234,13 +224,10 @@ mapElement.prototype.searchNodeById = function (id){
  * click node
  */
 mapElement.prototype.clickNode = function (node){
-	//console.log("CLICK")
 	if(!element.shiftpress){
-	//if(!element.crtlpress){
 		element.clearSelection();	
 	}
 
-	//mapElement.prototype.selectNode(Number(node.target.options.id));
 	mapElement.prototype.selectNode(node.target.options.id);
 }
 
@@ -248,7 +235,6 @@ mapElement.prototype.clickNode = function (node){
  * double click node
  */
 mapElement.prototype.dblClickNode = function (node){
-	//console.log("DBLCLICK")
 
 }
 
@@ -292,11 +278,7 @@ mapElement.prototype.clearNodeSelection = function (id){
 }
 
 mapElement.prototype.selectNodes = function (nl){
-	/*nl = new Set(nl);
-	for (var i in this.treeNodes)
-	{
-		if (nl.has(this.treeNodes[i].name)){element.selectNode(this.treeNodes[i])}
-	}*/
+
 }
 
 mapElement.prototype.selectNode = function(id,refresh) {

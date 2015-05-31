@@ -96,8 +96,7 @@ element.prototype.load = function () {
  * @param {propesties} properties 
  */
 element.prototype.selectElement = function (properties){
-	//var idsNodes = properties.nodes;
-	//var idsEdges = properties.edges;
+
 };
 
 /**
@@ -105,7 +104,6 @@ element.prototype.selectElement = function (properties){
  */
 element.prototype.doubleClickElement = function (properties){
 	var idsNodes = properties.nodes;
-	//var idsEdges = properties.edges;
 	PYCON.send('graphDblClick',{nodes:idsNodes});
 };
 
@@ -135,7 +133,7 @@ element.prototype.repaint = function (){
 	this.repaintTO = setTimeout(function() {
 		var layout = document.getElementById("layout");
 		$(element).trigger('repaintEnd');
-	}, 1000);
+	}, 500);
 };
 
 /**
@@ -451,14 +449,6 @@ function isKeyPressed(event) {
 		element.shiftpress = false;
 	}
 }
-
-/*element.prototype.keyboardPress = function() {
-	element.shiftpress = true;
-}
-
-element.prototype.keyboardUp = function (n){
-	element.shiftpress = false;
-}*/
 
 element.prototype.clearSelection = function() {
 

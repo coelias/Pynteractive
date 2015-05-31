@@ -58,9 +58,6 @@ phyloElement.prototype.loadHtml = function () {
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	//tag = {tag:'button', to:'#optionsNetwork', id: 'filterDataChart', text: "Apply", type: 'button', onclick: 'element.test();'};
-	//this.loadHtmlTag(tag);
-
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelRadius', text: 'Radius'};
@@ -93,18 +90,19 @@ phyloElement.prototype.loadHtml = function () {
 phyloElement.prototype.load = function () {
 	jQuery("#layout").css({	overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", }).animate({opacity: 1}, 200);
 
-	//jQuery("#layout").css({	overflow: "auto", display: "visible", opacity: 0.25,}).animate({opacity: 1}, 200);
-
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
 		element.setData(element.data);
-		element.drawData();
-		//element.refreshSelection();
+		element.repaint();
 	}
-
-	//submit_download_form("png");	
 };
 
+/**
+ * Repaint widgets
+ */
+treeD3Element.prototype.repaintEnd = function (){	
+	element.drawData();
+};
 
 /**
  * Add mouse event
@@ -213,98 +211,9 @@ phyloElement.prototype.initParams = function () {
 					element.wrap.style("-webkit-transform", "rotateZ(" + delta + "deg)");
 				}
 			});
-
-		//d3.select("#save").on("click", function(){
-		/*d3.select(window).on("click", function(){
-			  var html = d3.select("#layout svg")
-				.attr("version", 1.1)
-				.attr("xmlns", "http://www.w3.org/2000/svg")
-				.node().parentNode.innerHTML;
-
-			  //console.log(html);
-			  var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
-			  var img = '<img src="'+imgsrc+'">'; 
-			  d3.select("#svgdataurl").html(img);
-
-				var canvas = document.querySelector("canvas"),
-				    context = canvas.getContext("2d");
-
-				var image = new Image;
-				image.src = imgsrc;
-				image.onload = function() {
-				  context.drawImage(image, 0, 0);
-
-				  //save and serve it as an actual filename
-			    	  binaryblob();
-
-				  var a = document.createElement("a");
-				  a.download = "sample.png";
-				  a.href = canvas.toDataURL("image/png");
-
-				   var pngimg = '<img src="'+a.href+'">'; 
-			  	   d3.select("#pngdataurl").html(pngimg);
-
-				  a.click();
-				};
-
-			});*/
-
-
-
-		/*d3.select(window).on("click", function(){
-			var html = d3.select("#layout svg")
-				.attr("title", "test")
-				.attr("version", 1.1)
-				.attr("xmlns", "http://www.w3.org/2000/svg")
-
-				/*"<style type=\"text/css\" >
-				      <![CDATA[
-
-					.node circle {
-					  fill: #fff;
-					  stroke: steelblue;
-					  stroke-width: 1.5px;
-					}
-
-					.node, text {
-					  font: 10px sans-serif;
-					}
-
-					.link {
-					  fill: none;
-					  stroke: #ccc;
-					  stroke-width: 1.5px;
-					}
-
-					text {
-					  fill: #000;
-					}
-
-				      ]]>
-				</style>"*/
-				/*svg = jQuery(html)[0][0];
-				jQuery(svg).append("<style></style>")
-
-				.node().parentNode.innerHTML;
-
-
-
-			d3.select("body").append("div")
-				.attr("id", "download")
-				.append("img")
-				.attr("src", "data:image/svg+xml;base64,"+ btoa(html));
-			});*/
-
 	});
 
 }
-
-/*phyloElement.prototype.test = function (){
-	//newick.normalize(element.data);
-	var x = newick.parse(element.data);
-
-	element.normalize(x.branchset,0,x.length);
-}*/
 
 function binaryblob(){
 	var byteString = atob(document.querySelector("canvas").toDataURL().replace(/^data:image\/(png|jpg);base64,/, "")); //wtf is atob?? https://developer.mozilla.org/en-US/docs/Web/API/Window.atob
@@ -480,17 +389,7 @@ function dot(a, b) {
 */
 function submit_download_form(output_format)
 {
-/*console.log("hio")
-var html = d3.select("#layout svg")
-        .attr("title", "test")
-        .attr("version", 1.1)
-        .attr("xmlns", "http://www.w3.org/2000/svg")
-        .node().parentNode.innerHTML;
 
-d3.select("body").append("div")
-        .attr("id", "download")
-        .append("img")
-        .attr("src", "data:image/svg+xml;base64,"+ btoa(html));*/
 
 }
 
