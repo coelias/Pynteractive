@@ -119,8 +119,6 @@ chartElement.prototype.loadHtml = function () {
  */
 chartElement.prototype.changeLayoutType = function (id){
 
-	//Bar, Scatter, Line, Stack, Pie, All
-
 	jQuery("#"+this.layoutType).attr("checked",true);
 	this.layoutType = id;
 	jQuery("#"+id).attr("checked",true);
@@ -202,7 +200,6 @@ chartElement.prototype.loadCharts = function () {
  */
 chartElement.prototype.data1 = function(id,data) {
 	var chart = nv.models.multiBarChart()
-		//.transitionDuration(350)
 		.reduceXTicks(true)   //If 'false', every single x-axis tick label will be rendered.
 		.rotateLabels(0)      //Angle to rotate x-axis labels.
 		.showControls(true)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
@@ -235,9 +232,6 @@ chartElement.prototype.data2 = function(id,data) {
 	var chart = nv.models.scatterChart()
 		.showDistX(true)    //showDist, when true, will display those little distribution lines on the axis.
 		.showDistY(true)
-		//.transitionDuration(350)
-                //.width("25%")
-                //.height("35%")
 		.color(d3.scale.category10().range());
 
 	//Configure how the tooltip looks.
@@ -252,12 +246,9 @@ chartElement.prototype.data2 = function(id,data) {
 	jQuery("#layout"+id).empty();
 
 	var svg = d3.select("#layout"+id)
-		//.append("svg:svg")
 		.datum(data)
 		.transition()
 		.duration(500)
-		//.attr("width", "500px")
-      		//.attr("height", "500px")
 		.call(chart);
 
 	nv.utils.windowResize(chart.update);
@@ -284,7 +275,6 @@ chartElement.prototype.data3 = function(id, data) {
 	jQuery("#layout"+id).empty();
 
 	d3.select("#layout"+id)
-		//.append("svg:svg")
 		.datum(data)
 		.transition()
 		.duration(500)
@@ -301,25 +291,18 @@ chartElement.prototype.data3 = function(id, data) {
 chartElement.prototype.data4 = function(id,data) {
 	var chart = nv.models.stackedAreaChart()
 		.margin({right: 100})
-		//.x(function(d) { return d[0] })   //We can modify the data accessor functions...
-		//.y(function(d) { return d[1] })   //...in case your data is formatted differently.
 		.useInteractiveGuideline(true)    //Tooltips which show all data points. Very nice!
 		.rightAlignYAxis(true)      //Let's move the y-axis to the right side.
 		.showControls(true)       //Allow user to choose 'Stacked', 'Stream', 'Expanded' mode.
 		.clipEdge(true);
 
-	//Format x-axis labels with custom function.
-	//chart.xAxis
-	//     .tickFormat(function(d) { 
-	//      return d3.time.format('%x')(new Date(d)) 
-	// });
 
 	chart.yAxis.tickFormat(d3.format(',.2f'));
 
 	jQuery("#layout"+id).empty();
 
 	var svg = d3.select("#layout"+id)
-		//.append("svg:svg")
+
 		.datum(data)
 		.call(chart);
 
@@ -333,8 +316,6 @@ chartElement.prototype.data4 = function(id,data) {
  */
 chartElement.prototype.data5 = function(id,data) {
 	var chart = nv.models.pieChart()
-		//.x(function(d) { return d.label })
-		//.y(function(d) { return d.value })
 		.showLabels(true);
 
 	var dataAux = [];
@@ -349,7 +330,6 @@ chartElement.prototype.data5 = function(id,data) {
 	jQuery("#layout"+id).empty();
 
 	d3.select("#layout"+id)
-		//.append("svg:svg")
 		.datum(dataAux)
 		.transition()
 		.duration(350)
@@ -379,7 +359,6 @@ chartElement.prototype.addChartData = function (data){
  * remove data for chart
  */
 chartElement.prototype.removeChartData = function (id){
-	//var data = this.data;
 	var data = this.dataRaw;
 	jQuery.each(data, function(i, val) {
 		if(val.key == id)
@@ -411,7 +390,6 @@ function sortX(value1, value2){
  * add data in a serie for chart
  */
 chartElement.prototype.addSerieData = function (id,dataSerie){
-	//var data = this.data;
 	var data = this.dataRaw;
 	jQuery.each(data, function(i, val) {
 		if(val.key == id)
@@ -484,7 +462,6 @@ chartElement.prototype.filterData = function (e){
 
 	var value1 = jQuery('#spinbox1Chart').val();
 	var value2 = jQuery('#spinbox2Chart').val();
-	//element.maxdata = value2 - value1;
 
 	console.log("min: "+value1+" max: "+value2)
 
@@ -537,7 +514,6 @@ chartElement.prototype.smoothData = function (dataRaw, value1){
 					average += dataRaw[serie].values[j].y;
 					count++;
 				}
-				//value = {x:i+1,y:average / count}
 				var xx = Number(value1)+elemi;
 				console.log()
 				value = {x: xx,y:average / count}

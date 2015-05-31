@@ -18,8 +18,7 @@ graphElement.prototype.constructor = graphElement;
  * @param {propesties} properties 
  */
 graphElement.prototype.selectElement = function (properties){
-	//var idsNodes = properties.nodes;
-	//var idsEdges = properties.edges;
+
 };
 
 /**
@@ -27,8 +26,8 @@ graphElement.prototype.selectElement = function (properties){
  */
 graphElement.prototype.doubleClickElement = function (properties){
 	var idsNodes = properties.nodes;
-	//var idsEdges = properties.edges;
 	PYCON.send('graphDblClick',{nodes:idsNodes});
+	console.log(idsNodes)
 };
 
 /**
@@ -206,12 +205,6 @@ graphElement.prototype.loadHtml = function () {
 	this.loadHtmlTag(tag);
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
-
-
-	//tag = {tag:'hr', to:'#optionsNetwork'};
-	//this.loadHtmlTag(tag);
-
-
 };
 
 /**

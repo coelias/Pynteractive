@@ -39,40 +39,45 @@ chartD3Element.prototype.loadHtml = function () {
  */
 chartD3Element.prototype.load = function () {
 
-	/*tag = {tag:'div', to:'#sidebar-toggle', id: 'sidebarLegend'};
-	this.loadHtmlTagBefore(tag);
-	tag = {tag:'input', to:'#sidebarLegend', id: 'togglelegend', type:'checkbox'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'label', to:'#sidebarLegend', text:' Legend'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'br', to:'#sidebarLegend'};
-	this.loadHtmlTag(tag);
-	tag = {tag:'div', to:'#sidebarLegend', id: 'legend', style:'visibility: hidden;'};
-	this.loadHtmlTag(tag);*/
-
 	jQuery("#sidebarLegend").css("visibility","visible");
 	jQuery("#layout").css("width","750px");
 
-	element.data = JSON.parse('{"name": "name1", "children": [{"name": "name2","children": [{"name": "name3","size": 1}, {"name": "name4","size": 1}]},{"name": "name5","children": [{"name": "name6","size": 1}, {"name": "name7","size": 1}]}]}');
+	//element.data = JSON.parse('{"name": "name1", "children": [{"name": "name2","children": [{"name": "name3","size": 1}, {"name": "name4","size": 1}]},{"name": "name5","children": [{"name": "name6","size": 1}, {"name": "name7","size": 1}]}]}');
 
 	if(!jQuery.isEmptyObject(element.data)){
-		element.chart(element.data);
-		this.repaint();
+		element.initParams();
+		element.setData(element.data);
+		element.repaint();
 	}
 };
 
 /**
  * Repaint widgets
  */
-chartD3Element.prototype.repaintEnd = function (){
-	console.log("hola")
-	//this.load();
+chartD3Element.prototype.repaintEnd = function (){	
+	element.drawData();
 };
+
+/**
+ * 
+ */
+chartD3Element.prototype.initParams = function () {
+	jQuery("#layout").empty();
+}
+
+/**
+ * 
+ */
+chartD3Element.prototype.setData = function (data) {
+	element.data = data;
+}
 
 /**
  * Load and create Tree
  */
-chartD3Element.prototype.chart = function (data) {
+chartD3Element.prototype.drawData = function () {
+
+    data = element.data;
 
     jQuery("#layout").empty();
 
@@ -88,14 +93,6 @@ var b = {
 
 // Mapping of step names to colors.
 var colors = new Object();
-/*var colors = {
-  "tuyo": "#5687d1",
-  "chupame": "#7b615c",
-  "los cojones": "#de783b",
-  "el ojete": "#6ab975",
-  "hazme": "#a173d1",
-  "rico": "#bbbbbb"
-};*/
 
 
 function getKeys (tree) {
@@ -149,14 +146,6 @@ var vis = div
     .attr("id", "container")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-/*var vis = d3.select("#layout")
-    .append("svg:svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("svg:g")
-    .attr("id", "container")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");*/
-
 var partition = d3.layout.partition()
     .size([2 * Math.PI, radius * radius])
     .value(function(d) { return d.size; });
@@ -166,18 +155,6 @@ var arc = d3.svg.arc()
     .endAngle(function(d) { return d.x + d.dx; })
     .innerRadius(function(d) { return Math.sqrt(d.y); })
     .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
-
-// Use d3.text and d3.csv.parseRows so that we do not need to have a header
-// row, and can receive the csv as an array of arrays.
-/*d3.text("js/visit-sequences.csv", function(text) {
-  //var csv = d3.csv.parseRows(text);
-
-  //var json = buildHierarchy(csv);
-  //console.log(csv)
-  //console.log(json)
-
-  createVisualization(json);
-});*/
 
 createVisualization(data);
 

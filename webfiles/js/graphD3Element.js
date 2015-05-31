@@ -46,28 +46,44 @@ graphD3Element.prototype.loadHtml = function () {
 
 
 /**
+ * Load graph on layout div html page
+ */
+graphD3Element.prototype.load = function () {
+	
+	//element.setData();
+
+	if(!jQuery.isEmptyObject(element.data)){
+		element.initParams();
+		element.setData(element.data);
+		element.repaint();
+	}
+};
+
+/**
+ * Repaint widgets
+ */
+graphD3Element.prototype.repaintEnd = function (){	
+	element.drawData();
+};
+
+/**
  * Change Data and Plot it
  */
 graphD3Element.prototype.setData = function (data) {
 	element.data = data;
 
-	element.data = JSON.parse('[{"name":"father.Carlos del Ojo","imports":["father.Gay","mother.Huevos"]},{"name":"father.Gay","imports":["mother.Huevos"]},{"name":"mother.Huevos","imports":["father.Carlos del Ojo"]}]');
-
+	//element.data = JSON.parse('[{"name":"father.Carlos del Ojo","imports":["father.Gay","mother.Huevos"]},{"name":"father.Gay","imports":["mother.Huevos"]},{"name":"mother.Huevos","imports":["father.Carlos del Ojo"]}]');
 	element.data = JSON.parse('[{"imports": ["bioinf.Hang_Phang", "bioinf.Nicholas_Sanderson"], "name": "boss.Sarah_Walker"}, {"imports": ["boss.Sarah_Walker"], "name": "boss.Tim_Peto"}, {"imports": ["doc.Ana_Gibertoni"], "name": "boss.Derrick_Crook"}, {"imports": ["boss.Sarah_Walker", "bioinf.Anna_Sheppard", "boss.Derrick_Crook", "evol.Jane_CharlesWorth"], "name": "boss.Helen_Barker"}, {"imports": ["IT.Laura_Madrid", "bioinf.Hang_Phang", "IT.William_Sayers", "doc.Kyle_Knox", "bioinf.Dilrini_De_Silva", "bioinf.Hang_Phang", "doc.Kyle_Knox", "IT.William_Sayers"], "name": "evol.Danny_Wilson"}, {"imports": ["bioinf.Carlos_del_Ojo", "IT.Milind_Acharya", "bioinf.Vasiliki_Kostiou", "evol.Jane_CharlesWorth", "bioinf.Dilrini_De_Silva", "IT.John_Finney"], "name": "evol.Nicola_Di_Maio"}, {"imports": ["evol.Jane_CharlesWorth", "evol.Jane_CharlesWorth", "stat.Amy_Mason", "IT.William_Sayers", "doc.Bernardette_Young"], "name": "evol.Jess_Hedge"}, {"imports": ["doc.Nicola_Fawcett", "boss.Tim_Peto", "evol.Nicola_Di_Maio", "evol.Jess_Hedge", "boss.Tim_Peto", "doc.Tim_Walker"], "name": "evol.Sarah_Earle"}, {"imports": ["bioinf.Anna_Sheppard"], "name": "evol.Jane_CharlesWorth"}, {"imports": ["boss.Sarah_Walker", "stat.Phuong_Quan"], "name": "IT.Milind_Acharya"}, {"imports": ["stat.Phuong_Quan"], "name": "IT.Oriol_Mazariegos"}, {"imports": ["evol.Danny_Wilson", "boss.Sarah_Walker"], "name": "IT.John_Finney"}, {"imports": ["doc.Nicole_Stoesser", "stat.Phuong_Quan", "bioinf.Carlos_del_Ojo", "stat.Amy_Mason", "lab.Luke_Anson", "IT.Milind_Acharya", "bioinf.Nicholas_Sanderson", "bioinf.Vasiliki_Kostiou"], "name": "IT.William_Sayers"}, {"imports": ["doc.Nicole_Stoesser", "doc.Kyle_Knox", "stat.Tjibbe_Donker", "IT.Laura_Madrid", "bioinf.Tanya_Golubchik", "boss.Helen_Barker", "stat.Tjibbe_Donker", "evol.Jess_Hedge"], "name": "IT.Peter_Welch"}, {"imports": ["evol.Jane_CharlesWorth", "doc.Bernardette_Young", "boss.Sarah_Walker", "boss.Tim_Peto", "bioinf.Dilrini_De_Silva", "lab.Luke_Anson", "IT.Oriol_Mazariegos", "lab.Louise_Pankhurst"], "name": "IT.Laura_Madrid"}, {"imports": ["res.Rosalind_Harding", "bioinf.Carlos_del_Ojo", "doc.Nicola_Gordon", "lab.Luke_Anson", "doc.Nicole_Stoesser", "stat.Amy_Mason", "bioinf.Carlos_del_Ojo", "doc.Bernardette_Young"], "name": "bioinf.Dilrini_De_Silva"}, {"imports": ["IT.Milind_Acharya"], "name": "bioinf.Vasiliki_Kostiou"}, {"imports": ["IT.William_Sayers", "lab.Louise_Pankhurst", "lab.Tonya_Votintseva", "doc.Nicole_Stoesser", "evol.Sarah_Earle"], "name": "bioinf.Nicholas_Sanderson"}, {"imports": ["bioinf.Dilrini_De_Silva", "res.Jessie_Wu", "doc.Ana_Gibertoni", "stat.Phuong_Quan", "evol.Sarah_Earle", "evol.Jane_CharlesWorth", "doc.Bernardette_Young"], "name": "bioinf.Tanya_Golubchik"}, {"imports": ["bioinf.Nicholas_Sanderson", "bioinf.Hang_Phang", "bioinf.Tanya_Golubchik", "lab.Ali_Vaunghan"], "name": "bioinf.Carlos_del_Ojo"}, {"imports": ["doc.Nicola_Fawcett", "boss.Derrick_Crook", "doc.Bernardette_Young", "res.Jessie_Wu", "doc.John_Wrightson", "boss.Helen_Barker", "stat.Amy_Mason", "lab.Tonya_Votintseva"], "name": "bioinf.Hang_Phang"}, {"imports": ["evol.Danny_Wilson", "doc.Nicole_Stoesser"], "name": "bioinf.Anna_Sheppard"}, {"imports": ["res.Rosalind_Harding", "bioinf.Tanya_Golubchik", "doc.Nicola_Gordon"], "name": "doc.Nicole_Stoesser"}, {"imports": ["doc.Tim_Walker", "res.Teresa_Street", "IT.John_Finney", "IT.Oriol_Mazariegos", "stat.Tjibbe_Donker", "evol.Jane_CharlesWorth"], "name": "doc.Nicola_Fawcett"}, {"imports": ["boss.Tim_Peto", "IT.Milind_Acharya", "stat.Phuong_Quan", "bioinf.Hang_Phang"], "name": "doc.Tim_Walker"}, {"imports": ["doc.Tim_Walker", "doc.Bernardette_Young", "doc.Nicola_Fawcett"], "name": "doc.Nicola_Gordon"}, {"imports": ["doc.Tim_Walker", "stat.Tjibbe_Donker", "doc.John_Wrightson", "IT.Milind_Acharya"], "name": "doc.Ana_Gibertoni"}, {"imports": ["evol.Danny_Wilson", "boss.Sarah_Walker", "stat.Amy_Mason"], "name": "doc.John_Wrightson"}, {"imports": ["boss.Helen_Barker", "IT.Peter_Welch", "lab.Ali_Vaunghan", "bioinf.Tanya_Golubchik"], "name": "doc.Bernardette_Young"}, {"imports": ["IT.Laura_Madrid", "IT.Milind_Acharya", "IT.Laura_Madrid", "res.Jessie_Wu", "IT.Peter_Welch", "bioinf.Tanya_Golubchik", "IT.William_Sayers"], "name": "doc.Kyle_Knox"}, {"imports": ["bioinf.Tanya_Golubchik", "IT.Peter_Welch", "lab.Louise_Pankhurst", "IT.Peter_Welch"], "name": "stat.Phuong_Quan"}, {"imports": ["doc.Nicole_Stoesser", "lab.Tonya_Votintseva", "bioinf.Dilrini_De_Silva", "bioinf.Nicholas_Sanderson"], "name": "stat.Amy_Mason"}, {"imports": ["evol.Jess_Hedge", "doc.Tim_Walker", "boss.Derrick_Crook"], "name": "stat.Tjibbe_Donker"}, {"imports": ["doc.Nicola_Gordon", "doc.Tim_Walker", "IT.Laura_Madrid", "IT.Oriol_Mazariegos", "boss.Derrick_Crook", "IT.William_Sayers", "IT.Laura_Madrid", "bioinf.Anna_Sheppard"], "name": "lab.Tonya_Votintseva"}, {"imports": ["boss.Sarah_Walker", "IT.Peter_Welch", "res.Rosalind_Harding", "res.Rosalind_Harding", "evol.Nicola_Di_Maio", "boss.Helen_Barker", "bioinf.Anna_Sheppard"], "name": "lab.Louise_Pankhurst"}, {"imports": ["doc.Nicola_Fawcett", "bioinf.Tanya_Golubchik", "res.Rosalind_Harding", "doc.Tim_Walker", "lab.Luke_Anson", "doc.Nicola_Fawcett"], "name": "lab.Ali_Vaunghan"}, {"imports": ["IT.Laura_Madrid", "bioinf.Vasiliki_Kostiou", "stat.Tjibbe_Donker", "doc.Nicola_Fawcett"], "name": "lab.Luke_Anson"}, {"imports": ["evol.Sarah_Earle", "lab.Ali_Vaunghan", "evol.Jess_Hedge", "evol.Danny_Wilson", "doc.Nicole_Stoesser", "lab.Louise_Pankhurst", "doc.Kyle_Knox"], "name": "res.Rosalind_Harding"}, {"imports": ["bioinf.Dilrini_De_Silva", "bioinf.Tanya_Golubchik", "bioinf.Nicholas_Sanderson"], "name": "res.Teresa_Street"}, {"imports": ["stat.Phuong_Quan", "res.Teresa_Street", "stat.Phuong_Quan", "bioinf.Dilrini_De_Silva", "bioinf.Tanya_Golubchik", "lab.Luke_Anson", "doc.Tim_Walker", "IT.Milind_Acharya"], "name": "res.Jessie_Wu"}]');
-
 }
 
 /**
- * Load graph on layout div html page
+ * 
  */
-graphD3Element.prototype.load = function () {
-	element.setData();
-	if(!jQuery.isEmptyObject(element.data)){
-		element.chart(element.data);
-	}
-};
+graphD3Element.prototype.initParams = function () {
 
-graphD3Element.prototype.chart = function (data) {
+}
+
+graphD3Element.prototype.drawData = function () {
 
 jQuery("#layout").empty();
 
@@ -113,7 +129,7 @@ svg.append("svg:path")
     .on("mousedown", mousedown);
 
 
-  classes = data;
+  classes = element.data;
 
   var nodes = cluster.nodes(packages.root(classes)),
       links = packages.imports(nodes),
@@ -136,7 +152,7 @@ svg.append("svg:path")
       .attr("dy", ".31em")
       .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
       .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
-      .text(function(d) { return d.key; })
+      .text(function(d) { return d.key.replace(/_/g,' '); })
       .on("mouseover", mouseover)
       .on("mouseout", mouseout);
 

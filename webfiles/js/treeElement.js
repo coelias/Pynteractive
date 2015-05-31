@@ -201,10 +201,6 @@ treeElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-
-	//tag = {tag:'hr', to:'#optionsNetwork'};
-	//this.loadHtmlTag(tag);
-
 };
 
 /**
@@ -313,11 +309,6 @@ treeElement.prototype.addNode = function (node){
  */
 treeElement.prototype.addEdge = function (edge){
 	element.edgesMap.add(edge);
-
-	/*rom = element.nodesMap.get(id2);
-	if (from.radius == undefined) from.radius = 10;
-	from.radius = from.radius + 1;
-	element.nodesMap.update(from);*/
 }
 
 /**
