@@ -123,8 +123,11 @@ clearNewickSelection: function(data){
 	element.clearSelection();
 		},
 
+addPhyloFeat: function(fid,shape,color,desc){
+		element.addFeature(fid,shape,color,desc);
+	},
+
+addPhyloTipFeat: function(tid,fid){
+		element.addSampleFeature(tid,fid);
+	}
 }
-
-
-
-

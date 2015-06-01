@@ -100,7 +100,7 @@ phyloElement.prototype.load = function () {
 /**
  * Repaint widgets
  */
-treeD3Element.prototype.repaintEnd = function (){	
+phyloElement.prototype.repaintEnd = function (){	
 	element.drawData();
 };
 
@@ -238,10 +238,11 @@ function binaryblob(){
 
 phyloElement.prototype.setData = function (data) {
 
-	//debugger;
 	element.data = data;
 	element.tree = newick.parse(element.data);
-	this.sample2Feat={};
+	element.name2Node={};
+	element.sample2Feat={};
+
 }
 
 
@@ -318,7 +319,7 @@ phyloElement.prototype.drawData = function () {
 //		.attr("points", "-4,-4 4,4 0,0 4,-4 -4,4 0,0 -4,-4")
 //		.attr("style", "stroke:red");
 
-	element.paintSampleFeatures()
+	element.paintAllFeatures()
 }
 
 
@@ -613,6 +614,7 @@ phyloElement.prototype.addSampleFeature=function (tipname,featid)
 {
 	if (!(tipname in element.sample2Feat)){element.sample2Feat[tipname]=[]}
 	element.sample2Feat[tipname].push(featid)
+	element.paintSampleFeatures(tipname);
 }
 
 phyloElement.prototype.addFeature=function(id,shape,color,description)
@@ -620,24 +622,37 @@ phyloElement.prototype.addFeature=function(id,shape,color,description)
 	this.features[id]=[shape,color,description]
 }
 
-phyloElement.prototype.paintSampleFeatures=function ()
+phyloElement.prototype.paintAllFeatures=function ()
 {
-	d3.selectAll('g.feat').remove()
 	for (var key in element.sample2Feat)
 	{
-		fts=element.sample2Feat[key];
-		fts.sort()
-		for (var i=0;i<fts.length;i++)
-		{
-			element.paintFeature(key,fts[i],i)
-		}
+		element.paintSampleFeatures(key);
 	}
 }
 
+phyloElement.prototype.paintSampleFeatures=function (s)
+{
+	var oj=element.name2Node[s];
+	if (oj==undefined) return;
+	if (oj.feats!=undefined)
+	{
+		for (var i=0;i<oj.feats.length;i++)
+			{
+			oj.feats[i].remove()
+		}
+	}
+
+	oj.feats=[];
+	fts=element.sample2Feat[s];
+	fts.sort();
+	for (var i=0;i<fts.length;i++)
+	{
+		element.paintFeature(s,fts[i],i)
+	}
+}
 
 phyloElement.prototype.paintFeature= function (tipname,featid,pos)
 {
-
 	var oj=element.name2Node[tipname];
  	if(element.circularLabel == true)
 	{
@@ -650,7 +665,7 @@ phyloElement.prototype.paintFeature= function (tipname,featid,pos)
 	{
 		var nd=element.layout.selectAll().data([oj])
 			.enter().append("g")
-			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y+d.label.getBBox().width+30+pos*12) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")";})
+			.attr("transform", function(d) {if (d.feats==undefined){d.feats=[]};d.feats.push(this); return "rotate(" + (d.x - 90) + ")translate(" + (d.y+d.label.getBBox().width+30+pos*12) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")";})
 			.attr("class","feat");
 	}
 	var ft=element.features[featid][0];
@@ -675,6 +690,7 @@ phyloElement.prototype.clearNodeSelection = function (n){
 }
 
 phyloElement.prototype.selectFeature = function (fid){
+	debugger;
 	var k=[];
 	for (var key in element.sample2Feat)
 	{
@@ -713,7 +729,7 @@ phyloElement.prototype.selectNode = function(n) {
 		d3.select(n.label).attr("class","selectednode");
 		element.selectionList.add(n);
 	}
-	element.paintSampleFeatures()
+	element.paintAllFeatures()
 }
 
 phyloElement.prototype.refreshSelection = function() {
