@@ -21,15 +21,15 @@ Pynteractive is in constant development, all feedback/suggestions/bugreports are
 * Networks: graphs and digraphs provided by the vis.js framework
 * Trees: Using different engines (d3.js, vis.js)
 * Maps: provided by leaflet (openstreet maps)
-* Phylogenetic trees
+* Phylogenetic trees + Annotation
 * Charts: using NVD3.js
 
 ## TODO
 
-* Annotation in phylogenetic trees + different layouts 
+* More phylogenetic tree layouts
 * Integrating Circos and making it interactive
 * Extra plots extracted from D3.js
-* Interactive scatter plots with selection
+* Interactive scatter plots with point selection
 
 ## Compatibility
 
