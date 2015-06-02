@@ -165,9 +165,23 @@ m.addEdge('ID3','ID4',width=5,color='green')
 ```python
 from pynteractive import *
 a=PhyloTree()
-a.setNewick('a.newick')
-a.view()
-a.setNewick('myco.newick')
+
+a.setData('(((erHomoC:0.28006,erCaelC:0.22089):0.40998,(erHomoA:0.32304,(erpCaelC:0.58815,((erHomoB:0.5807,erCaelB:0.23569):0.03586,erCaelA:0.38272):0.06516):0.03492):0.14265):0.63594,(TRXHomo:0.65866,TRXSacch:0.38791):0.32147,TRXEcoli:0.57336);')
+
+a.addFeature("feat1",'circle','green')
+a.addFeature("f2",'square','red')
+a.addFeature(3,'diamond','black')
+a.addFeature(4,'cross','#00f')
+
+a.addTipFeature('erCaelA','feat1')
+a.addTipFeature('erCaelA','f2')
+a.addTipFeature('erCaelA',3)
+a.addTipFeature('TRXHomo',4)
+a.addTipFeature('TRXHomo','feat1')
+a.addTipFeature('TRXEcoli',3)
+a.addTipFeature('TRXEcoli',4)
+a.addTipFeature('erHomoA','f2')
+a.addTipFeature('erpCaelC','f2')
 ```
 ## Real World Examples
 
