@@ -11,7 +11,9 @@ class PhyloTree(DataStruct):
 	def setData(self,newick=None):
 		'''Draws the specified newick tree, It can be either a string containing the newick string or a path to a file'''
 		if os.path.isfile(newick):
-			self.newick=open(newick).read().strip()
+			newick=open(newick).read().strip()
+		
+		self.newick=newick
 		
 		self._update('setData',self.newick)
 
