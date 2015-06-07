@@ -25,6 +25,8 @@ function phyloElement() {
 		            "cross":["polyline",["points", "-4,-4 4,4 0,0 4,-4 -4,4 0,0 -4,-4"],'stroke']
 					}
 	this.sample2Feat={}
+
+	this.colors = new Object();
 };
 
 phyloElement.prototype = new element();
@@ -88,14 +90,26 @@ phyloElement.prototype.loadHtml = function () {
  * Load graph on layout div html page
  */
 phyloElement.prototype.load = function () {
-	jQuery("#layout").css({	overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", }).animate({opacity: 1}, 200);
+	
+	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", width:"95%"}).animate({opacity: 1}, 200);
+	jQuery("#sidebarLegend").css({opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
 
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
 		element.setData(element.data);
 		element.repaint();
+
+
 	}
+	
+	element.getKeys();
+	element.drawLegend();
+	d3.select("#togglelegend").on("click", element.toggleLegend);
+	//jQuery("#togglelegend").on("click", element.toggleLegend);
+
 };
+
+
 
 /**
  * Repaint widgets
@@ -737,4 +751,63 @@ phyloElement.prototype.refreshSelection = function() {
 		d3.select(v.circle).attr("class","selectednode").select('circle').attr('r',"3.2");
 		d3.select(v.label).attr("class","selectednode");
 	});
+}
+
+phyloElement.prototype.drawLegend = function() {
+
+  // Dimensions of legend item: width, height, spacing, radius of rounded rect.
+  var li = {
+    w: 75, h: 30, s: 3, r: 3
+  };
+
+  var legend = d3.select("#legend").append("svg:svg")
+      .attr("width", li.w)
+      .attr("height", d3.keys(this.colors).length * (li.h + li.s));
+
+  var g = legend.selectAll("g")
+      .data(d3.entries(this.colors))
+      .enter().append("svg:g")
+      .attr("transform", function(d, i) {
+              return "translate(0," + i * (li.h + li.s) + ")";
+           });
+
+  g.append("svg:rect")
+      .attr("rx", li.r)
+      .attr("ry", li.r)
+      .attr("width", li.w)
+      .attr("height", li.h)
+      .style("fill", function(d) { return d.value; });
+
+  g.append("svg:text")
+      .attr("x", li.w / 2)
+      .attr("y", li.h / 2)
+      .attr("text-anchor", "middle")
+      .text(function(d) { return d.key; });
+
+}
+
+phyloElement.prototype.toggleLegend = function() {
+console.log("hola")
+  var legend = d3.select("#legend");
+  if (legend.style("visibility") == "hidden") {
+    legend.style("visibility", "");
+  } else {
+    legend.style("visibility", "hidden");
+  }
+}
+
+phyloElement.prototype.getKeys = function() {
+
+	var colour = '#FF0000'
+	this.colors["circle"] = colour;
+	var colour = '#006600'
+	this.colors["triangle"] = colour;
+	var colour = '#0000CC'
+	this.colors["round"] = colour;
+	var colour = '#6666FF'
+	this.colors["node"] = colour;
+	var colour = '#99CCFF'
+	this.colors["edge"] = colour;
+
+	return 0;
 }

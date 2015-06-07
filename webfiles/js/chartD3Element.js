@@ -42,7 +42,7 @@ chartD3Element.prototype.load = function () {
 	jQuery("#sidebarLegend").css("visibility","visible");
 	jQuery("#layout").css("width","750px");
 
-	//element.data = JSON.parse('{"name": "name1", "children": [{"name": "name2","children": [{"name": "name3","size": 1}, {"name": "name4","size": 1}]},{"name": "name5","children": [{"name": "name6","size": 1}, {"name": "name7","size": 1}]}]}');
+	element.data = JSON.parse('{"name": "name1", "children": [{"name": "name2","children": [{"name": "name3","size": 1}, {"name": "name4","size": 1}]},{"name": "name5","children": [{"name": "name6","size": 1}, {"name": "name7","size": 1}]}]}');
 
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
