@@ -699,7 +699,12 @@ phyloElement.prototype.clearSelection = function() {
 
 phyloElement.prototype.clearNodeSelection = function (n){
 	d3.select(n.circle).attr("class","node").select('circle').attr('r',"2.5");
-	d3.select(n.label).attr("class",null);
+	if (d3.select(n.label).attr("class") == 'selectednode')
+	{
+		d3.select(n.label).attr("class",null);
+		element.paintSampleFeatures(n.name);
+		
+	}
 	element.selectionList.delete(n);
 }
 
@@ -741,9 +746,10 @@ phyloElement.prototype.selectNode = function(n) {
 		element.clearNodeSelection(n)
 		d3.select(n.circle).attr("class","selectednode").select('circle').attr('r',"3.2");
 		d3.select(n.label).attr("class","selectednode");
+		element.paintSampleFeatures(n.name);
 		element.selectionList.add(n);
 	}
-	element.paintAllFeatures()
+//	element.paintAllFeatures()
 }
 
 phyloElement.prototype.refreshSelection = function() {
