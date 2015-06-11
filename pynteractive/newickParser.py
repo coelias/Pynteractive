@@ -1,0 +1,90 @@
+import os
+import re
+
+class Newick:
+	releaf=re.compile("([^:]+)?(:[0-9.]+)?")
+	class Node:
+		def __init__(self,name=None,lgth=None):
+			self.name=name
+			self.length=lgth
+			self.children=[]
+	
+		def append(self,x):
+			self.children.append(x)
+
+		def __str__(self):
+			cad=""
+			if self.name:
+				cad=self.name
+			if self.length: cad+=":{0}".format(self.length)
+			if self.children:
+				cad="({0})".format(",".join([str(i) for i in self.children]))+cad
+			return cad
+
+	def __init__(self):
+		self.root=None
+		self.nodenames=set()
+
+	def readNewick(self,newick):
+		try:
+			if os.path.isfile(newick):
+				self.root,pos=self._parseTree(open(newick).read(),0)
+			else:
+				self.root,pos=self._parseTree(newick,0)
+		except:
+			raise Exception('Invalid format for Newick')
+	
+	def _parseTree(self,cad,pos):
+		n=Newick.Node()
+		assert cad[pos]=='('
+		
+		while True:
+			if cad[pos]==')':
+				if pos==len(cad)-1: break
+				if cad[pos+1]==';': break
+				if cad[pos+1] not in "),":
+					name,lgth,pos=self._parseLeaf(cad,pos+1)
+					n.name=name
+					n.length=lgth
+					return n,pos
+				else: break
+			elif cad[pos]==';': 
+				break
+	
+			if cad[pos+1]!='(': 
+				name,lgth,pos=self._parseLeaf(cad,pos+1)
+				n.append(Newick.Node(name,lgth))
+			else:
+				nn,pos=self._parseTree(cad,pos+1)
+				n.append(nn)
+		return n,pos+1
+	
+	def _parseLeaf(self,cad,pos):
+		length=None
+		name=None
+		i=pos
+		while i<=len(cad) and cad[i] not in ",);":
+			i+=1
+		items=Newick.releaf.findall(cad[pos:i])
+		if not items: raise Exception("Tree wrongly constructed")
+		if items[0][0]: name=self.getName(items[0][0])
+		if items[0][1]: length=float(items[0][1][1:])
+	
+		return name,length,i
+	
+	def getName(self,name):
+		if not name in self.nodenames:
+			self.nodenames.add(name)
+			return name
+		k=1
+		newname=name+"#{0}".format(k)
+		while newname in self.nodenames:
+			k+=1
+			newname=name+"#{0}".format(k)
+		self.nodenames.add(newname)
+		return newname
+
+	def getNewick(self):
+		return str(self.root)+";"
+	__str__=getNewick
+
