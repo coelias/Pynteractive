@@ -16,6 +16,9 @@ function phyloElement() {
 	this.circularLabel = false;
 	this.treeNodes=[];
 	this.name2Node={}
+	this.nodedegrees=0;
+	this.trackWidth=15;
+	this.trackRadius=367;
 
 	this.features={}//{1: ["circle","red"], 2: ["diamond","black"], 3: ["square","green"], 4:["cross","blue"]}
 
@@ -266,6 +269,7 @@ phyloElement.prototype.drawData = function () {
 	}
 
 	this.maxpath = 0;
+	var ntips=0
 	element.normalize(element.tree.branchset,0,element.tree.length);
 
 	element.parsenormalize(element.tree);
@@ -275,8 +279,12 @@ phyloElement.prototype.drawData = function () {
 	for (var i=0;i<element.treeNodes.length;i++)
 	{
 		element.name2Node[element.treeNodes[i].name]=element.treeNodes[i]
+		if (element.treeNodes[i].children==undefined)
+		{
+			ntips++;
+		}
 	}
-
+	element.nodedegrees=360/(ntips*2);
 	phylo(element.treeNodes[0], 0);
 
 	var link = element.layout.selectAll("path.link")
@@ -333,6 +341,20 @@ phyloElement.prototype.drawData = function () {
 //		.attr("points", "-4,-4 4,4 0,0 4,-4 -4,4 0,0 -4,-4")
 //		.attr("style", "stroke:red");
 
+	var maxR=undefined;
+	for (var i=0;i<element.treeNodes.length;i++)
+	{
+		if (element.treeNodes[i].label!= undefined )
+		{
+			if (!maxR)
+			{maxR=element.treeNodes[i]}
+			else if (element.treeNodes[i].y+element.treeNodes[i].label.getBBox().width>maxR.y+maxR.label.getBBox().width)
+			{maxR=element.treeNodes[i]}
+		}
+	}
+	element.trackRadius=maxR.label.getBBox().width+35
+
+	element.trackRadius=maxR.y+maxR.label.getBBox().width+1.2;
 	element.paintAllFeatures()
 }
 
@@ -350,6 +372,38 @@ function step(d) {
 	"M" + s[0] + "," + s[1] +
 	"A" + r + "," + r + " 0 0," + sweep + " " + m[0] + "," + m[1] +
 	"L" + t[0] + "," + t[1]);
+}
+
+function step22(d){
+	if (d.target.children!=undefined)
+	{
+		return "";
+	}
+	
+	if (d.source.x<d.target.x)
+	{
+			var di=-element.nodedegrees;
+	}
+	else
+	{
+			var di=element.nodedegrees;
+	}
+
+	var di2=10;
+	var r=element.trackRadius;
+	var r2=element.trackRadius+element.trackWidth;
+	var sweep2 = d.target.x > d.source.x ? 1 : 0;
+	var sweep = d.target.x <= d.source.x ? 1 : 0;
+	var p1 = project({x: d.target.x-di, y: r});
+	var p2 = project({x: d.target.x-di, y: r2});
+	var p3 = project({x: d.target.x+di, y: r2});
+	var p4 = project({x: d.target.x+di, y: r});
+	return ( "M"+p1[0] + "," + p1[1] + 
+			"L" + p2[0] + "," + p2[1] +
+			"A" + r2 + "," + r2 + " 0 0," + sweep + " " + p3[0] + "," + p3[1]+
+			"L" + p4[0] + "," + p4[1] +
+			"A" + r + "," + r + " 0 0," + sweep2 + " " + p1[0] + "," + p1[1]
+	);
 }
 
 /**
@@ -375,9 +429,6 @@ function phylo(n, offset) {
 	});
 }
 
-/**
- * Process mouse event
- */
 function project(d) {
 	var r = d.y, a = (d.x - 90) / 180 * Math.PI;
 	return [r * Math.cos(a), r * Math.sin(a)];
@@ -655,6 +706,7 @@ phyloElement.prototype.paintSampleFeatures=function (s)
 			oj.feats[i].remove()
 		}
 	}
+	else{ return;}
 
 	oj.feats=[];
 	fts=element.sample2Feat[s];
@@ -793,7 +845,6 @@ phyloElement.prototype.drawLegend = function() {
 }
 
 phyloElement.prototype.toggleLegend = function() {
-console.log("hola")
   var legend = d3.select("#legend");
   if (legend.style("visibility") == "hidden") {
     legend.style("visibility", "");

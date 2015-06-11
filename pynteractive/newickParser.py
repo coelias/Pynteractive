@@ -26,6 +26,7 @@ class Newick:
 		self.nodenames=set()
 
 	def readNewick(self,newick):
+		self.nodenames=set()
 		try:
 			if os.path.isfile(newick):
 				self.root,pos=self._parseTree(open(newick).read(),0)
