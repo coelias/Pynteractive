@@ -3,7 +3,6 @@ import os
 import re
 
 class Tree(Network):
-	releaf=re.compile("([^:]+)?(:[0-9.]+)?")
 	def __init__(self,name=None,directed=None):
 		self.nodenames=set()
 		VisNetwork.__init__(self,name,True)
@@ -22,23 +21,7 @@ class Tree(Network):
 		return newname
 
 
-	class Node:
-		def __init__(self,name=None,lgth=None):
-			self.name=name
-			self.length=lgth
-			self.children=[]
-	
-		def append(self,x):
-			self.children.append(x)
 
-	def readNewick(self,newick):
-		try:
-			if os.path.isfile(newick):
-				self.root,pos=self._parseTree(open(newick).read(),0)
-			else:
-				self.root,pos=self._parseTree(newick,0)
-		except:
-			raise Exception('Invalid format for Newick')
 
 	def _refresh(self):
 		if self.root:
@@ -61,6 +44,14 @@ class Tree(Network):
 					i.name=newnodename
 					self.addEdge(rt.name,newnodename,length=50)
 
+	def readNewick(self,newick):
+		try:
+			if os.path.isfile(newick):
+				self.root,pos=self._parseTree(open(newick).read(),0)
+			else:
+				self.root,pos=self._parseTree(newick,0)
+		except:
+			raise Exception('Invalid format for Newick')
 
 	def _parseTree(self,cad,pos):
 		n=Tree.Node()

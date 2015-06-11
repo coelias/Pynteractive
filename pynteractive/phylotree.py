@@ -1,5 +1,6 @@
 from pynteractive.datastruct import *
 import os
+from newickParser import *
 
 class PhyloTree(DataStruct):
 	def __init__(self,name=None):
@@ -7,24 +8,24 @@ class PhyloTree(DataStruct):
 		self.newick=""
 		self.features={}
 		self.tipfeatures={}
+		self.newick=Newick()
 
 	def setData(self,newick=None):
 		'''Draws the specified newick tree, It can be either a string containing the newick string or a path to a file'''
-		if os.path.isfile(newick):
-			newick=open(newick).read().strip()
-		
-		self.newick=newick
-		
-		self._update('setData',self.newick)
+		self.newick.readNewick(newick)
+		self._update('setData',str(self.newick))
 
 	def _refresh(self):
-		self._update('setData',self.newick)
+		self._update('setData',str(self.newick))
 		for i,j in self.features.items():
 			self._update('addPhyloFeat',i,*j)
 
 		for i,j in self.tipfeatures.items():
 			for k in j:
 				self._update('addPhyloTipFeat',i,k)
+
+	def getTips(self):
+		return self.newick.nodenames
 			
 
 
