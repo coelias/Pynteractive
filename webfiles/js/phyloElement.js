@@ -12,13 +12,13 @@ function phyloElement() {
 	this.maxpath = 0;
 	this.minpath = 1000;
 	this.tree;
-	this.resolution = 960;
+	this.resolution = 1440;
 	this.circularLabel = false;
 	this.treeNodes=[];
 	this.name2Node={}
 	this.nodedegrees=0;
 	this.trackWidth=15;
-	this.trackRadius=367;
+	this.trackRadius=461;
 
 	this.features={}//{1: ["circle","red"], 2: ["diamond","black"], 3: ["square","green"], 4:["cross","blue"]}
 
@@ -352,9 +352,8 @@ phyloElement.prototype.drawData = function () {
 			{maxR=element.treeNodes[i]}
 		}
 	}
-	element.trackRadius=maxR.label.getBBox().width+35
 
-	element.trackRadius=maxR.y+maxR.label.getBBox().width+1.2;
+	element.trackRadius=maxR.y+25+maxR.label.getBBox().width*1.2;
 	element.paintAllFeatures()
 }
 
@@ -374,7 +373,7 @@ function step(d) {
 	"L" + t[0] + "," + t[1]);
 }
 
-function step22(d){
+function step(d){
 	if (d.target.children!=undefined)
 	{
 		return "";
