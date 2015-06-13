@@ -358,6 +358,7 @@ phyloElement.prototype.drawData = function () {
 		}
 	}
 
+	this.ntracks=0;
 	element.trackRadius=maxR.y+25+maxR.label.getBBox().width*1.2;
 	element.paintAllFeatures()
 }
