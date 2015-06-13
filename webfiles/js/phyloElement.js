@@ -95,15 +95,13 @@ phyloElement.prototype.loadHtml = function () {
  */
 phyloElement.prototype.load = function () {
 	
-	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", width:"95%"}).animate({opacity: 1}, 200);
+	//jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", width:"95%"}).animate({opacity: 1}, 200);
 	jQuery("#sidebarLegend").css({opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
 
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
 		element.setData(element.data);
 		element.repaint();
-
-
 	}
 	
 	element.getKeys();
@@ -184,6 +182,7 @@ phyloElement.prototype.initParams = function () {
 
 	this.layout = this.wrap.append("g")
 		.attr("transform", "translate(" + w/2 + "," + h/2 + ")");
+		//.attr("transform", "translate(" + w/3 + "," + h/3 + ")");
 
 	this.start = null,
 	this.rotate = 0,
@@ -192,13 +191,25 @@ phyloElement.prototype.initParams = function () {
 	this.wrap.on("mousedown", function() {
 		element.wrap.style("cursor", "move");
 		element.start = mouse(d3.event);
+
+		var blubar = $("#tools").attr("class");
+		if(blubar == "container open-sidebar"){
+			element.start[0] = element.start[0]-216;
+		}
+
 		d3.event.preventDefault();
 
 		d3.select(window)
 			.on("mouseup", function() {
 				if (element.start) {
 					element.wrap.style("cursor", "auto");
+
+					var blubar = $("#tools").attr("class");
 					var m = mouse(d3.event);
+					if(blubar == "container open-sidebar"){
+						m[0] = m[0]-216;
+					}
+
 					var delta = Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI;
 					element.rotate += delta;
 					if (element.rotate > 360) {
@@ -210,6 +221,7 @@ phyloElement.prototype.initParams = function () {
 					element.start = null;
 					element.wrap.style("-webkit-transform", null);
 					element.layout	.attr("transform", "translate(" + element.r + "," + element.r + ")rotate(" + element.rotate + ")")
+					//element.layout	.attr("transform", "translate(" + w/2 + "," + h/2 + ")rotate(" + element.rotate + ")")
 							.selectAll("text")
 							.attr("text-anchor", 	function(d) { 
 											return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; 
@@ -225,9 +237,19 @@ phyloElement.prototype.initParams = function () {
 			})
 			.on("mousemove", function() {
 				if (element.start) {
+					//var m = mouse(d3.event);
+					//var delta = Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI;
+					//element.wrap.style("-webkit-transform", "rotate(" + delta + "deg)");
+						
+	
+					var blubar = $("#tools").attr("class");
 					var m = mouse(d3.event);
+					if(blubar == "container open-sidebar"){
+						m[0] = m[0]-216;
+					}
+
 					var delta = Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI;
-					element.wrap.style("-webkit-transform", "rotateZ(" + delta + "deg)");
+					element.wrap.style("-webkit-transform", "rotate(" + delta + "deg)");
 				}
 			});
 	});
@@ -685,6 +707,7 @@ phyloElement.prototype.changeResolution = function (value) {
 	element.clearSelection();
 	element.resolution = value;
 	element.maxrange = 2.7+((value-960)*0.0043);
+
 	element.initParams();
 //	element.drawData();
 //	element.refreshSelection();
