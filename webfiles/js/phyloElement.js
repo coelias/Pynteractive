@@ -18,7 +18,8 @@ function phyloElement() {
 	this.name2Node={}
 	this.nodedegrees=0;
 	this.trackWidth=15;
-	this.trackRadius=461;
+	this.trackRadius=0;
+	this.ntracks=0;
 
 	this.features={}//{1: ["circle","red"], 2: ["diamond","black"], 3: ["square","green"], 4:["cross","blue"]}
 
@@ -129,6 +130,7 @@ phyloElement.prototype.initParams = function () {
 	jQuery("#layout").empty();
 
 	this.r = element.resolution / 2;
+	this.trackRadius=0;
 
 	var width = element.r * 2;
 	var height = element.r * 2;
@@ -326,20 +328,6 @@ phyloElement.prototype.drawData = function () {
 
 	}
 
-//	element.layout.selectAll().data([element.name2Node['HHHHHHHHH']])
-//		.enter().append("g")
-//		.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y+d.label.getBBox().width+30) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")";})
-//		.append("circle")
-//		.attr("r", 5)
-//		.attr("style", "fill:#F00");
-//
-//
-//	element.layout.selectAll().data([element.name2Node['IIIIIIIII']])
-//		.enter().append("g")
-//		.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y+d.label.getBBox().width+30) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")";})
-//		.append("polyline")
-//		.attr("points", "-4,-4 4,4 0,0 4,-4 -4,4 0,0 -4,-4")
-//		.attr("style", "stroke:red");
 
 	var maxR=undefined;
 	for (var i=0;i<element.treeNodes.length;i++)
@@ -373,13 +361,17 @@ function step(d) {
 	"L" + t[0] + "," + t[1]);
 }
 
-function step(d){
-	if (d.target.children!=undefined)
-	{
-		return "";
+function trackFeatStep(info){
+	if (element.trackRadius==0){
+		setTimeout(function() { element.trackFeatStep(info); }, 500);
+		return
 	}
+
+	while (!element.trackRadius){}
+	var d=info[0];
+	var ntrack=info[1]-1;
 	
-	if (d.source.x<d.target.x)
+	if (d.parent.x<d.x)
 	{
 			var di=-element.nodedegrees;
 	}
@@ -389,14 +381,14 @@ function step(d){
 	}
 
 	var di2=10;
-	var r=element.trackRadius;
-	var r2=element.trackRadius+element.trackWidth;
-	var sweep2 = d.target.x > d.source.x ? 1 : 0;
-	var sweep = d.target.x <= d.source.x ? 1 : 0;
-	var p1 = project({x: d.target.x-di, y: r});
-	var p2 = project({x: d.target.x-di, y: r2});
-	var p3 = project({x: d.target.x+di, y: r2});
-	var p4 = project({x: d.target.x+di, y: r});
+	var r=element.trackRadius+element.trackWidth*(ntrack);
+	var r2=element.trackRadius+element.trackWidth*(ntrack+1);
+	var sweep2 = d.x > d.parent.x ? 1 : 0;
+	var sweep = d.x <= d.parent.x ? 1 : 0;
+	var p1 = project({x: d.x-di, y: r});
+	var p2 = project({x: d.x-di, y: r2});
+	var p3 = project({x: d.x+di, y: r2});
+	var p4 = project({x: d.x+di, y: r});
 	return ( "M"+p1[0] + "," + p1[1] + 
 			"L" + p2[0] + "," + p2[1] +
 			"A" + r2 + "," + r2 + " 0 0," + sweep + " " + p3[0] + "," + p3[1]+
@@ -405,6 +397,43 @@ function step(d){
 	);
 }
 
+function trackBarStep(info){
+	if (element.trackRadius==0){
+		setTimeout(function() { element.trackBarStep(info); }, 500);
+		return
+	}
+
+	while (!element.trackRadius){}
+	var d=info[0];
+	var value=info[1];
+	var ntrack=element.ntracks;
+
+	
+	if (d.parent.x<d.x)
+	{
+			var di=-element.nodedegrees*.9;
+	}
+	else
+	{
+			var di=element.nodedegrees*.9;
+	}
+
+	var di2=10;
+	var r=element.trackRadius+element.trackWidth*(ntrack);
+	var r2=element.trackRadius+element.trackWidth*(ntrack)+value;
+	var sweep2 = d.x > d.parent.x ? 1 : 0;
+	var sweep = d.x <= d.parent.x ? 1 : 0;
+	var p1 = project({x: d.x-di, y: r});
+	var p2 = project({x: d.x-di, y: r2});
+	var p3 = project({x: d.x+di, y: r2});
+	var p4 = project({x: d.x+di, y: r});
+	return ( "M"+p1[0] + "," + p1[1] + 
+			"L" + p2[0] + "," + p2[1] +
+			"A" + r2 + "," + r2 + " 0 0," + sweep + " " + p3[0] + "," + p3[1]+
+			"L" + p4[0] + "," + p4[1] +
+			"A" + r + "," + r + " 0 0," + sweep2 + " " + p1[0] + "," + p1[1]
+	);
+}
 /**
  * Process mouse event
  */
@@ -657,11 +686,14 @@ phyloElement.prototype.changeCircularLabel = function () {
  * 
  */
 phyloElement.prototype.changeResolution = function (value) {
+	element.clearSelection();
 	element.resolution = value;
 	element.maxrange = 2.7+((value-960)*0.0043);
 	element.initParams();
-	element.drawData();
-	element.refreshSelection();
+//	element.drawData();
+//	element.refreshSelection();
+	PYCON.send("refresh",{"name": DATAID});
+
 }
 
 /**
@@ -678,6 +710,16 @@ phyloElement.prototype.addSampleFeature=function (tipname,featid)
 {
 	if (!(tipname in element.sample2Feat)){element.sample2Feat[tipname]=[]}
 	element.sample2Feat[tipname].push(featid)
+	element.paintSampleFeatures(tipname);
+}
+
+phyloElement.prototype.delSampleFeature=function (tipname,featid)
+{
+	if (!(tipname in element.sample2Feat)){element.sample2Feat[tipname]=[]}
+	var pos=element.sample2Feat[tipname].lastIndexOf(featid);
+	if (pos<0){return;}
+	delete element.sample2Feat[tipname][pos];
+	element.sample2Feat[tipname].splice(pos,1);
 	element.paintSampleFeatures(tipname);
 }
 
@@ -705,10 +747,10 @@ phyloElement.prototype.paintSampleFeatures=function (s)
 			oj.feats[i].remove()
 		}
 	}
-	else{ return;}
 
 	oj.feats=[];
 	fts=element.sample2Feat[s];
+	if (fts==undefined){return;}
 	fts.sort();
 	for (var i=0;i<fts.length;i++)
 	{
@@ -739,6 +781,59 @@ phyloElement.prototype.paintFeature= function (tipname,featid,pos)
 	nd.append(shape[0]).attr(shape[1][0],shape[1][1]).attr(shape[2],color)
 		.on("click",function(d){element.selectFeature(featid)})
 }
+
+
+phyloElement.prototype.addTrack=function ()
+{
+	if (element.trackRadius==0){ setTimeout(function() { element.addTrack(); }, 500); return }
+	if (element.ntracks==0)
+	{
+		nd=element.layout.selectAll().data([undefined]).enter().append("g").attr('class','track').append("circle").attr("r", element.trackRadius);
+	}
+	nd=element.layout.selectAll().data([undefined]).enter().append("g").attr('class','track').append("circle").attr("r", element.trackRadius+(element.ntracks+1)*element.trackWidth);
+	element.ntracks++;
+}
+
+phyloElement.prototype.addTrackFeature=function (trackn,tipname,color,title,gradient)
+{
+	var oj=element.name2Node[tipname];
+	if (oj==undefined){ setTimeout(function() { element.addTrackFeature(trackn,tipname,color,title,gradient); }, 500); return }
+	if (oj.trackFeats==undefined){oj.trackFeats={}}
+	var nd=element.layout.selectAll().data([[oj,trackn]])
+			.enter().append("g")
+			.append("path")
+			.attr("d", trackFeatStep)
+			.attr("fill",color)
+			.attr("stroke",'none')
+	if (title){nd.append("svg:title").text(title);}
+	if (gradient!=false){nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0])});}
+	else {// add code to select all nodes containig this fature
+		nd.on("click",function(d){element.selectTrackFeature(trackn)})
+		}
+	oj.trackFeats[trackn]=nd;
+}
+
+phyloElement.prototype.delTrackFeature=function (trackn,tipname)
+{
+	var oj=element.name2Node[tipname];
+	if (oj.trackFeats==undefined){return;}
+	if (!(trackn in oj.trackFeats)){return;}
+	oj.trackFeats[trackn].remove()
+	delete oj.trackFeats[trackn]
+}
+
+phyloElement.prototype.addTrackBar=function (value,tipname,color)
+{
+	if (oj==undefined){ setTimeout(function() { element.addTrackBar(value,tipname,color); }, 500); return }
+
+	var oj=element.name2Node[tipname];
+	var nd=element.layout.selectAll().data([[oj,value]])
+			.enter().append("g")
+			.append("path")
+			.attr("d", trackBarStep)
+			.attr("fill",color);
+
+}
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////    SELECTIONS    //////////////////////
@@ -760,11 +855,22 @@ phyloElement.prototype.clearNodeSelection = function (n){
 }
 
 phyloElement.prototype.selectFeature = function (fid){
-	debugger;
 	var k=[];
 	for (var key in element.sample2Feat)
 	{
 		if (element.sample2Feat[key].indexOf(fid)>=0){ k.push(key)}
+	}
+	element.clearSelection()
+	element.selectNodes(k)
+}
+
+phyloElement.prototype.selectTrackFeature = function (trackn){
+	var k=[];
+	for (var oj in element.treeNodes)
+	{
+		oj=element.treeNodes[oj];
+		if (oj.trackFeats!=undefined && trackn in oj.trackFeats)
+			{ k.push(oj.name)}
 	}
 	element.clearSelection()
 	element.selectNodes(k)
@@ -800,7 +906,6 @@ phyloElement.prototype.selectNode = function(n) {
 		element.paintSampleFeatures(n.name);
 		element.selectionList.add(n);
 	}
-//	element.paintAllFeatures()
 }
 
 phyloElement.prototype.refreshSelection = function() {

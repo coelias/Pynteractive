@@ -4,6 +4,12 @@
   stroke-width: 1.5px;
 }
 
+.track circle {
+  fill: none;
+  stroke: #aaa;
+  stroke-width: 1px;
+}
+
 .selectednode circle {
   fill: steelblue;
   stroke: #335E82;

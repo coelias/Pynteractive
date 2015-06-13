@@ -129,5 +129,19 @@ addPhyloFeat: function(fid,shape,color,desc){
 
 addPhyloTipFeat: function(tid,fid){
 		element.addSampleFeature(tid,fid);
+	},
+delPhyloTipFeat: function(tid,fid){
+		element.delSampleFeature(tid,fid);
+	},
+
+addTreeTrack: function() {
+		element.addTrack()
+	},
+addTreeTrackFeature: function(trackn,tipname,color,title,gradient) {
+		element.addTrackFeature(trackn,tipname,color,title,gradient)
+	},
+delTreeTrackFeature: function(trackn,tipname) {
+		element.delTrackFeature(trackn,tipname)
 	}
+
 }
