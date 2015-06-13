@@ -142,6 +142,24 @@ addTreeTrackFeature: function(trackn,tipname,color,title,gradient) {
 	},
 delTreeTrackFeature: function(trackn,tipname) {
 		element.delTrackFeature(trackn,tipname)
+	},
+
+addTreeTrackBar: function(value,normValue,tipname,color,barn,totbar) {
+		element.addTrackBar(value,normValue,tipname,color,barn,totbar)
+	},
+delTreeTrackBar: function(tipname,barn) {
+		element.delTrackBar(tipname,barn)
+	},
+clearTracks: function() {
+		element.clearTracks()
+	},
+deleteTracks: function() {
+		element.deleteTracks()
+	},
+deleteBars: function() {
+		element.deleteTrackBars()
 	}
+
+
 
 }

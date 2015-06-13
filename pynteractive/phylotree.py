@@ -15,6 +15,8 @@ class PhyloTree(DataStruct):
 		self.tracks={}
 		self.gradientTracks={}
 		self.ntracks=0
+		self.trackBars={}
+		self.nbars=0
 
 	def __getHexColor(self,trackn,val):
 		_,color,minval,maxval,_=self.gradientTracks[trackn]
@@ -60,6 +62,19 @@ class PhyloTree(DataStruct):
 			for tipname,[title,value] in data[4].items():
 				self._update('addTreeTrackFeature',trackn,tipname,self.__getHexColor(trackn,value),title,value)
 
+		self._refreshBars()
+
+	def _refreshBars(self):
+		for nbar,(description,color,minval,maxval,bars) in  self.trackBars.items():
+			for tipname,value in bars.items():
+				rng=maxval-minval
+				val=value-minval
+				val=rng-val
+				val=1-float(val)/rng
+
+				self._update('addTreeTrackBar',value,val,tipname,color,nbar,self.nbars)
+			
+
 	def getTips(self):
 		'''Returns a set containing all the tip names found in the tree'''
 		return self.newick.nodenames
@@ -104,11 +119,17 @@ class PhyloTree(DataStruct):
 		self.ntracks+=1
 		self.tracks[self.ntracks]=[description,color,{}]
 		self._update('addTreeTrack')
+		self._update('deleteBars')
+		self._refreshBars()
+		return self.ntracks
 
 	def addGradientTrack(self,description,color,minval,maxval):
 		self.ntracks+=1
 		self.gradientTracks[self.ntracks]=[description,color,minval,maxval,{}]
 		self._update('addTreeTrack')
+		self._update('deleteBars')
+		self._refreshBars()
+		return self.ntracks
 
 	def addTrackFeature(self,trackn,tipname,value=False,title=None):
 		assert tipname in self.newick.nodenames 
@@ -128,6 +149,36 @@ class PhyloTree(DataStruct):
 		if tipname in self.tracks[trackn][2]: del self.tracks[trackn][2][tipname]
 		self._update('delTreeTrackFeature',trackn,tipname)
 
+	def addBar(self,description,color,minval,maxval):
+		self.nbars+=1
+		self.trackBars[self.nbars]=[description,color,minval,maxval,{}]
+		self._update('deleteBars')
+		self._refreshBars()
+		return self.nbars
 
+	def addTrackBar(self,nbar,tipname,value):
+		if not 0<nbar<=self.nbars: raise Exception("Bar number does not exist")
+		_,color,minval,maxval,tipbars=self.trackBars[nbar]
+		rng=maxval-minval
+		val=value-minval
+		val=rng-val
+		val=1-float(val)/rng
 
+		tipbars[tipname]=value
+
+		self._update('addTreeTrackBar',value,val,tipname,color,nbar,self.nbars)
+
+		
+#delTreeTrackBar: function(tipname,barn) {
+#		element.delTrackBar(tipname,barn)
+#	},
+#clearTracks: function() {
+#		element.clearTracks()
+#	},
+#deleteTracks: function() {
+#		element.deleteTracks()
+#	},
+#deleteBars: function() {
+#		element.deleteBars()
+#	}
 

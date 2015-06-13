@@ -405,28 +405,24 @@ function trackBarStep(info){
 
 	while (!element.trackRadius){}
 	var d=info[0];
-	var value=info[1];
+	var barn=info[1]-1;
+	var totbar=info[2];
+	var value=info[3]*100;
 	var ntrack=element.ntracks;
 
-	
-	if (d.parent.x<d.x)
-	{
-			var di=-element.nodedegrees*.9;
-	}
-	else
-	{
-			var di=element.nodedegrees*.9;
-	}
+	var barlgth=element.nodedegrees*2/totbar;
 
-	var di2=10;
+	var di2=-element.nodedegrees+barlgth*barn;
+	var di=di2+barlgth;
+
 	var r=element.trackRadius+element.trackWidth*(ntrack);
 	var r2=element.trackRadius+element.trackWidth*(ntrack)+value;
 	var sweep2 = d.x > d.parent.x ? 1 : 0;
 	var sweep = d.x <= d.parent.x ? 1 : 0;
-	var p1 = project({x: d.x-di, y: r});
-	var p2 = project({x: d.x-di, y: r2});
-	var p3 = project({x: d.x+di, y: r2});
-	var p4 = project({x: d.x+di, y: r});
+	var p1 = project({x: d.x+di, y: r});
+	var p2 = project({x: d.x+di, y: r2});
+	var p3 = project({x: d.x+di2, y: r2});
+	var p4 = project({x: d.x+di2, y: r});
 	return ( "M"+p1[0] + "," + p1[1] + 
 			"L" + p2[0] + "," + p2[1] +
 			"A" + r2 + "," + r2 + " 0 0," + sweep + " " + p3[0] + "," + p3[1]+
@@ -799,6 +795,7 @@ phyloElement.prototype.addTrackFeature=function (trackn,tipname,color,title,grad
 	var oj=element.name2Node[tipname];
 	if (oj==undefined){ setTimeout(function() { element.addTrackFeature(trackn,tipname,color,title,gradient); }, 500); return }
 	if (oj.trackFeats==undefined){oj.trackFeats={}}
+	if (trackn in oj.trackFeats){element.delTrackFeature(trackn,tipname);}
 	var nd=element.layout.selectAll().data([[oj,trackn]])
 			.enter().append("g")
 			.append("path")
@@ -806,12 +803,36 @@ phyloElement.prototype.addTrackFeature=function (trackn,tipname,color,title,grad
 			.attr("fill",color)
 			.attr("stroke",'none')
 	if (title){nd.append("svg:title").text(title);}
-	if (gradient!=false){nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0])});}
+	if (typeof(gradient)!="boolean")
+		{
+			nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0])});}
 	else {// add code to select all nodes containig this fature
 		nd.on("click",function(d){element.selectTrackFeature(trackn)})
 		}
 	oj.trackFeats[trackn]=nd;
 }
+
+
+phyloElement.prototype.clearTracks=function ()
+{
+	for (var key in element.treeNodes)
+	{
+		key=element.treeNodes[key];
+		if (key.trackFeats==undefined){continue;}
+		for (var trk in key.trackFeats)
+		{
+			key.trackFeats[trk].remove()
+		}
+		key.trackFeats={};
+	}
+}
+
+phyloElement.prototype.deleteTracks=function ()
+{
+	d3.selectAll('g.track').remove()
+	element.ntracks=0
+}
+
 
 phyloElement.prototype.delTrackFeature=function (trackn,tipname)
 {
@@ -822,18 +843,49 @@ phyloElement.prototype.delTrackFeature=function (trackn,tipname)
 	delete oj.trackFeats[trackn]
 }
 
-phyloElement.prototype.addTrackBar=function (value,tipname,color)
+phyloElement.prototype.addTrackBar=function (value,normValue,tipname,color,barn,totbar)
 {
-	if (oj==undefined){ setTimeout(function() { element.addTrackBar(value,tipname,color); }, 500); return }
-
 	var oj=element.name2Node[tipname];
-	var nd=element.layout.selectAll().data([[oj,value]])
+	if (oj==undefined){ setTimeout(function() { element.addTrackBar(value,normValue,tipname,color,barn,totbar); }, 500); return }
+	if (oj.bars==undefined){oj.bars={};}
+	if (barn in oj.bars){element.delTrackBar(tipname,barn)}
+
+	var nd=element.layout.selectAll().data([[oj,barn,totbar,normValue]])
 			.enter().append("g")
 			.append("path")
 			.attr("d", trackBarStep)
 			.attr("fill",color);
 
+	oj.bars[barn]=nd;
+	nd.append("svg:title").text(value);
+	nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0])});
 }
+
+phyloElement.prototype.delTrackBar=function (tipname,barn){
+	var oj=element.name2Node[tipname];
+	if (oj.bars==undefined){return;}
+	if (barn in oj.bars){
+			oj.bars[barn].remove();
+			delete oj.bars[barn];
+		}
+}
+
+
+phyloElement.prototype.deleteTrackBars=function (){
+	for (var key in element.treeNodes)
+	{
+		key=element.treeNodes[key];
+		if (key.bars==undefined){continue;}
+		for (var trk in key.bars)
+		{
+			key.bars[trk].remove()
+		}
+		key.trackFeats={};
+	}
+
+
+}
+
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 ////////////////////    SELECTIONS    //////////////////////
