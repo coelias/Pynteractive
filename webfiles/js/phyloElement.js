@@ -95,7 +95,7 @@ phyloElement.prototype.loadHtml = function () {
  */
 phyloElement.prototype.load = function () {
 	
-	//jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", width:"95%"}).animate({opacity: 1}, 200);
+	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", width:"95%"}).animate({opacity: 1}, 200);
 	jQuery("#sidebarLegend").css({opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
 
 	if(!jQuery.isEmptyObject(element.data)){
@@ -237,11 +237,6 @@ phyloElement.prototype.initParams = function () {
 			})
 			.on("mousemove", function() {
 				if (element.start) {
-					//var m = mouse(d3.event);
-					//var delta = Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI;
-					//element.wrap.style("-webkit-transform", "rotate(" + delta + "deg)");
-						
-	
 					var blubar = $("#tools").attr("class");
 					var m = mouse(d3.event);
 					if(blubar == "container open-sidebar"){
