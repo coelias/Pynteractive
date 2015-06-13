@@ -528,29 +528,14 @@ as well as linking them with edges. In order to specify the location coordinates
 <dt id="pynteractive.tree.Tree">
 <em class="property">class </em><code class="descclassname">pynteractive.tree.</code><code class="descname">Tree</code><span class="sig-paren">(</span><em>name=None</em>, <em>directed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pynteractive.Network.Network" title="pynteractive.Network.Network"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.Network.Network</span></code></a></p>
-<dl class="class">
-<dt id="pynteractive.tree.Tree.Node">
-<em class="property">class </em><code class="descname">Node</code><span class="sig-paren">(</span><em>name=None</em>, <em>lgth=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.Node" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="pynteractive.tree.Tree.Node.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.Node.append" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 <dl class="method">
 <dt id="pynteractive.tree.Tree.getName">
-<code class="descclassname">Tree.</code><code class="descname">getName</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.getName" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getName</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.getName" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.tree.Tree.readNewick">
-<code class="descclassname">Tree.</code><code class="descname">readNewick</code><span class="sig-paren">(</span><em>newick</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.readNewick" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pynteractive.tree.Tree.releaf">
-<code class="descclassname">Tree.</code><code class="descname">releaf</code><em class="property"> = &lt;_sre.SRE_Pattern object&gt;</em><a class="headerlink" href="#pynteractive.tree.Tree.releaf" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readNewick</code><span class="sig-paren">(</span><em>newick</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.tree.Tree.readNewick" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -626,6 +611,26 @@ as well as linking them with edges. In order to specify the location coordinates
 <em class="property">class </em><code class="descclassname">pynteractive.phylotree.</code><code class="descname">PhyloTree</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pynteractive.datastruct.DataStruct" title="pynteractive.datastruct.DataStruct"><code class="xref py py-class docutils literal"><span class="pre">pynteractive.datastruct.DataStruct</span></code></a></p>
 <dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.addBar">
+<code class="descname">addBar</code><span class="sig-paren">(</span><em>description</em>, <em>color</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outside the tracks, bars can be drawn showing extra information. You can have as many bars you want per sector (tip) (eg: if you want two bars in a barplot per tip, you call addBar twice and then you populate them with data</p>
+<ul>
+<li><p class="first">description: Text description for the legend</p>
+</li>
+<li><p class="first">color: color used for the bar</p>
+</li>
+<li><p class="first">minval: minimum value of the data that the bars will show</p>
+</li>
+<li><p class="first">maxval: maximum value of the data that the bars will show</p>
+<blockquote>
+<div><p>Returns the Bar identifier to be used to add data to it 
+(See example below)</p>
+</div></blockquote>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.addFeature">
 <code class="descname">addFeature</code><span class="sig-paren">(</span><em>fid</em>, <em>shape</em>, <em>color</em>, <em>description=''</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addFeature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a feature available for the tree</p>
@@ -638,10 +643,91 @@ as well as linking them with edges. In order to specify the location coordinates
 </dd></dl>
 
 <dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.addGradientTrack">
+<code class="descname">addGradientTrack</code><span class="sig-paren">(</span><em>description</em>, <em>color</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addGradientTrack" title="Permalink to this definition">¶</a></dt>
+<dd><p>A gradient Track is a track where tips in the tree can have a continuous value, and the color will be shown as a gradient color. You must specify minval and maxval of the track so that the gradient can be calculated</p>
+<ul>
+<li><p class="first">description: Text used for the legend</p>
+</li>
+<li><p class="first">color: color used for the gradient on track</p>
+</li>
+<li><p class="first">minval: Minimum value of the range of values this track will have</p>
+</li>
+<li><p class="first">maxval: Minimum value of the range of values this track will have</p>
+<blockquote>
+<div><p>Returns the track ID that you will have to use to add data to it</p>
+</div></blockquote>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.addTipFeature">
 <code class="descname">addTipFeature</code><span class="sig-paren">(</span><em>tid</em>, <em>fid</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addTipFeature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds the feature <cite>fid</cite> to the tip <cite>tid</cite></p>
 </dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.addTrack">
+<code class="descname">addTrack</code><span class="sig-paren">(</span><em>description</em>, <em>color</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addTrack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ads a track as an external ring. This is a BOOLEAN track, where any tip can be flagged in the track. When clicking a coloured tip on the track, all the tips flagged in the track will automatically be selected</p>
+<ul>
+<li><p class="first">description: Text used for the legend</p>
+</li>
+<li><p class="first">color: color used for the flagged tips on the track</p>
+<blockquote>
+<div><p>Returns the track ID that you will have to use to add data to it</p>
+</div></blockquote>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.addTrackBar">
+<code class="descname">addTrackBar</code><span class="sig-paren">(</span><em>nbar</em>, <em>tipname</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addTrackBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds data to a bar</p>
+<ul class="simple">
+<li>nbar: bar ID provided by addBar function</li>
+<li>tipname: name of the tip you will add data to</li>
+<li>value: Value the the bar will show</li>
+</ul>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">p</span><span class="o">=</span><span class="n">PhyloTree</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="s">&quot;file.newick&quot;</span><span class="p">)</span>
+<span class="n">contaminationBars</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">addBar</span><span class="p">(</span><span class="s">&#39;contamination&#39;</span><span class="p">,</span><span class="s">&#39;green&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">28</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTrackBar</span><span class="p">(</span><span class="n">contaminationBars</span><span class="p">,</span><span class="s">&#39;sample1&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTrackBar</span><span class="p">(</span><span class="n">contaminationBars</span><span class="p">,</span><span class="s">&#39;sample2&#39;</span><span class="p">,</span><span class="mi">22</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTrackBar</span><span class="p">(</span><span class="n">contaminationBars</span><span class="p">,</span><span class="s">&#39;sample3&#39;</span><span class="p">,</span><span class="mi">17</span><span class="p">)</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.addTrackFeature">
+<code class="descname">addTrackFeature</code><span class="sig-paren">(</span><em>trackn</em>, <em>tipname</em>, <em>value=False</em>, <em>title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addTrackFeature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a data to a track:</p>
+<ul class="simple">
+<li>trackn: Track number to add data to</li>
+<li>tipname: The tip you want to add the feature to</li>
+<li>value: Only required/necessary if it&#8217;s a gradient track</li>
+<li>title: Tooltip shown when hovering with the mouse</li>
+</ul>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">p</span><span class="o">=</span><span class="n">PhyloTree</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="s">&quot;file.newick&quot;</span><span class="p">)</span>
+<span class="n">resistanteTrack</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">addTrack</span><span class="p">(</span><span class="s">&#39;Antibiotic resistante&#39;</span><span class="p">,</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">coverageTrack</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">addTrack</span><span class="p">(</span><span class="s">&#39;Avg Depth coverage&#39;</span><span class="p">,</span><span class="s">&#39;blue&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">344</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTrackFeature</span><span class="p">(</span><span class="n">resistanceTrack</span><span class="p">,</span><span class="s">&#39;sample1&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTrackFeature</span><span class="p">(</span><span class="n">resistanceTrack</span><span class="p">,</span><span class="s">&#39;sample3&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTrackFeature</span><span class="p">(</span><span class="n">coverageTrack</span><span class="p">,</span><span class="s">&#39;sampler1&#39;</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTrackFeature</span><span class="p">(</span><span class="n">coverageTrack</span><span class="p">,</span><span class="s">&#39;sampler2&#39;</span><span class="p">,</span><span class="mi">221</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTrackFeature</span><span class="p">(</span><span class="n">coverageTrack</span><span class="p">,</span><span class="s">&#39;sampler3&#39;</span><span class="p">,</span><span class="mi">344</span><span class="p">)</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.clearBars">
+<code class="descname">clearBars</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.clearBars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.clearSelection">
@@ -650,10 +736,38 @@ as well as linking them with edges. In order to specify the location coordinates
 </dd></dl>
 
 <dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.clearTracks">
+<code class="descname">clearTracks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.clearTracks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.delTipFeature">
+<code class="descname">delTipFeature</code><span class="sig-paren">(</span><em>tid</em>, <em>fid</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.delTipFeature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the feature <cite>fid</cite> to the tip <cite>tid</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.delTrackFeature">
+<code class="descname">delTrackFeature</code><span class="sig-paren">(</span><em>trackn</em>, <em>tipname</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.delTrackFeature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a feature present on a track</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.getTips">
+<code class="descname">getTips</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.getTips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set containing all the tip names found in the tree</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.nodeClick">
 <code class="descname">nodeClick</code><span class="sig-paren">(</span><em>nid</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.nodeClick" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method called when a node is clicked</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="pynteractive.phylotree.PhyloTree.recolor">
+<code class="descname">recolor</code><em class="property"> = &lt;_sre.SRE_Pattern object&gt;</em><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.recolor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.selectTips">
