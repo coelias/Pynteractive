@@ -37,10 +37,9 @@ class PhyloTree(DataStruct):
 		'''Draws the specified newick tree, It can be either a string containing the newick string or a path to a file'''
 		self.newick.readNewick(newick)
 		self._update('setData',str(self.newick))
-		self.tracks={}
-		self.gradientTracks={}
+		self.clearBars()
+		self.clearTracks()
 		self.tipfeatures={}
-		self.ntracks=0
 
 	def _refresh(self):
 		self._update('setData',str(self.newick))
@@ -116,6 +115,13 @@ class PhyloTree(DataStruct):
 		self._update('delPhyloTipFeat',tid,fid)
 
 	def addTrack(self,description,color):
+		'''Ads a track as an external ring. This is a BOOLEAN track, where any tip can be flagged in the track. When clicking a coloured tip on the track, all the tips flagged in the track will automatically be selected
+		
+- description: Text used for the legend
+- color: color used for the flagged tips on the track
+
+		Returns the track ID that you will have to use to add data to it'''
+
 		self.ntracks+=1
 		self.tracks[self.ntracks]=[description,color,{}]
 		self._update('addTreeTrack')
@@ -124,6 +130,16 @@ class PhyloTree(DataStruct):
 		return self.ntracks
 
 	def addGradientTrack(self,description,color,minval,maxval):
+		'''A gradient Track is a track where tips in the tree can have a continuous value, and the color will be shown as a gradient color. You must specify minval and maxval of the track so that the gradient can be calculated
+		
+- description: Text used for the legend
+- color: color used for the gradient on track
+- minval: Minimum value of the range of values this track will have
+- maxval: Minimum value of the range of values this track will have
+		
+		Returns the track ID that you will have to use to add data to it'''
+
+
 		self.ntracks+=1
 		self.gradientTracks[self.ntracks]=[description,color,minval,maxval,{}]
 		self._update('addTreeTrack')
@@ -132,6 +148,25 @@ class PhyloTree(DataStruct):
 		return self.ntracks
 
 	def addTrackFeature(self,trackn,tipname,value=False,title=None):
+		'''Adds a data to a track:
+
+- trackn: Track number to add data to
+- tipname: The tip you want to add the feature to
+- value: Only required/necessary if it's a gradient track
+- title: Tooltip shown when hovering with the mouse 
+
+.. code:: python
+
+		p=PhyloTree()
+		p.setData("file.newick")
+		resistanteTrack=p.addTrack('Antibiotic resistante','red')
+		coverageTrack=p.addTrack('Avg Depth coverage','blue',0,344)
+		p.addTrackFeature(resistanceTrack,'sample1')
+		p.addTrackFeature(resistanceTrack,'sample3')
+		p.addTrackFeature(coverageTrack,'sampler1',25)
+		p.addTrackFeature(coverageTrack,'sampler2',221)
+		p.addTrackFeature(coverageTrack,'sampler3',344) '''
+
 		assert tipname in self.newick.nodenames 
 		if not 0<trackn<=self.ntracks: raise Exception("Track number does not exist")
 		if trackn in self.gradientTracks: 
@@ -145,11 +180,24 @@ class PhyloTree(DataStruct):
 			self._update('addTreeTrackFeature',trackn,tipname,self.tracks[trackn][1],title,value)
 
 	def delTrackFeature(self,trackn,tipname):
+		'''Deletes a feature present on a track'''
+
 		assert trackn in self.tracks and tipname in self.newick.nodenames
 		if tipname in self.tracks[trackn][2]: del self.tracks[trackn][2][tipname]
 		self._update('delTreeTrackFeature',trackn,tipname)
 
 	def addBar(self,description,color,minval,maxval):
+		'''Outside the tracks, bars can be drawn showing extra information. You can have as many bars you want per sector (tip) (eg: if you want two bars in a barplot per tip, you call addBar twice and then you populate them with data
+	
+- description: Text description for the legend
+- color: color used for the bar
+- minval: minimum value of the data that the bars will show
+- maxval: maximum value of the data that the bars will show
+
+		Returns the Bar identifier to be used to add data to it 
+		(See example below)
+		'''
+
 		self.nbars+=1
 		self.trackBars[self.nbars]=[description,color,minval,maxval,{}]
 		self._update('deleteBars')
@@ -157,6 +205,21 @@ class PhyloTree(DataStruct):
 		return self.nbars
 
 	def addTrackBar(self,nbar,tipname,value):
+		'''Adds data to a bar
+	
+- nbar: bar ID provided by addBar function
+- tipname: name of the tip you will add data to
+- value: Value the the bar will show 
+
+.. code:: python
+
+		p=PhyloTree()
+		p.setData("file.newick")
+		contaminationBars=p.addBar('contamination','green',0,28)
+		p.addTrackBar(contaminationBars,'sample1',4)
+		p.addTrackBar(contaminationBars,'sample2',22)
+		p.addTrackBar(contaminationBars,'sample3',17) '''
+
 		if not 0<nbar<=self.nbars: raise Exception("Bar number does not exist")
 		_,color,minval,maxval,tipbars=self.trackBars[nbar]
 		rng=maxval-minval
@@ -168,17 +231,14 @@ class PhyloTree(DataStruct):
 
 		self._update('addTreeTrackBar',value,val,tipname,color,nbar,self.nbars)
 
-		
-#delTreeTrackBar: function(tipname,barn) {
-#		element.delTrackBar(tipname,barn)
-#	},
-#clearTracks: function() {
-#		element.clearTracks()
-#	},
-#deleteTracks: function() {
-#		element.deleteTracks()
-#	},
-#deleteBars: function() {
-#		element.deleteBars()
-#	}
+	def clearTracks(self):
+		self.tracks={}
+		self.gradientTracks={}
+		self.ntracks=0
+		self._update("deleteTracks")
 
+	def clearBars(self):
+		self.trackBars={}
+		self.nbars=0
+		self._update("deleteBars")
+		
