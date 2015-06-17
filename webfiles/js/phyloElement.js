@@ -1,5 +1,4 @@
 function phyloElement() {
-	this.r;
 	this.cluster;
 	this.data;
 	this.wrap;
@@ -13,6 +12,7 @@ function phyloElement() {
 	this.minpath = 1000;
 	this.tree;
 	this.resolution = 1440;
+	this.r=this.resolution/2;
 	this.circularLabel = false;
 	this.treeNodes=[];
 	this.name2Node={}
@@ -127,7 +127,7 @@ phyloElement.prototype.initParams = function () {
 
 	jQuery("#layout").empty();
 
-	this.r = element.resolution / 2;
+	this.r = (element.resolution*1.05) / 2;
 	this.trackRadius=0;
 
 	var width = element.r * 2;
