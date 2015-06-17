@@ -40,6 +40,12 @@ phyloElement.prototype.constructor = phyloElement;
 ////////////////////////////////////////////////////////////
 ////////////////////    FUNCTIONS    ///////////////////////
 ////////////////////////////////////////////////////////////
+/*$("#layout").bind('scroll', function() {
+var p = $( "#layout" );
+
+console.log(p.scrollTop());
+});*/
+
 
 /**
  * Load html page
@@ -94,10 +100,10 @@ phyloElement.prototype.loadHtml = function () {
  * Load graph on layout div html page
  */
 phyloElement.prototype.load = function () {
-	
+
 	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", width:"95%"}).animate({opacity: 1}, 200);
 	jQuery("#sidebarLegend").css({opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
-
+	
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
 		element.setData(element.data);
@@ -107,7 +113,6 @@ phyloElement.prototype.load = function () {
 	element.getKeys();
 	element.drawLegend();
 	d3.select("#togglelegend").on("click", element.toggleLegend);
-	//jQuery("#togglelegend").on("click", element.toggleLegend);
 
 };
 
@@ -127,6 +132,7 @@ phyloElement.prototype.initParams = function () {
 
 	jQuery("#layout").empty();
 
+	element.maxrange = 2.7+((element.resolution-960)*0.0043);
 	this.r = (element.resolution*1.05) / 2;
 	this.trackRadius=0;
 
@@ -192,6 +198,11 @@ phyloElement.prototype.initParams = function () {
 		element.wrap.style("cursor", "move");
 		element.start = mouse(d3.event);
 
+		var top = jQuery("#layout").scrollTop();
+		var left = jQuery("#layout").scrollLeft();
+
+		element.start[0] = element.start[0]+left;
+		element.start[1] = element.start[1]+top;
 		var blubar = $("#tools").attr("class");
 		if(blubar == "container open-sidebar"){
 			element.start[0] = element.start[0]-216;
@@ -204,14 +215,21 @@ phyloElement.prototype.initParams = function () {
 				if (element.start) {
 					element.wrap.style("cursor", "auto");
 
+					var top = jQuery("#layout").scrollTop();
+					var left = jQuery("#layout").scrollLeft();
+
 					var blubar = $("#tools").attr("class");
 					var m = mouse(d3.event);
+
+					m[1] = m[1]+top;
+					m[0] = m[0]+left;
 					if(blubar == "container open-sidebar"){
 						m[0] = m[0]-216;
 					}
 
 					var delta = Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI;
 					element.rotate += delta;
+
 					if (element.rotate > 360) {
 						element.rotate %= 360;
 					}
@@ -221,7 +239,6 @@ phyloElement.prototype.initParams = function () {
 					element.start = null;
 					element.wrap.style("-webkit-transform", null);
 					element.layout	.attr("transform", "translate(" + element.r + "," + element.r + ")rotate(" + element.rotate + ")")
-					//element.layout	.attr("transform", "translate(" + w/2 + "," + h/2 + ")rotate(" + element.rotate + ")")
 							.selectAll("text")
 							.attr("text-anchor", 	function(d) { 
 											return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; 
@@ -236,9 +253,18 @@ phyloElement.prototype.initParams = function () {
 				}
 			})
 			.on("mousemove", function() {
+
 				if (element.start) {
+					var top = jQuery("#layout").scrollTop();
+					var left = jQuery("#layout").scrollLeft();
+
 					var blubar = $("#tools").attr("class");
 					var m = mouse(d3.event);
+
+
+					m[0] = m[0]+left;
+					m[1] = m[1]+top;
+
 					if(blubar == "container open-sidebar"){
 						m[0] = m[0]-216;
 					}
