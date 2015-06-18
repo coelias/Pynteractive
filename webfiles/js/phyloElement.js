@@ -20,6 +20,7 @@ function phyloElement() {
 	this.trackWidth=15;
 	this.trackRadius=0;
 	this.ntracks=0;
+	this.maxR=0;
 
 	this.features={}//{1: ["circle","red"], 2: ["diamond","black"], 3: ["square","green"], 4:["cross","blue"]}
 
@@ -239,17 +240,7 @@ phyloElement.prototype.initParams = function () {
 					element.start = null;
 					element.wrap.style("-webkit-transform", null);
 					element.layout	.attr("transform", "translate(" + element.r + "," + element.r + ")rotate(" + element.rotate + ")")
-							.selectAll("text")
-							.attr("text-anchor", 	function(d) { 
-											return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; 
-										})
-							.attr("transform", 	function(d) {
-											if(element.circularLabel == true){
-												return "rotate(" + (d.x - 90) + ")translate(" + (element.r - 170 + 8) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")";
-											}else{
-												return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")";
-											}
-										});
+					element.reLayoutTips();
 				}
 			})
 			.on("mousemove", function() {
@@ -297,6 +288,19 @@ function binaryblob(){
  * Change Data and Plot it
  */
 
+phyloElement.prototype.reLayoutTips = function () {
+					element.layout	.selectAll("text")
+							.attr("text-anchor", 	function(d) { 
+											return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; 
+										})
+							.attr("transform", 	function(d) {
+											if(element.circularLabel == true){
+												return "rotate(" + (d.x - 90) + ")translate(" + (element.maxR+10) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")";
+											}else{
+												return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")";
+											}
+										});
+}
 
 phyloElement.prototype.setData = function (data) {
 
@@ -349,13 +353,27 @@ phyloElement.prototype.drawData = function () {
 			.attr("r", 2.5);
 	
 
+
+
+	var maxR=undefined;
+	for (var i=0;i<element.treeNodes.length;i++)
+	{
+			if (!maxR)
+			{maxR=element.treeNodes[i]}
+			else if (element.treeNodes[i].y>maxR.y)
+			{maxR=element.treeNodes[i]}
+	}
+
+	element.maxR=maxR.y;
+
+
 	if(element.circularLabel == true){
 		var label = element.layout.selectAll("text")
 				.data(element.treeNodes.filter(function(d) { return d.x !== undefined && !d.children; }))
 				.enter().append("text")
 				.attr("dy", ".31em")
 				.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-				.attr("transform", function(d) { d.label=this; return "rotate(" + (d.x - 90) + ")translate(" + (element.r - 170 + 8) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")"; })
+				.attr("transform", function(d) { d.label=this; return "rotate(" + (d.x - 90) + ")translate(" + (element.maxR+10 ) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")"; })
 				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d)})
 				.text(function(d) { return d.name.replace(/_/g, ' '); });
 
@@ -369,19 +387,6 @@ phyloElement.prototype.drawData = function () {
 			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d)})
 			.text(function(d) { return d.name.replace(/_/g, ' '); });
 
-	}
-
-
-	var maxR=undefined;
-	for (var i=0;i<element.treeNodes.length;i++)
-	{
-		if (element.treeNodes[i].label!= undefined )
-		{
-			if (!maxR)
-			{maxR=element.treeNodes[i]}
-			else if (element.treeNodes[i].y+element.treeNodes[i].label.getBBox().width>maxR.y+maxR.label.getBBox().width)
-			{maxR=element.treeNodes[i]}
-		}
 	}
 
 	this.ntracks=0;
@@ -439,6 +444,21 @@ function trackFeatStep(info){
 			"L" + p4[0] + "," + p4[1] +
 			"A" + r + "," + r + " 0 0," + sweep2 + " " + p1[0] + "," + p1[1]
 	);
+}
+
+function trackCircleStep(radius)
+{
+	var cad=""
+		var p=project({x: 0, y: radius});
+	cad+="M"+p[0]+","+p[1];
+	for (var i=0;i<361;i++)
+	{
+		p=project({x: i, y: radius});
+		cad+="L"+p[0]+","+p[1];
+	}
+	return cad;
+
+
 }
 
 function trackBarStep(info){
@@ -829,9 +849,9 @@ phyloElement.prototype.addTrack=function ()
 	if (element.trackRadius==0){ setTimeout(function() { element.addTrack(); }, 500); return }
 	if (element.ntracks==0)
 	{
-		nd=element.layout.selectAll().data([undefined]).enter().append("g").attr('class','track').append("circle").attr("r", element.trackRadius);
+		var nd=element.layout.selectAll().data([element.trackRadius]).enter().append("g").append("path").attr("d", trackCircleStep).attr("fill","none").attr("stroke","gray")
 	}
-	nd=element.layout.selectAll().data([undefined]).enter().append("g").attr('class','track').append("circle").attr("r", element.trackRadius+(element.ntracks+1)*element.trackWidth);
+	var nd=element.layout.selectAll().data([element.trackRadius+(element.ntracks+1)*element.trackWidth]).enter().append("g").append("path").attr("d", trackCircleStep).attr("fill","none").attr("stroke","gray")
 	element.ntracks++;
 }
 
