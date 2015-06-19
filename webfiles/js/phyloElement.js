@@ -41,11 +41,6 @@ phyloElement.prototype.constructor = phyloElement;
 ////////////////////////////////////////////////////////////
 ////////////////////    FUNCTIONS    ///////////////////////
 ////////////////////////////////////////////////////////////
-/*$("#layout").bind('scroll', function() {
-var p = $( "#layout" );
-
-console.log(p.scrollTop());
-});*/
 
 
 /**
@@ -102,9 +97,9 @@ phyloElement.prototype.loadHtml = function () {
  */
 phyloElement.prototype.load = function () {
 
-	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "100%", width:"95%"}).animate({opacity: 1}, 200);
-	jQuery("#sidebarLegend").css({opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
-	
+	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "99%", width:"97.5%"}).animate({opacity: 1}, 200);
+	jQuery("#sidebarLegend").css({right:"25px",opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
+
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
 		element.setData(element.data);
@@ -264,7 +259,23 @@ phyloElement.prototype.initParams = function () {
 					element.wrap.style("-webkit-transform", "rotate(" + delta + "deg)");
 				}
 			});
+
 	});
+
+  	var screen_height = jQuery(window).height(); 
+  	var screen_witdh = jQuery(window).width(); 
+
+    	var svg_witdh = jQuery("#layout svg").width();
+    	var svg_height = jQuery("#layout svg").height();
+
+	var top = (svg_witdh-screen_height)/2;
+	var left = (svg_height-screen_witdh)/2;
+
+	if(top<0) {top=0;}
+	if(left<0) {left=0;}
+
+	jQuery("#layout").scrollTop(top);
+	jQuery("#layout").scrollLeft(left);
 
 }
 
