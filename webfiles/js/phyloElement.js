@@ -23,6 +23,7 @@ function phyloElement() {
 	this.trackRadius=0;
 	this.ntracks=0;
 	this.maxR=0;
+	this.rotateFactor = 1;
 
 	this.features={}//{1: ["circle","red"], 2: ["diamond","black"], 3: ["square","green"], 4:["cross","blue"]}
 
@@ -80,6 +81,16 @@ phyloElement.prototype.loadHtml = function () {
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelRotate', text: 'Rotate Speed'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'input', to:'#optionsNetwork', id: 'sliderRotate', type: 'range', value: element.rotateFactor, min: '0.5', max: '3', step: '0.2', onclick: 'element.changeRotateSpeed(value)'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLabel', text: 'Circular Labels'};
 	this.loadHtmlTag(tag);
@@ -115,7 +126,7 @@ phyloElement.prototype.loadHtml = function () {
 phyloElement.prototype.load = function () {
 
 	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "99%", width:"97.5%"}).animate({opacity: 1}, 200);
-	//jQuery("#sidebarLegend").css({right:"25px",opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
+	jQuery("#sidebarLegend").css({right:"25px",opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
 
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
@@ -241,7 +252,7 @@ phyloElement.prototype.initParams = function () {
 					}
 
 					var delta = Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI;
-					element.rotate += delta;
+					element.rotate += delta*element.rotateFactor;
 
 					if (element.rotate > 360) {
 						element.rotate %= 360;
@@ -273,7 +284,8 @@ phyloElement.prototype.initParams = function () {
 						m[0] = m[0]-216;
 					}
 
-					var delta = Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI;
+					var delta = (Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI) * element.rotateFactor;
+					
 					element.wrap.style("-webkit-transform", "rotate(" + delta + "deg)");
 					element.wrap.style("-moz-transform", "rotate(" + delta + "deg)");
 				}
@@ -807,6 +819,14 @@ phyloElement.prototype.changeResolution = function (value) {
 
 	element.initParams();
 	PYCON.send("refresh",{"name": DATAID});
+}
+
+
+/**
+ * 
+ */
+phyloElement.prototype.changeRotateSpeed = function (value) {
+	element.rotateFactor = value;
 }
 
 /**

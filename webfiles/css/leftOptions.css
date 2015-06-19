@@ -216,7 +216,7 @@ input[type="checkbox"]{
 	font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
-#sliderTension, #sliderRadius{
+#sliderTension, #sliderRadius, #sliderRotate{
 	position:absolute;
 	right: 0%;
     	width:125px;
