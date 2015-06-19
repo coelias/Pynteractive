@@ -14,6 +14,7 @@ function phyloElement() {
 	this.resolution = 1440;
 	this.r=this.resolution/2;
 	this.circularLabel = false;
+	this.enableLabel = true;
 	this.treeNodes=[];
 	this.name2Node={}
 	this.nodedegrees=0;
@@ -87,6 +88,14 @@ phyloElement.prototype.loadHtml = function () {
 
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLabel', text: 'Enable/Disable Labels'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'enableLabel', type: 'checkbox', checked: this.enableLabel, onclick: 'element.drawTipLabels();'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
@@ -98,7 +107,7 @@ phyloElement.prototype.loadHtml = function () {
 phyloElement.prototype.load = function () {
 
 	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "99%", width:"97.5%"}).animate({opacity: 1}, 200);
-	jQuery("#sidebarLegend").css({right:"25px",opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
+	//jQuery("#sidebarLegend").css({right:"25px",opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
 
 	if(!jQuery.isEmptyObject(element.data)){
 		element.initParams();
@@ -234,6 +243,7 @@ phyloElement.prototype.initParams = function () {
 					}
 					element.start = null;
 					element.wrap.style("-webkit-transform", null);
+					element.wrap.style("-moz-transform", null);
 					element.layout	.attr("transform", "translate(" + element.r + "," + element.r + ")rotate(" + element.rotate + ")")
 					element.reLayoutTips();
 				}
@@ -257,6 +267,7 @@ phyloElement.prototype.initParams = function () {
 
 					var delta = Math.atan2(cross(element.start, m), dot(element.start, m)) * 180 / Math.PI;
 					element.wrap.style("-webkit-transform", "rotate(" + delta + "deg)");
+					element.wrap.style("-moz-transform", "rotate(" + delta + "deg)");
 				}
 			});
 
@@ -766,9 +777,11 @@ phyloElement.prototype.parsenormalize = function (tree) {
 phyloElement.prototype.changeCircularLabel = function () {
 	element.circularLabel = !element.circularLabel;
 	element.reLayoutTips();
-//	element.initParams();
-//	element.drawData();
-//	element.refreshSelection();
+}
+
+phyloElement.prototype.drawTipLabels = function () {
+	element.enableLabel = !enableLabel.circularLabel;
+
 }
 
 /**
@@ -780,10 +793,7 @@ phyloElement.prototype.changeResolution = function (value) {
 	element.maxrange = 2.7+((value-960)*0.0043);
 
 	element.initParams();
-//	element.drawData();
-//	element.refreshSelection();
 	PYCON.send("refresh",{"name": DATAID});
-
 }
 
 /**
