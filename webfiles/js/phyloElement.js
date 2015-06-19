@@ -14,7 +14,8 @@ function phyloElement() {
 	this.resolution = 1440;
 	this.r=this.resolution/2;
 	this.circularLabel = false;
-	this.enableLabel = true;
+	this.enableLabel = false;
+	this.nodeCircles = false;
 	this.treeNodes=[];
 	this.name2Node={}
 	this.nodedegrees=0;
@@ -89,9 +90,16 @@ phyloElement.prototype.loadHtml = function () {
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLabel', text: 'Enable/Disable Labels'};
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLabel', text: 'Hide Labels'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'input', to:'#optionsNetwork', id: 'enableLabel', type: 'checkbox', checked: this.enableLabel, onclick: 'element.drawTipLabels();'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'nodeCirclesLabel', text: 'Hide Node Circles'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'input', to:'#optionsNetwork', id: 'nodeCirclesLabel', type: 'checkbox', checked: this.nodeCirclesLabel, onclick: 'element.drawNodeCircles();'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -781,6 +789,11 @@ phyloElement.prototype.changeCircularLabel = function () {
 
 phyloElement.prototype.drawTipLabels = function () {
 	element.enableLabel = !enableLabel.circularLabel;
+
+}
+
+phyloElement.prototype.drawNodeCircles = function () {
+	element.nodeCircles = !element.nodeCircles;
 
 }
 
