@@ -92,7 +92,7 @@ body, html {
 #sidebarLegend {
 	z-index: 2;
   	visibility: hidden;
-	float: right;
+	position: absolute;
 }
 
 #explanation {
