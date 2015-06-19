@@ -134,7 +134,7 @@ phyloElement.prototype.initParams = function () {
 	jQuery("#layout").empty();
 
 	element.maxrange = 2.7+((element.resolution-960)*0.0043);
-	this.r = (element.resolution*1.05) / 2;
+	this.r = (element.resolution*1.10) / 2;
 	this.trackRadius=0;
 
 	var width = element.r * 2;
@@ -289,17 +289,10 @@ function binaryblob(){
  */
 
 phyloElement.prototype.reLayoutTips = function () {
-					element.layout	.selectAll("text")
-							.attr("text-anchor", 	function(d) { 
-											return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; 
-										})
-							.attr("transform", 	function(d) {
-											if(element.circularLabel == true){
-												return "rotate(" + (d.x - 90) + ")translate(" + (element.maxR+10) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")";
-											}else{
-												return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")";
-											}
-										});
+	if(element.circularLabel == true){
+		element.layout	.selectAll("text") .attr("text-anchor", 	function(d) { return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; }) .attr("transform", 	function(d) { if(element.circularLabel == true){ return "rotate(" + (d.x - 90) + ")translate(" + (element.maxR+10) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; }else{ return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; } });}
+	else{
+		element.layout	.selectAll("text") .attr("text-anchor", 	function(d) { return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; }) .attr("transform", 	function(d) { if(element.circularLabel == true){ return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; }else{ return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; } });}
 }
 
 phyloElement.prototype.setData = function (data) {
@@ -350,7 +343,7 @@ phyloElement.prototype.drawData = function () {
 			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d);})
 
 	node.append("circle")
-			.attr("r", 2.5);
+			.attr("r", 2.5).append("svg:title").text(function(d){return d.name});
 	
 
 
@@ -412,11 +405,10 @@ function step(d) {
 
 function trackFeatStep(info){
 	if (element.trackRadius==0){
-		setTimeout(function() { element.trackFeatStep(info); }, 500);
+		setTimeout(function() { trackFeatStep(info); }, 500);
 		return
 	}
 
-	while (!element.trackRadius){}
 	var d=info[0];
 	var ntrack=info[1]-1;
 	
@@ -429,7 +421,6 @@ function trackFeatStep(info){
 			var di=element.nodedegrees;
 	}
 
-	var di2=10;
 	var r=element.trackRadius+element.trackWidth*(ntrack);
 	var r2=element.trackRadius+element.trackWidth*(ntrack+1);
 	var sweep2 = d.x > d.parent.x ? 1 : 0;
@@ -445,6 +436,32 @@ function trackFeatStep(info){
 			"A" + r + "," + r + " 0 0," + sweep2 + " " + p1[0] + "," + p1[1]
 	);
 }
+
+function sectorStep(info){
+	if (element.trackRadius==0){
+		setTimeout(function() { sectorStep(info); }, 500);
+		return
+	}
+	var x1=info[0]-element.nodedegrees;
+	var x2=info[1]+element.nodedegrees;
+	var r=info[2];
+	var r2=element.trackRadius-5;
+	
+
+	var sweep2 = 0//d.x > d.parent.x ? 1 : 0;
+	var sweep =1 // d.x <= d.parent.x ? 1 : 0;
+	var p1 = project({x: x1, y: r});
+	var p2 = project({x: x1, y: r2});
+	var p3 = project({x: x2, y: r2});
+	var p4 = project({x: x2, y: r});
+	return ( "M"+p1[0] + "," + p1[1] + 
+			"L" + p2[0] + "," + p2[1] +
+			"A" + r2 + "," + r2 + " 0 0," + sweep + " " + p3[0] + "," + p3[1]+
+			"L" + p4[0] + "," + p4[1] +
+			"A" + r + "," + r + " 0 0," + sweep2 + " " + p1[0] + "," + p1[1]
+	);
+}
+
 
 function trackCircleStep(radius)
 {
@@ -737,9 +754,10 @@ phyloElement.prototype.parsenormalize = function (tree) {
  */
 phyloElement.prototype.changeCircularLabel = function () {
 	element.circularLabel = !element.circularLabel;
-	element.initParams();
-	element.drawData();
-	element.refreshSelection();
+	element.reLayoutTips();
+//	element.initParams();
+//	element.drawData();
+//	element.refreshSelection();
 }
 
 /**
@@ -878,6 +896,8 @@ phyloElement.prototype.addTrackFeature=function (trackn,tipname,color,title,grad
 }
 
 
+
+
 phyloElement.prototype.clearTracks=function ()
 {
 	for (var key in element.treeNodes)
@@ -924,6 +944,44 @@ phyloElement.prototype.addTrackBar=function (value,normValue,tipname,color,barn,
 	oj.bars[barn]=nd;
 	nd.append("svg:title").text(value);
 	nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0])});
+}
+
+phyloElement.prototype.markLabel=function (tipname)
+{
+	var nd=element.layout.selectAll().data([element.cladeLimits(tipname)])
+			.enter().append("g")
+			.append("path")
+			.attr("d", sectorStep)
+			.attr("fill",'red')
+			.attr("stroke",'none')
+			.attr("fill-opacity","0.2")
+			.attr("style","pointer-events: none")
+
+}
+
+phyloElement.prototype.cladeLimits=function (tipname)
+{
+	var nodes=[element.name2Node[tipname]];
+	var xmin=500;
+	var xmax=-500;
+	var ymin=nodes[0].y
+	
+	while (nodes.length)
+	{
+		n=nodes.splice(0,1)[0]
+		if (n.x<xmin) {xmin=n.x}
+		if (n.x>xmax) {xmax=n.x}
+		if (n.children)
+		{
+			for (var i=0;i<n.children.length;i++)
+			{
+				nodes.push(n.children[i])
+			}
+		}
+	}
+
+	return [xmin,xmax,ymin]
+	
 }
 
 phyloElement.prototype.delTrackBar=function (tipname,barn){

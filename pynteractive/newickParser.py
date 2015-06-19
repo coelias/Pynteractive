@@ -1,25 +1,39 @@
 import os
 import re
+from random import *
 
 class Newick:
 	releaf=re.compile("([^:]+)?(:[0-9.]+)?")
+
 	class Node:
+		RANDOMNAMES=set()
 		def __init__(self,name=None,lgth=None):
 			self.name=name
 			self.length=lgth
 			self.children=[]
+			if not self.name:
+				self.name=Newick.Node.randomName()
 	
 		def append(self,x):
 			self.children.append(x)
 
 		def __str__(self):
 			cad=""
-			if self.name:
-				cad=self.name
-			if self.length: cad+=":{0}".format(self.length)
 			if self.children:
-				cad="({0})".format(",".join([str(i) for i in self.children]))+cad
+				cad+="({0})".format(",".join([str(i) for i in self.children]))
+			if self.name:
+				cad+=self.name
+			if self.length: cad+=":{0}".format(self.length)
 			return cad
+
+		@staticmethod
+		def randomName():
+			while True:
+				name="clade-"+str(randint(1,99999))
+				if name not in Newick.Node.RANDOMNAMES:
+					Newick.Node.RANDOMNAMES.add(name)
+					return name
+			
 
 	def __init__(self):
 		self.root=None
@@ -45,7 +59,7 @@ class Newick:
 				if cad[pos+1]==';': break
 				if cad[pos+1] not in "),":
 					name,lgth,pos=self._parseLeaf(cad,pos+1)
-					n.name=name
+					if name: n.name=name
 					n.length=lgth
 					return n,pos
 				else: break
