@@ -333,17 +333,19 @@ phyloElement.prototype.drawData = function () {
 			.data(element.cluster.links(element.treeNodes))
 			.enter().append("path")
 			.attr("class", "link")
-			.attr("d", step);
+			.attr("d", step)
+			.attr('style','stroke: none')
+			.attr('style',null)
 
 	var node = element.layout.selectAll("g.node")
 			.data(element.treeNodes.filter(function(n) { return n.x !== undefined; }))
 			.enter().append("g")
 			.attr("class", "node")
-			.attr("transform", function(d) { d.circle=this; return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+			.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
 			.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d);})
-
-	node.append("circle")
-			.attr("r", 2.5).append("svg:title").text(function(d){return d.name});
+			.append("circle")
+			.attr("r", function(d){d.circle=this; return 2.5})
+			.append("svg:title").text(function(d){return d.name});
 	
 
 
@@ -358,7 +360,6 @@ phyloElement.prototype.drawData = function () {
 	}
 
 	element.maxR=maxR.y;
-
 
 	if(element.circularLabel == true){
 		var label = element.layout.selectAll("text")
@@ -392,6 +393,9 @@ phyloElement.prototype.drawData = function () {
  * Layout position calculation
  */
 function step(d) {
+	if (d.source.paths==undefined)
+	{ d.source.paths=[];}
+	d.source.paths.push(this);
 	var s = project(d.source);
 	var m = project({x: d.target.x, y: d.source.y});
 	var t = project(d.target);
@@ -946,17 +950,74 @@ phyloElement.prototype.addTrackBar=function (value,normValue,tipname,color,barn,
 	nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0])});
 }
 
-phyloElement.prototype.markLabel=function (tipname)
+phyloElement.prototype.markClade=function (tipname,color)
 {
+	oj=element.name2Node[tipname]
+	if (oj.mark)
+	{
+		oj.mark.remove()
+	}
 	var nd=element.layout.selectAll().data([element.cladeLimits(tipname)])
 			.enter().append("g")
 			.append("path")
 			.attr("d", sectorStep)
-			.attr("fill",'red')
+			.attr("fill",color)
 			.attr("stroke",'none')
 			.attr("fill-opacity","0.2")
 			.attr("style","pointer-events: none")
+	oj.mark=nd;
+}
 
+
+phyloElement.prototype.unMarkClade=function (tipname)
+{
+	oj=element.name2Node[tipname]
+	if (oj.mark)
+	{
+		oj.mark.remove()
+	}
+}
+
+phyloElement.prototype.setCladeColor=function (tipname,color)
+{
+	var nodes=[element.name2Node[tipname]];
+	while (nodes.length)
+	{
+		var n=nodes.splice(0,1)[0]
+		if (n.paths)
+		{ for (var i=0;i<n.paths.length;i++) { n.paths[i].setAttribute('style','stroke: '+color)}}
+		if (n.circle)
+		{n.circle.setAttribute('style','stroke: '+color)}
+
+		if (n.children)
+		{
+			for (var i=0;i<n.children.length;i++)
+			{
+				nodes.push(n.children[i])
+			}
+		}
+	}
+}
+
+phyloElement.prototype.clearCladeColor=function (tipname)
+{
+	var nodes=[element.name2Node[tipname]];
+	while (nodes.length)
+	{
+		var n=nodes.splice(0,1)[0]
+		if (n.paths)
+		{ for (var i=0;i<n.paths.length;i++) { n.paths[i].setAttribute('style',null)}}
+		if (n.circle)
+		{n.circle.setAttribute('style',null)}
+
+		if (n.children)
+		{
+			for (var i=0;i<n.children.length;i++)
+			{
+				nodes.push(n.children[i])
+			}
+		}
+	}
 }
 
 phyloElement.prototype.cladeLimits=function (tipname)
@@ -981,7 +1042,6 @@ phyloElement.prototype.cladeLimits=function (tipname)
 	}
 
 	return [xmin,xmax,ymin]
-	
 }
 
 phyloElement.prototype.delTrackBar=function (tipname,barn){
