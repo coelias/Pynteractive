@@ -18,6 +18,7 @@ class PhyloTree(DataStruct):
 		self.trackBars={}
 		self.nbars=0
 		self.cladeMarks={}
+		self.cladeColors={}
 
 	def __getHexColor(self,trackn,val):
 		_,color,minval,maxval,_=self.gradientTracks[trackn]
@@ -64,6 +65,9 @@ class PhyloTree(DataStruct):
 
 		for tipname,color in self.cladeMarks.items():
 			self._update("markClade",tipname,color)
+
+		for tipname,color in self.cladeColors.items():
+			self._update("setCladeColor",tipname,color)
 
 		self._refreshBars()
 
@@ -248,14 +252,22 @@ class PhyloTree(DataStruct):
 		self.nbars=0
 		self._update("deleteBars")
 
-	def markClade(self,tipname,color):
+	def markClade(self,clade,color):
 		'''Marks the region of a clade given a fill color'''
-		self.cladeMarks[tipname]=color
-		self._update("markClade",tipname,color)
+		self.cladeMarks[clade]=color
+		self._update("markClade",clade,color)
 
-
-	def unMarkClade(self,tipname):
+	def unMarkClade(self,clade):
 		'''Removes a mark for a clade'''
-		del self.cladeMarks[tipname]
-		self._update("unMarkClade",tipname)
-		
+		del self.cladeMarks[clade]
+		self._update("unMarkClade",clade)
+
+	def setCladeColor(self,clade,color):
+		'''Sets tree color for a clade'''
+		self.cladeColors[clade]=color
+		self._update("setCladeColor",clade,color)
+
+	def clearCladeColor(self,clade):
+		'''Clears tree color given a clade'''
+		del self.cladeColors[clade]
+		self._update("clearCladeColor",clade)
