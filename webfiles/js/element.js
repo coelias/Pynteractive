@@ -45,7 +45,7 @@ element.prototype.loadInstance = function () {
 	//create layout visualization
 	this.load();
 	//create connection between GUI and Business model
-	PYCON.connect("ws://localhost:8000/");
+	PYCON.connect("ws://localhost:"+WSPORT+"/");
 
 	//browser events
 	$(window).on("resize", this.browserResize);
