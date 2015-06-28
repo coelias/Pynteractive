@@ -89,7 +89,7 @@ class DataStruct:
 
 	def view(self):
 		'''This method opens the default web browser in the system showing the web visualization associated to the data'''
-		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}".format(pyn_globals.PORT,self._ID,self.__class__.__name__))
+		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}&wsport={3}".format(pyn_globals.PORT,self._ID,self.__class__.__name__,pyn_globals.WEBSOCKETPORT))
 
 	def addAction(self,name,func):
 		'''Actions can be added to each visualization

@@ -21,7 +21,7 @@ class WebServices:
 
 	@staticmethod
 	def webSocketServerWorker():
-		WSOCKserver = SimpleWebSocketServer("localhost", 8000, JSCom)
+		WSOCKserver = SimpleWebSocketServer("localhost", pyn_globals.WEBSOCKETPORT, JSCom)
 		DataStruct._connect(WSOCKserver.sendAction)
 		WSOCKserver.serveforever()
 
