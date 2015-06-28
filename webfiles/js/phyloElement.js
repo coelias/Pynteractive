@@ -19,7 +19,7 @@ function phyloElement() {
 	this.treeNodes=[];
 	this.name2Node={}
 	this.nodedegrees=0;
-	this.trackWidth=15;
+	this.trackWidth=5;
 	this.trackRadius=0;
 	this.ntracks=0;
 	this.maxR=0;
