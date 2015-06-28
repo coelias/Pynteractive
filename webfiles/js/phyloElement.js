@@ -35,6 +35,8 @@ function phyloElement() {
 	this.sample2Feat={}
 
 	this.colors = new Object();
+
+	this.emptySvgDeclarationComputed;
 };
 
 phyloElement.prototype = new element();
@@ -117,14 +119,35 @@ phyloElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'input', to:'#optionsNetwork', id: 'export', type: 'button', onclick: 'element.exportPNG();'};
+	this.loadHtmlTag(tag);
+
 };
 
 /**
  * Load graph on layout div html page
  */
-phyloElement.prototype.load = function () {
+phyloElement.prototype.exportPNG = function () {
 
-	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "99%", width:"97.5%"}).animate({opacity: 1}, 200);
+	var svg = $('#layout svg')[0];
+
+	emptySvgDeclarationComputed = getComputedStyle(svg);
+
+	var allElements = element.traverse(svg);
+	var i = allElements.length;
+	while (i--){
+	    element.explicitlySetStyle(allElements[i]);
+	}
+
+	PYCON.send('downloadSVG',{svg:new XMLSerializer().serializeToString(svg)});
+}
+
+/**
+ * Load graph on layout div html page
+ */
+phyloElement.prototype.load = function () {
+	
+        jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "99%", width:"97.5%"}).animate({opacity: 1}, 200);
 	jQuery("#sidebarLegend").css({right:"25px",opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
 
 	if(!jQuery.isEmptyObject(element.data)){
