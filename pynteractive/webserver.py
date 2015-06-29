@@ -92,20 +92,24 @@ class JSCom(WebSocket):
 			self.dicFuncs[i]=getattr(self,i)
 			self.dicArgs[i]=inspect.getargspec(self.dicFuncs[i])
 
+		self.MESSAGES={}
+
 	def sendAction(self,fname,*params):
 		data=json.dumps([fname]+list(params))
 		with Pynteractive_ws_MUTEX:
 			self.sendMessage(data)
 
 	def handleMessage(self):
+		orig=self.data
 		try:
-			dat=json.loads(str(self.data))
+			dat=json.loads(str(orig))
 			funcname=dat[0]
+			print funcname
 			args=dat[1]
 			self.dicFuncs[funcname](**args)
 		except:
 			traceback.print_exc()
-			print "Error processing",str(self.data)
+			print "Error processing","({0})".format(len(orig)),str(orig)[:30],"...",str(orig)[-30:]
 
 	def handleConnected(self):
 #		print self.address, 'connected'
@@ -131,6 +135,12 @@ class JSCom(WebSocket):
 
 	def refresh(self,name):
 		DataStruct._refreshData(name)
+
+	def downloadSVG(self,svg):
+		q=open("/tmp/a.svg","w")
+		q.write(svg)
+		q.close()
+
 
 class SimpleWS(SimpleHTTPRequestHandler):
 	FILE_MGR=FileMgr(path='webfiles/') if not pyn_globals.WEBFILES else FileMgr(tarString=pyn_globals.WEBFILES)

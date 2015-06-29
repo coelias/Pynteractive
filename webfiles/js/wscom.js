@@ -1,20 +1,12 @@
-//function MyClone(obj){
-//    if(obj == null || typeof(obj) != 'object')
-//        return obj;
-//
-//    var temp = {};
-//    for(var key in obj)
-//        temp[key] = MyClone(obj[key]);
-//    return temp;
-//}
-//
-//ErrorHandler= new function ErrHandler()
-//{
-//	this.report = function(type,msg)
-//	{
-//		alert (type+" : "+msg);
-//	}
-//}
+function uuid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
 
 var PYCON={
 	websocket:null,
@@ -41,7 +33,9 @@ var PYCON={
 	onError: function(evt){},
 	send: function(funcname,params)
 	{
-		this.websocket.send(JSON.stringify([funcname,params]));
-	}
+		var msg=JSON.stringify([funcname,params]);
+		this.websocket.send(msg);
+	}	
 }
+
 

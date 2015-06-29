@@ -139,7 +139,8 @@ phyloElement.prototype.exportPNG = function () {
 	    element.explicitlySetStyle(allElements[i]);
 	}
 
-	PYCON.send('downloadSVG',{svg:new XMLSerializer().serializeToString(svg)});
+//	PYCON.send('downloadSVG',{svg:new XMLSerializer().serializeToString(svg)});
+	saveAs(new Blob([new XMLSerializer().serializeToString(svg)], {type:"application/svg+xml"}), "output.svg")
 }
 
 /**

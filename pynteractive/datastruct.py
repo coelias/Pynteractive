@@ -91,11 +91,6 @@ class DataStruct:
 		'''This method opens the default web browser in the system showing the web visualization associated to the data'''
 		webbrowser.open_new_tab("http://localhost:{0}/?dataid={1}&vtype={2}&wsport={3}".format(pyn_globals.PORT,self._ID,self.__class__.__name__,pyn_globals.WEBSOCKETPORT))
 
-	def downloadSVG(self,svg):
-		q=open("/tmp/a.svg","w")
-		q.write(svg)
-		q.close()
-
 	def addAction(self,name,func):
 		'''Actions can be added to each visualization
 

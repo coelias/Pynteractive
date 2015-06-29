@@ -92,8 +92,8 @@ class WebSocket(object):
 		self.state = self.HEADERB1
 	
 		# restrict the size of header and payload for security reasons
-		self.maxheader = 65536
-		self.maxpayload = 4194304
+		self.maxheader = 4294967296
+		self.maxpayload = 4294967296
 
 	def close(self):
 		self.client.close()
@@ -249,7 +249,6 @@ class WebSocket(object):
 		
 
 	def sendClose(self):
-
 		msg = bytearray()
 		if self.hixie76 is False:
 			msg.append(0x88)
