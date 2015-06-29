@@ -36,6 +36,9 @@ function element() {
 
 	//seleccion nodes
 	this.selectionList = new Set();
+
+	///export SVG
+	this.emptySvgDeclarationComputed;
 };
 
 
@@ -406,14 +409,16 @@ element.prototype.addData = function (data){
  * 
  */
 element.prototype.addLoad = function (){
-	document.getElementById("load").style.display = "block";
+	//this.document.getElementById("load").style.display = "block";
+        jQuery("#load").css({display: "block"});
 }
 
 /**
  * 
  */
 element.prototype.deleteLoad = function (){
-	document.getElementById("load").style.display = "none";
+	//this.document.getElementById("load").style.display = "none";
+        jQuery("#load").css({display: "none"});
 }
 
 ////////////////////////////////////////////////////////////
@@ -478,19 +483,20 @@ element.prototype.refreshSelection = function() {
 ////////////////////    EXPORT SVG    //////////////////////
 ////////////////////////////////////////////////////////////
 
-element.prototype.explicitlySetStyle = function(element) {
-    var cSSStyleDeclarationComputed = getComputedStyle(element);
+element.prototype.explicitlySetStyle = function(element_svg) {
+    var cSSStyleDeclarationComputed = getComputedStyle(element_svg);
     var i, len, key, value;
     var computedStyleStr = "";
     for (i=0, len=cSSStyleDeclarationComputed.length; i<len; i++) {
         key=cSSStyleDeclarationComputed[i];
         value=cSSStyleDeclarationComputed.getPropertyValue(key);
-        if (value!==emptySvgDeclarationComputed.getPropertyValue(key)) {
+        if (value!==element.emptySvgDeclarationComputed.getPropertyValue(key)) {
             computedStyleStr+=key+":"+value+";";
         }
     }
-    element.setAttribute('style', computedStyleStr);
+    element_svg.setAttribute('style', computedStyleStr);
 }
+
 element.prototype.traverse = function(obj) {
     var tree = [];
     var fifo= [obj];
@@ -504,4 +510,34 @@ element.prototype.traverse = function(obj) {
     }
 
     return tree;
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+element.prototype.exportPNG = function () {
+
+	element.addLoad();
+
+	var svg = jQuery('#layout svg')[0];
+
+	element.emptySvgDeclarationComputed = getComputedStyle(svg);
+
+	var allElements = element.traverse(svg);
+	var i = allElements.length;
+
+	while (i--){
+	    element.explicitlySetStyle(allElements[i]);
+	}
+
+	element.deleteLoad();
+
+	saveAs(new Blob([new XMLSerializer().serializeToString(svg)], {type:"application/svg+xml"}), "output.svg")
+
 }

@@ -35,8 +35,6 @@ function phyloElement() {
 	this.sample2Feat={}
 
 	this.colors = new Object();
-
-	this.emptySvgDeclarationComputed;
 };
 
 phyloElement.prototype = new element();
@@ -119,29 +117,12 @@ phyloElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
-	tag = {tag:'input', to:'#optionsNetwork', id: 'export', type: 'button', onclick: 'element.exportPNG();'};
+	tag = {tag:'label', to:'#optionsNetwork', id: 'ExportSVG', text: 'Export SVG'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'exportSVGButton', type: 'button', onclick: 'element.exportPNG();'};
 	this.loadHtmlTag(tag);
 
 };
-
-/**
- * Load graph on layout div html page
- */
-phyloElement.prototype.exportPNG = function () {
-
-	var svg = $('#layout svg')[0];
-
-	emptySvgDeclarationComputed = getComputedStyle(svg);
-
-	var allElements = element.traverse(svg);
-	var i = allElements.length;
-	while (i--){
-	    element.explicitlySetStyle(allElements[i]);
-	}
-
-//	PYCON.send('downloadSVG',{svg:new XMLSerializer().serializeToString(svg)});
-	saveAs(new Blob([new XMLSerializer().serializeToString(svg)], {type:"application/svg+xml"}), "output.svg")
-}
 
 /**
  * Load graph on layout div html page
