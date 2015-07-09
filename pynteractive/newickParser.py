@@ -86,7 +86,25 @@ class Newick:
 		if items[0][1]: length=float(items[0][1][1:])
 	
 		return name,length,i
-	
+
+	def getMonophyletics(self,nodes):
+		found,clades=self._recur_getMonoPhyletics(nodes,self.root)
+		return clades
+
+	def _recur_getMonoPhyletics(self,nodes,curNode):
+		childres=[]
+		res=set()
+		if curNode.children:
+			for i in curNode.children:
+				childres.append(self._recur_getMonoPhyletics(nodes,i))
+			if all([i[0] for i in childres]):
+				return True,set([curNode.name])
+			else:
+				return False,reduce(set.union,[i[1] for i in childres])
+		else:
+			if curNode.name in nodes: return True,set([curNode.name])
+			return False,set()
+
 	def getName(self,name):
 		if not name in self.nodenames:
 			self.nodenames.add(name)
