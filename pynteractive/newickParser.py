@@ -1,6 +1,6 @@
 import os
 import re
-from random import *
+import random
 
 class Newick:
 	releaf=re.compile("([^:]+)?(:[0-9.]+)?")
@@ -29,7 +29,7 @@ class Newick:
 		@staticmethod
 		def randomName():
 			while True:
-				name="clade-"+str(randint(1,99999))
+				name="clade-"+str(random.randint(1,99999))
 				if name not in Newick.Node.RANDOMNAMES:
 					Newick.Node.RANDOMNAMES.add(name)
 					return name
