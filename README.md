@@ -159,7 +159,7 @@ m.addEdge('ID3','ID4',width=5,color='green')
 ```
 
 ####Phylogenetic tree example
-[![Phylo example](http://coelias.github.io/Pynteractive/imgs/phylo.png)](http://coelias.github.io/Pynteractive/imgs/phylo.png)
+[![Phylo example](http://coelias.github.io/Pynteractive/imgs/phylo.svg)](http://coelias.github.io/Pynteractive/imgs/phylo.svg)
 
 
 ```python
@@ -188,6 +188,10 @@ b2=a.addBar('second bar','mediumpurple',1,50)
 for i in range(1,201):
     a.addTrackBar(b1,str(i),random.randint(1,51))
     a.addTrackBar(b2,str(i),random.randint(1,51))
+
+a.markClade(['144','93'],'red')
+a.markClade(['116','107','58',],'blue')
+a.markClade(['39','72','164',],'green')
 
 raw_input()
 

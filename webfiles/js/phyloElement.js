@@ -129,7 +129,7 @@ phyloElement.prototype.loadHtml = function () {
  */
 phyloElement.prototype.load = function () {
 	
-        jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "99%", width:"97.5%"}).animate({opacity: 1}, 200);
+	jQuery("#layout").css({overflow: "auto", position:"absolute", margin:"2%", display: "visible", opacity: 0.25,  height: "99%", width:"97.5%"}).animate({opacity: 1}, 200);
 	jQuery("#sidebarLegend").css({right:"25px",opacity: 0.25, visibility:"visible"}).animate({opacity: 1}, 200);
 
 	if(!jQuery.isEmptyObject(element.data)){
@@ -434,7 +434,7 @@ phyloElement.prototype.drawTipLabels = function () {
 				.attr('class',function(d){if (element.selectionList.has(d)){return 'selectednode'}; return 'tip'})
 				.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
 				.attr("transform", function(d) { d.label=this; return "rotate(" + (d.x - 90) + ")translate(" + (element.maxR+10 ) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")"; })
-				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d)})
+				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d,true)})
 				.text(function(d) { return d.name.replace(/_/g, ' '); });
 
 		}
@@ -447,7 +447,7 @@ phyloElement.prototype.drawTipLabels = function () {
 				.attr('class',function(d){if (element.selectionList.has(d)){return 'selectednode'}; return 'tip'})
 				.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
 				.attr("transform", function(d) { d.label=this; return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + (d.x < 180 ? 0 : 180) + ")";})
-				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d)})
+				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d,true)})
 				.text(function(d) { return d.name.replace(/_/g, ' '); });
 		}
 	}
@@ -465,7 +465,7 @@ phyloElement.prototype.drawNodeCircles = function () {
 				.data(element.treeNodes.filter(function(n) { return n.x !== undefined; }))
 				.enter().append("g")
 				.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
-				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d);})
+				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d,true);})
 				.append("circle")
 				.attr("class", "node")
 				.attr("r", function(d){d.circle=this; return 2.5})
@@ -994,7 +994,7 @@ phyloElement.prototype.addTrackFeature=function (trackn,tipname,color,title,grad
 	if (title){nd.append("svg:title").text(title);}
 	if (typeof(gradient)!="boolean")
 		{
-			nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0])});}
+			nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0],true)});}
 	else {// add code to select all nodes containig this fature
 		nd.on("click",function(d){element.selectTrackFeature(trackn)})
 		}
@@ -1050,7 +1050,7 @@ phyloElement.prototype.addTrackBar=function (value,normValue,tipname,color,barn,
 
 	oj.bars[barn]=nd;
 	nd.append("svg:title").text(value);
-	nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0])});
+	nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0],true)});
 }
 
 phyloElement.prototype.markClade=function (tipname,color)
@@ -1190,6 +1190,7 @@ phyloElement.prototype.clearSelection = function() {
 	d3.selectAll('path.trackf').attr('opacity','1')
 	d3.selectAll('path.trackbf').attr('opacity','1')
 	element.selectionList.forEach(function(v){element.clearNodeSelection(v)});
+	PYCON.send('selectionSet',{nodes:[]});
 }
 
 phyloElement.prototype.clearNodeSelection = function (n){
@@ -1225,21 +1226,25 @@ phyloElement.prototype.selectTrackFeature = function (trackn){
 	element.selectNodes(k)
 }
 
-phyloElement.prototype.selectNodes = function (nl){
+phyloElement.prototype.selectNodes = function (nl,report){
 	nl=new Set(nl);
 	for (var i in this.treeNodes)
 	{
-		if (nl.has(this.treeNodes[i].name)){element.selectNode(this.treeNodes[i])}
+		if (nl.has(this.treeNodes[i].name)){element.selectNode(this.treeNodes[i],false)}
 	}
+
+	var selectednodes=[];
+	element.selectionList.forEach(function(d){selectednodes.push(d.name)})
+	PYCON.send('selectionSet',{nodes:selectednodes});
 }
 
 
-phyloElement.prototype.selectNode = function(n) {
+phyloElement.prototype.selectNode = function(n,report) {
 	if (n.branchset)
 	{
 		for (var i in n.branchset)
 		{
-			element.selectNode(n.branchset[i])
+			element.selectNode(n.branchset[i],false)
 		}
 	}
 	else
@@ -1269,6 +1274,13 @@ phyloElement.prototype.selectNode = function(n) {
 		}
 		
 	}
+	if (report)
+	{
+		var selectednodes=[];
+		element.selectionList.forEach(function(d){selectednodes.push(d.name)})
+		PYCON.send('selectionSet',{nodes:selectednodes});
+	}
+
 }
 
 phyloElement.prototype.refreshSelection = function() {

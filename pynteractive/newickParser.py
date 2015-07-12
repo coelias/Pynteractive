@@ -51,7 +51,6 @@ class Newick:
 			raise Exception('Invalid format for Newick')
 
 		self.internalNodes=self.getInternalNodes(self.root)
-		print self.internalNodes
 
 	def getInternalNodes(self,root):
 		res=set()
