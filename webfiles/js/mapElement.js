@@ -305,8 +305,11 @@ mapElement.prototype.selectNode = function(id,refresh,rectangle) {
 		element.selectionList.add(id);
 	}
 
+	var els=[];
+	element.selectionList.forEach(function(v){els.push(v)});
+
 	if(!rectangle){
-		PYCON.send("mapSelection",{"nodes":element.selectionList});
+		PYCON.send("selectionSet",{"nodes":els});
 	}
 
 }
@@ -323,7 +326,9 @@ mapElement.prototype.rectangleSelection = function(e){
 			element.selectNode(node,false,true);
 		}
 	}
-	PYCON.send("mapSelection",{"nodes":element.selectionList});
+	var els=[];
+	element.selectionList.forEach(function(v){els.push(v)});
+	PYCON.send("selectionSet",{"nodes":els});
 }
 
 mapElement.prototype.exportSVG = function (err, canvas) {	

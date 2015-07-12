@@ -135,6 +135,9 @@ class JSCom(WebSocket):
 	def refresh(self,name):
 		DataStruct._refreshData(name)
 
+	def selectionSet(self,nodes):
+		DataStruct._OBJECTS[self.dataId]._selectionSet(nodes)
+
 	def downloadSVG(self,svg):
 		q=open("/tmp/a.svg","w")
 		q.write(svg)

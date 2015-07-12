@@ -24,6 +24,7 @@ class DataStruct:
 		self.actions={}
 		self.actionid=1
 		self.dclickfunc=None
+		self.selectionHook=None
 	
 	def setDoubleClick(self,f):
 		'''Sets a callback as a response to a double click event on a graph node'''
@@ -32,6 +33,14 @@ class DataStruct:
 	def _doubleClick(self,node):
 		if self.dclickfunc:
 			self.dclickfunc(node)
+
+	def selectionHandler(self,func):
+		'''Sets a hook method that will be fired every time a selection is performed'''
+		self.selectionHook=func
+
+	def _selectionSet(self,nodes):
+		if self.selectionHook:
+			self.selectionHook(nodes)
 
 	def _performAction(self,fid,params):
 		fid=int(fid)
