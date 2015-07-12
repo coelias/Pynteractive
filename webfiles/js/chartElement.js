@@ -73,7 +73,6 @@ chartElement.prototype.loadHtml = function () {
 
 	tag = {tag:'label', to:'#optionsNetwork', id:'labelChartStack', text:'Stacked Area Chart'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'Stack', name: 'charts', type: 'radio', value: '0', onclick: 'element.changeLayoutType(id);', checked: false};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
@@ -111,6 +110,16 @@ chartElement.prototype.loadHtml = function () {
 	tag = {tag:'button', to:'#optionsNetwork', id: 'filterDataChart', text: "Apply", type: 'button', onclick: 'element.filterData();'};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'hr', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'ExportSVG', text: 'Export SVG'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'exportSVGButton', type: 'button', onclick: 'element.exportSVG();'};
+	this.loadHtmlTag(tag);
+
 };
 
 /**
@@ -125,6 +134,8 @@ chartElement.prototype.changeLayoutType = function (id){
 
 	jQuery("#charts").css({opacity: 0.25, display: "visible"}).animate({opacity: 1}, 200);
 
+console.log(id)
+console.log(this.layoutType)
 	if(id=='All'){
 
 		jQuery("#chartlayoutBar").css({opacity: 0.25, display: "visible", margin: "0%", width:"33%", height: "50%"}).animate({opacity: 1}, 200);
@@ -546,3 +557,30 @@ chartElement.prototype.action = function (e){
 	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
 };
 
+chartElement.prototype.exportSVG = function () {
+	
+	element.addLoad();
+
+	if(element.layoutType == "All") {
+		element.deleteLoad();
+		return;
+	}
+
+	var id = "#chartlayout"+element.layoutType+" svg";
+	console.log(id);
+	var element_exp = jQuery(id)[0];
+	element_export = element_exp.children[0];
+
+	element.emptySvgDeclarationComputed = getComputedStyle(element_export);
+
+	var allElements = element.traverse(element_export);
+	var i = allElements.length;
+
+	while (i--){
+	    element.explicitlySetStyle(allElements[i]);
+	}
+
+	element.deleteLoad();
+
+	saveAs(new Blob([new XMLSerializer().serializeToString(element_exp)], {type:"image/svg+xml"}), "output.svg")
+}

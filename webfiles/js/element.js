@@ -521,23 +521,6 @@ function sleep(milliseconds) {
   }
 }
 
-element.prototype.exportPNG = function () {
-
-	element.addLoad();
-
-	var svg = jQuery('#layout svg')[0];
-
-	element.emptySvgDeclarationComputed = getComputedStyle(svg);
-
-	var allElements = element.traverse(svg);
-	var i = allElements.length;
-
-	while (i--){
-	    element.explicitlySetStyle(allElements[i]);
-	}
-
-	element.deleteLoad();
-
-	saveAs(new Blob([new XMLSerializer().serializeToString(svg)], {type:"application/svg+xml"}), "output.svg")
+element.prototype.exportSVG = function () {
 
 }
