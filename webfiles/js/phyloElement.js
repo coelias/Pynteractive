@@ -160,6 +160,7 @@ phyloElement.prototype.initParams = function () {
 
 	jQuery("#layout").empty();
 
+
 	element.maxrange = 2.7+((element.resolution-960)*0.0043);
 	this.r = (element.resolution*1.10) / 2;
 	this.trackRadius=0;
@@ -175,7 +176,7 @@ phyloElement.prototype.initParams = function () {
     var w = element.r * 2;
     var h = element.r * 2;
 
-    var div = d3.select("#layout");//.insert("div", "h2")
+    var div = d3.select("#layout")//.insert("div", "h2")
     //.style("top", ((viewerHeight)/2)+"px")
     //.style("left", ((viewerWidth)/2)+"px")
     //.style("width", width)
@@ -213,6 +214,9 @@ phyloElement.prototype.initParams = function () {
 		.attr("width", w)
 		.attr("height", h)
 		.attr("fill", "none")
+		.attr('style','fill:rgb(255,255,255)')
+		.on("click",function (x){ if (element.moved==false){
+			   element.clearSelection()}});
 
 	this.layout = this.wrap.append("g")
 		.attr("transform", "translate(" + w/2 + "," + h/2 + ")");
@@ -223,6 +227,7 @@ phyloElement.prototype.initParams = function () {
 	this.div = document.getElementById("layout");
 
 	this.wrap.on("mousedown", function() {
+		element.moved=false;
 		element.wrap.style("cursor", "move");
 		element.start = mouse(d3.event);
 
@@ -272,6 +277,7 @@ phyloElement.prototype.initParams = function () {
 				}
 			})
 			.on("mousemove", function() {
+				element.moved=true;
 
 				if (element.start) {
 					var top = jQuery("#layout").scrollTop();
@@ -336,8 +342,19 @@ function binaryblob(){
 
 phyloElement.prototype.reLayoutTips = function () {
 	if(element.circularLabel == true){
-		element.layout	.selectAll("text") .attr("text-anchor", 	function(d) { return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; }) .attr("transform", 	function(d) { if(element.circularLabel == true){ return "rotate(" + (d.x - 90) + ")translate(" + (element.maxR+10) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; }else{ return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; } });}
+		element.layout	.selectAll("text") .attr("text-anchor", 	function(d) { return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; }) .attr("transform", 	function(d) { if(element.circularLabel == true){ return "rotate(" + (d.x - 90) + ")translate(" + (element.maxR+10) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; }else{ return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; } });
+			var dline = element.layout.selectAll("line.dline")
+				.data(element.treeNodes.filter(function(d) { return d.x !== undefined && !d.children; }))
+				.enter().append("line")
+				.attr('class','dline')
+				.attr('x1',10)
+				.attr('y1',0)
+				.attr('x2',function (d) {return element.maxR-d.y})
+				.attr('y2',0)
+				.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; });
+		}
 	else{
+			d3.selectAll("line.dline").remove()
 		element.layout	.selectAll("text") .attr("text-anchor", 	function(d) { return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; }) .attr("transform", 	function(d) { if(element.circularLabel == true){ return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; }else{ return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; } });}
 }
 
@@ -447,10 +464,10 @@ phyloElement.prototype.drawNodeCircles = function () {
 		var node = element.layout.selectAll("g.node")
 				.data(element.treeNodes.filter(function(n) { return n.x !== undefined; }))
 				.enter().append("g")
-				.attr("class", "node")
 				.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
 				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d);})
 				.append("circle")
+				.attr("class", "node")
 				.attr("r", function(d){d.circle=this; return 2.5})
 				.append("svg:title").text(function(d){return d.name});
 			}
@@ -973,6 +990,7 @@ phyloElement.prototype.addTrackFeature=function (trackn,tipname,color,title,grad
 			.attr("d", trackFeatStep)
 			.attr("fill",color)
 			.attr("stroke",'none')
+			.attr("class",'trackf')
 	if (title){nd.append("svg:title").text(title);}
 	if (typeof(gradient)!="boolean")
 		{
@@ -1027,7 +1045,8 @@ phyloElement.prototype.addTrackBar=function (value,normValue,tipname,color,barn,
 			.enter().append("g")
 			.append("path")
 			.attr("d", trackBarStep)
-			.attr("fill",color);
+			.attr("fill",color)
+			.attr("class","trackbf");
 
 	oj.bars[barn]=nd;
 	nd.append("svg:title").text(value);
@@ -1168,14 +1187,16 @@ phyloElement.prototype.deleteTrackBars=function (){
 ////////////////////////////////////////////////////////////
 
 phyloElement.prototype.clearSelection = function() {
+	d3.selectAll('path.trackf').attr('opacity','1')
+	d3.selectAll('path.trackbf').attr('opacity','1')
 	element.selectionList.forEach(function(v){element.clearNodeSelection(v)});
 }
 
 phyloElement.prototype.clearNodeSelection = function (n){
-	d3.select(n.circle).attr("class","node").select('circle').attr('r',"2.5");
+	d3.select(n.circle).attr("class","node");
 	if (d3.select(n.label).attr("class") == 'selectednode')
 	{
-		d3.select(n.label).attr("class",'tip');
+		d3.select(n.label).attr("class",'node');
 		element.paintSampleFeatures(n.name);
 		
 	}
@@ -1223,6 +1244,11 @@ phyloElement.prototype.selectNode = function(n) {
 	}
 	else
 	{
+		if (element.selectionList.size==0)
+		{
+			d3.selectAll('path.trackf').attr('opacity','.1')
+			d3.selectAll('path.trackbf').attr('opacity','.1')
+		}
 		if (element.selectionList.has(n))
 		{
 			element.clearNodeSelection(n);
@@ -1233,6 +1259,15 @@ phyloElement.prototype.selectNode = function(n) {
 		d3.select(n.label).attr("class","selectednode");
 		element.paintSampleFeatures(n.name);
 		element.selectionList.add(n);
+		for (var k in n.bars)
+		{
+			for (var i=0;i<n.bars[k].length;i++) { n.bars[k][i][0].setAttribute("opacity","1") }
+		}
+		for (var k in n.trackFeats)
+		{
+			for (var i=0;i<n.trackFeats[k].length;i++) { n.trackFeats[k][i][0].setAttribute("opacity","1") }
+		}
+		
 	}
 }
 

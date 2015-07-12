@@ -1,7 +1,14 @@
-.node circle {
+circle.node {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 1.5px;
+}
+
+line.dline{
+	stroke: black;
+	stroke-width: 0.5;
+	stroke-dasharray: 2.5,5;
+	stroke-opacity: 0.5;
 }
 
 .track circle {
@@ -10,7 +17,7 @@
   stroke-width: 1px;
 }
 
-.selectednode circle {
+circle.selectednode {
   fill: steelblue;
   stroke: #335E82;
   stroke-width: 1.5px;

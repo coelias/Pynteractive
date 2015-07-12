@@ -98,29 +98,29 @@ class PhyloTree(DataStruct):
 		'''Method to clear the current selection in the tree'''
 		self._update('clearNewickSelection')
 
-	def addFeature(self,fid,shape,color,description=''):
-		'''Adds a feature available for the tree
-		
-- fid: Feature id (eg: INH-resist)
-- color: any html compatible color (eg: red,#f00)
-- shape: [circle,square,diamond,cross]
-- description: text to show in the legend'''
-		assert shape in ['circle','square','diamond','cross']
-		self.features[fid]=[shape,color,description]
-		self._update('addPhyloFeat',fid,shape,color,description)
-
-		
-	def addTipFeature(self,tid,fid):
-		'''Adds the feature `fid` to the tip `tid`'''
-		assert fid in self.features and tid in self.newick.nodenames
-		self.tipfeatures.setdefault(tid,[]).append(fid)
-		self._update('addPhyloTipFeat',tid,fid)
-
-	def delTipFeature(self,tid,fid):
-		'''Removes the feature `fid` to the tip `tid`'''
-		assert fid in self.tipfeatures[tid] and tid in self.newick.nodenames
-		self.tipfeatures[tid].remove(fid)
-		self._update('delPhyloTipFeat',tid,fid)
+#	def addFeature(self,fid,shape,color,description=''):
+#		'''Adds a feature available for the tree
+#		
+#- fid: Feature id (eg: INH-resist)
+#- color: any html compatible color (eg: red,#f00)
+#- shape: [circle,square,diamond,cross]
+#- description: text to show in the legend'''
+#		assert shape in ['circle','square','diamond','cross']
+#		self.features[fid]=[shape,color,description]
+#		self._update('addPhyloFeat',fid,shape,color,description)
+#
+#		
+#	def addTipFeature(self,tid,fid):
+#		'''Adds the feature `fid` to the tip `tid`'''
+#		assert fid in self.features and tid in self.newick.nodenames
+#		self.tipfeatures.setdefault(tid,[]).append(fid)
+#		self._update('addPhyloTipFeat',tid,fid)
+#
+#	def delTipFeature(self,tid,fid):
+#		'''Removes the feature `fid` to the tip `tid`'''
+#		assert fid in self.tipfeatures[tid] and tid in self.newick.nodenames
+#		self.tipfeatures[tid].remove(fid)
+#		self._update('delPhyloTipFeat',tid,fid)
 
 	def addTrack(self,description,color):
 		'''Ads a track as an external ring. This is a BOOLEAN track, where any tip can be flagged in the track. When clicking a coloured tip on the track, all the tips flagged in the track will automatically be selected
@@ -252,20 +252,41 @@ class PhyloTree(DataStruct):
 		self.nbars=0
 		self._update("deleteBars")
 
-	def markClade(self,clade,color):
-		'''Marks the region of a clade given a fill color'''
-		self.cladeMarks[clade]=color
-		self._update("markClade",clade,color)
+	def markClade(self,nodes,color):
+		'''Marks the region of a clade given a fill color
+
+- nodes: Is a list of tips/internalnodes
+- color: HTML compatible color '''
+
+		if type(nodes) not in [list,set]: nodes=[nodes]
+		nodes=self.newick.getMonophyletics(nodes)
+
+		for clade in nodes:
+			self.cladeMarks[clade]=color
+			self._update("markClade",clade,color)
 
 	def unMarkClade(self,clade):
 		'''Removes a mark for a clade'''
 		del self.cladeMarks[clade]
 		self._update("unMarkClade",clade)
 
-	def setCladeColor(self,clade,color):
-		'''Sets tree color for a clade'''
-		self.cladeColors[clade]=color
-		self._update("setCladeColor",clade,color)
+	def clearCladeMarks(self):
+		'''Removes all clade marks'''
+		for i in self.cladeMarks.keys():
+			self.unMarkClade(i)
+
+	def setCladeColor(self,nodes,color):
+		'''Sets tree color for a clade
+
+- nodes: Is a list of tips/internalnodes
+- color: HTML compatible color '''
+
+		if type(nodes) not in [list,set]: nodes=[nodes]
+		nodes=self.newick.getMonophyletics(nodes)
+
+		for clade in nodes:
+			self.cladeColors[clade]=color
+			self._update("setCladeColor",clade,color)
 
 	def clearCladeColor(self,clade):
 		'''Clears tree color given a clade'''

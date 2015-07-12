@@ -38,6 +38,7 @@ class Newick:
 	def __init__(self):
 		self.root=None
 		self.nodenames=set()
+		self.internalNodes=set()
 
 	def readNewick(self,newick):
 		self.nodenames=set()
@@ -48,6 +49,20 @@ class Newick:
 				self.root,pos=self._parseTree(newick,0)
 		except:
 			raise Exception('Invalid format for Newick')
+
+		self.internalNodes=self.getInternalNodes(self.root)
+		print self.internalNodes
+
+	def getInternalNodes(self,root):
+		res=set()
+		if not root.children: return res
+
+		for i in root.children:
+			res.update(self.getInternalNodes(i))
+
+		res.add(root.name)
+		
+		return res
 	
 	def _parseTree(self,cad,pos):
 		n=Newick.Node()
@@ -89,21 +104,26 @@ class Newick:
 
 	def getMonophyletics(self,nodes):
 		found,clades=self._recur_getMonoPhyletics(nodes,self.root)
+		clades.update([i for i in nodes if i in self.internalNodes])
 		return clades
 
 	def _recur_getMonoPhyletics(self,nodes,curNode):
 		childres=[]
 		res=set()
+		found=False
 		if curNode.children:
 			for i in curNode.children:
 				childres.append(self._recur_getMonoPhyletics(nodes,i))
 			if all([i[0] for i in childres]):
-				return True,set([curNode.name])
+				found=True
+				res=set([curNode.name])
 			else:
-				return False,reduce(set.union,[i[1] for i in childres])
+				res=reduce(set.union,[i[1] for i in childres])
 		else:
 			if curNode.name in nodes: return True,set([curNode.name])
-			return False,set()
+			res=set()
+
+		return found,res
 
 	def getName(self,name):
 		if not name in self.nodenames:

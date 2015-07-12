@@ -104,7 +104,6 @@ class JSCom(WebSocket):
 		try:
 			dat=json.loads(str(orig))
 			funcname=dat[0]
-			print funcname
 			args=dat[1]
 			self.dicFuncs[funcname](**args)
 		except:
