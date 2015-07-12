@@ -57,7 +57,7 @@ mapElement.prototype.load = function () {
 	    attribution: ' &copy; '+maplink+" | "+mmm,
 	});
 
-	this.layout = L.map('layout', {
+	element.layout = L.map('layout', {
 		center: [ 51.7504163, -1.2475879 ],
 		zoom: 12,
 		maxZoom: 18,
@@ -78,7 +78,7 @@ mapElement.prototype.load = function () {
 
 	//MAP ZOOM SELECTOR
 	var controls = new L.Control.Zoom({ position: 'bottomright'});
-	controls.addTo(this.layout);
+	controls.addTo(element.layout);
 
 	//MAP LEGEND SELECTOR
 	var baseLayers = {
@@ -88,11 +88,14 @@ mapElement.prototype.load = function () {
 	};
 
 	var layers = new L.control.layers(baseLayers, null, {collapsed: true, position: 'topright'});
-	layers.addTo(this.layout);
+	layers.addTo(element.layout);
 
 	//disable zoom i select area
 	this.layout.doubleClickZoom.disable();
-	this.layout.boxZoom.disable();
+	//this.layout.boxZoom.disable();
+
+	this.layout.on("boxzoomend", function(e) {element.rectangleSelection(e);});
+	this.layout.on("click", function(e) {element.clearSelection();});
 };
 
 /**
@@ -130,6 +133,10 @@ mapElement.prototype.loadHtml = function () {
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
+	tag = {tag:'label', to:'#optionsNetwork', id: 'ExportSVG2', text: 'Export PNG'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'exportSVGButton', type: 'button', onclick: 'element.exportSVG();'};
+	this.loadHtmlTag(tag);
 
 };
 
@@ -137,7 +144,7 @@ mapElement.prototype.loadHtml = function () {
  * Get lat and lng given the id of a node
  */
 mapElement.prototype.getLatLngNode = function (node){
-	if(this.markers.hasOwnProperty(node)) return this.markers[node]._latlng;
+	if(element.markers.hasOwnProperty(node)) return element.markers[node]._latlng;
 	return null;
 };
 
@@ -162,11 +169,11 @@ mapElement.prototype.addNode = function (node){
 	markerAux.options.id = node.id;
 	markerAux.options.radius = node.radius;
 	markerAux.options.fillcolor = node.color;
-	markerAux.on('click', this.clickNode);
-	markerAux.on('dblclick', this.dblClickNode);
+	markerAux.on('click', element.clickNode);
+	markerAux.on('dblclick', element.dblClickNode);
 
-	this.markers[node.id] = markerAux;
-	this.layout.addLayer(this.markers[node.id]);
+	element.markers[node.id] = markerAux;
+	element.layout.addLayer(element.markers[node.id]);
 }
 
 /**
@@ -175,8 +182,8 @@ mapElement.prototype.addNode = function (node){
 mapElement.prototype.addEdge = function (edge){
 	//id, id1, id2, label, title, threshold, style, length
 
-	p1 = this.getLatLngNode(edge.from);
-	p2 = this.getLatLngNode(edge.to);
+	p1 = element.getLatLngNode(edge.from);
+	p2 = element.getLatLngNode(edge.to);
 
 	var pointA = new L.LatLng(p1.lat, p1.lng);
 	var pointB = new L.LatLng(p2.lat, p2.lng);
@@ -187,16 +194,16 @@ mapElement.prototype.addEdge = function (edge){
 
 	polyline.options.id = edge.id;
 
-	this.lines[edge.id] = polyline;
-	this.layout.addLayer(this.lines[edge.id]);
+	element.lines[edge.id] = polyline;
+	element.layout.addLayer(element.lines[edge.id]);
 }
 
 /**
  * remove Node
  */
 mapElement.prototype.removeNode = function (node){
-	this.layout.removeLayer(this.markers[node.id]);
-	delete this.markers[node.id]; 
+	element.layout.removeLayer(element.markers[node.id]);
+	delete element.markers[node.id]; 
 }
 
 
@@ -204,16 +211,16 @@ mapElement.prototype.removeNode = function (node){
  * remove Edge
  */
 mapElement.prototype.removeEdge = function (edge){
-	this.layout.removeLayer(this.lines[edge.id]);
-	delete this.lines[edge.id]; 
+	element.layout.removeLayer(element.lines[edge.id]);
+	delete element.lines[edge.id]; 
 }
 
 /**
  * search by id
  */
 mapElement.prototype.searchNodeById = function (id){
-	points = this.getLatLngNode(id);
-	if(points != null) this.layout.setView(points,this.zoom);
+	points = element.getLatLngNode(id);
+	if(points != null) element.layout.setView(points,element.zoom);
 };
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -281,7 +288,7 @@ mapElement.prototype.selectNodes = function (nl){
 
 }
 
-mapElement.prototype.selectNode = function(id,refresh) {
+mapElement.prototype.selectNode = function(id,refresh,rectangle) {
 
 	var paint = element.selectionList.has(id);
 	if(refresh){
@@ -298,10 +305,27 @@ mapElement.prototype.selectNode = function(id,refresh) {
 		element.selectionList.add(id);
 	}
 
+	if(!rectangle){
+		PYCON.send("mapSelection",{"nodes":element.selectionList});
+	}
+
 }
 
 mapElement.prototype.refreshSelection = function() {
 	element.selectionList.forEach(function(v){
 		element.selectNode(v,true);
 	});
+}
+
+mapElement.prototype.rectangleSelection = function(e){
+	for(var node in element.markers) {
+		if (e.boxZoomBounds.contains(element.markers[node]._latlng)) {
+			element.selectNode(node,false,true);
+		}
+	}
+	PYCON.send("mapSelection",{"nodes":element.selectionList});
+}
+
+mapElement.prototype.exportSVG = function (err, canvas) {	
+	window.print(element.layout);
 }

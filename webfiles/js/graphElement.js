@@ -205,6 +205,16 @@ graphElement.prototype.loadHtml = function () {
 	this.loadHtmlTag(tag);
 	tag = {tag:'hr', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
+
+
+	tag = {tag:'label', to:'#optionsNetwork', id: 'ExportSVG2', text: 'Export PNG'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'button', to:'#optionsNetwork', id: 'exportSVGButton', type: 'button', onclick: 'element.exportSVG();'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'br', to:'#optionsNetwork'};
+	this.loadHtmlTag(tag);
+	tag = {tag:'label', to:'#optionsNetwork', id: 'ExportSVG1', text: 'Export to PNG, click mouse right button on canvas'};
+	this.loadHtmlTag(tag);
 };
 
 /**
@@ -337,3 +347,11 @@ graphElement.prototype.action = function (e){
 	var id = jQuery(e).attr("idaction");
 	PYCON.send('performAction',{n:id,selectedNodes:this.layout.getSelection().nodes});
 };
+
+graphElement.prototype.exportSVG = function () {	
+	element.addLoad();
+	var element_export = jQuery('#layout canvas')[0];
+	element.deleteLoad();
+	document.location.href = element_export.toDataURL("image/png").replace("image/png", "image/octet-stream");
+}
+

@@ -119,7 +119,7 @@ phyloElement.prototype.loadHtml = function () {
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'ExportSVG', text: 'Export SVG'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'exportSVGButton', type: 'button', onclick: 'element.exportPNG();'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'exportSVGButton', type: 'button', onclick: 'element.exportSVG();'};
 	this.loadHtmlTag(tag);
 
 };
@@ -1334,4 +1334,27 @@ phyloElement.prototype.getKeys = function() {
 	this.colors["edge"] = colour;
 
 	return 0;
+}
+
+phyloElement.prototype.exportSVG = function () {
+
+	//http://fabricjs.com/
+	//http://chmille4.github.io/Scribl/demos/exportSvg.html
+	
+	element.addLoad();
+
+	var element_export = jQuery('#layout svg')[0];
+
+	element.emptySvgDeclarationComputed = getComputedStyle(element_export);
+
+	var allElements = element.traverse(element_export);
+	var i = allElements.length;
+
+	while (i--){
+	    element.explicitlySetStyle(allElements[i]);
+	}
+
+	element.deleteLoad();
+
+	saveAs(new Blob([new XMLSerializer().serializeToString(element_export)], {type:"image/svg+xml"}), "output.svg")
 }
