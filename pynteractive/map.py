@@ -1,10 +1,23 @@
 from pynteractive.Network import *
 import urllib
 import json
+import pickle
+import os
+import threading
 
 class Map(Network):
 	'''The Map class allows to plot data in an OpenStreet Map. The user can plot points of different sizes and colors
 	as well as linking them with edges. In order to specify the location coordinates or places (eg. postcode) can be used.'''
+
+	MAXTHREADS=15
+
+	try: CACHE=pickle.load(os.path.join(os.path.expanduser("~"),".pynteractive"))
+	except: CACHE={}
+
+	RUNNINGTHREADS=threading.Semaphore(MAXTHREADS)
+	THREADS=[]
+	LOCK=threading.Lock()
+
 	def __init__(self,name=None):
 		'''Creates a map object'''
 		Network.__init__(self,name,False)
@@ -16,7 +29,25 @@ class Map(Network):
 		for i,j in self.edges.items():
 			self._update("addEdge",i,j["_n1"],j["_n2"],'','','','','',j["_color"],j["_width"])
 
-	def addNode(self,node_id=None,radius=5,color='red',lng=None,lat=None,place=None,country=None):
+	def addNode(self,*args,**kwargs):
+		Map.RUNNINGTHREADS.acquire()
+		try:
+			th=threading.Thread(target=self._addNode,args=args,kwargs=kwargs)
+			th.start()
+			with Map.LOCK:
+				Map.THREADS.append(th)
+
+		except: 
+			print "Error adding node",args,kwargs
+		Map.RUNNINGTHREADS.release()
+		with Map.LOCK:
+			done=[]
+			for i in Map.THREADS:
+				if not i.is_alive(): done.append(i)
+			for i in done: Map.THREADS.remove(i)
+
+
+	def _addNode(self,node_id=None,radius=5,color='red',lng=None,lat=None,place=None,country=None):
 		'''Adds a node to the map:
 
 - node_id: identification of the node, if not specified it will be randomly generated
@@ -30,7 +61,7 @@ class Map(Network):
 		if place:
 			lng,lat=self._getLocation(place,country)
 			if lng==None:
-				print "Error getting coordinates for loading"
+				print "Error getting coordinates for loading",place,country
 				return None,None
 		
 		_id,label=Network.addNode(self,node_id,node_id,radius=radius,color=color,lng=lng,lat=lat)
