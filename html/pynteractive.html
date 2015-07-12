@@ -108,6 +108,12 @@ can be defferent (eg. list of nodes, sample id, etc...)</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pynteractive.datastruct.DataStruct.selectionHandler">
+<code class="descname">selectionHandler</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.selectionHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a hook method that will be fired every time a selection is performed</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pynteractive.datastruct.DataStruct.setDoubleClick">
 <code class="descname">setDoubleClick</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.datastruct.DataStruct.setDoubleClick" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets a callback as a response to a double click event on a graph node</p>
@@ -631,18 +637,6 @@ as well as linking them with edges. In order to specify the location coordinates
 </dd></dl>
 
 <dl class="method">
-<dt id="pynteractive.phylotree.PhyloTree.addFeature">
-<code class="descname">addFeature</code><span class="sig-paren">(</span><em>fid</em>, <em>shape</em>, <em>color</em>, <em>description=''</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addFeature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a feature available for the tree</p>
-<ul class="simple">
-<li>fid: Feature id (eg: INH-resist)</li>
-<li>color: any html compatible color (eg: red,#f00)</li>
-<li>shape: [circle,square,diamond,cross]</li>
-<li>description: text to show in the legend</li>
-</ul>
-</dd></dl>
-
-<dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.addGradientTrack">
 <code class="descname">addGradientTrack</code><span class="sig-paren">(</span><em>description</em>, <em>color</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addGradientTrack" title="Permalink to this definition">¶</a></dt>
 <dd><p>A gradient Track is a track where tips in the tree can have a continuous value, and the color will be shown as a gradient color. You must specify minval and maxval of the track so that the gradient can be calculated</p>
@@ -659,12 +653,6 @@ as well as linking them with edges. In order to specify the location coordinates
 </div></blockquote>
 </li>
 </ul>
-</dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.phylotree.PhyloTree.addTipFeature">
-<code class="descname">addTipFeature</code><span class="sig-paren">(</span><em>tid</em>, <em>fid</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.addTipFeature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds the feature <cite>fid</cite> to the tip <cite>tid</cite></p>
 </dd></dl>
 
 <dl class="method">
@@ -727,7 +715,20 @@ as well as linking them with edges. In order to specify the location coordinates
 <dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.clearBars">
 <code class="descname">clearBars</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.clearBars" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Clears all bars around the tracks</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.clearCladeColor">
+<code class="descname">clearCladeColor</code><span class="sig-paren">(</span><em>clade</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.clearCladeColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears tree color given a clade</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.clearCladeMarks">
+<code class="descname">clearCladeMarks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.clearCladeMarks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all clade marks</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.clearSelection">
@@ -738,12 +739,7 @@ as well as linking them with edges. In order to specify the location coordinates
 <dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.clearTracks">
 <code class="descname">clearTracks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.clearTracks" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pynteractive.phylotree.PhyloTree.delTipFeature">
-<code class="descname">delTipFeature</code><span class="sig-paren">(</span><em>tid</em>, <em>fid</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.delTipFeature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the feature <cite>fid</cite> to the tip <cite>tid</cite></p>
+<dd><p>Clears all information in tracks</p>
 </dd></dl>
 
 <dl class="method">
@@ -756,6 +752,16 @@ as well as linking them with edges. In order to specify the location coordinates
 <dt id="pynteractive.phylotree.PhyloTree.getTips">
 <code class="descname">getTips</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.getTips" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a set containing all the tip names found in the tree</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.markClade">
+<code class="descname">markClade</code><span class="sig-paren">(</span><em>nodes</em>, <em>color</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.markClade" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marks the region of a clade given a fill color</p>
+<ul class="simple">
+<li>nodes: Is a list of tips/internalnodes</li>
+<li>color: HTML compatible color</li>
+</ul>
 </dd></dl>
 
 <dl class="method">
@@ -776,9 +782,25 @@ as well as linking them with edges. In order to specify the location coordinates
 </dd></dl>
 
 <dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.setCladeColor">
+<code class="descname">setCladeColor</code><span class="sig-paren">(</span><em>nodes</em>, <em>color</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.setCladeColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets tree color for a clade</p>
+<ul class="simple">
+<li>nodes: Is a list of tips/internalnodes</li>
+<li>color: HTML compatible color</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
 <dt id="pynteractive.phylotree.PhyloTree.setData">
 <code class="descname">setData</code><span class="sig-paren">(</span><em>newick=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.setData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the specified newick tree, It can be either a string containing the newick string or a path to a file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pynteractive.phylotree.PhyloTree.unMarkClade">
+<code class="descname">unMarkClade</code><span class="sig-paren">(</span><em>clade</em><span class="sig-paren">)</span><a class="headerlink" href="#pynteractive.phylotree.PhyloTree.unMarkClade" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a mark for a clade</p>
 </dd></dl>
 
 </dd></dl>
