@@ -171,12 +171,9 @@ a.setData('(109:0.5593,((53:1.8461,((185:1.5264,((((198:0.7133,(14:1.7812,(70:0.
 a.view()
     
 t1=a.addTrack("first track",'magenta')
-for i in range(25):
-    a.addTrackFeature(1,str(random.randint(1,200)))
-
 t2=a.addGradientTrack("Second track",'blue',0,100)
 
-for i in range(30):
+for i in range(60):
     a.addTrackFeature(t1,str(random.randint(1,199)))
 
 for i in range(1,199):
