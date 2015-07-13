@@ -343,6 +343,7 @@ function binaryblob(){
 phyloElement.prototype.reLayoutTips = function () {
 	if(element.circularLabel == true){
 		element.layout	.selectAll("text") .attr("text-anchor", 	function(d) { return (d.x + element.rotate) % 360 < 180 ? "start" : "end"; }) .attr("transform", 	function(d) { if(element.circularLabel == true){ return "rotate(" + (d.x - 90) + ")translate(" + (element.maxR+10) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; }else{ return "rotate(" + (d.x - 90) + ")translate(" + (d.y+15) + ")rotate(" + ((d.x + element.rotate) % 360 < 180 ? 0 : 180) + ")"; } });
+		if (!element.disableTipLabels){
 			var dline = element.layout.selectAll("line.dline")
 				.data(element.treeNodes.filter(function(d) { return d.x !== undefined && !d.children; }))
 				.enter().append("line")
@@ -351,7 +352,7 @@ phyloElement.prototype.reLayoutTips = function () {
 				.attr('y1',0)
 				.attr('x2',function (d) {return element.maxR-d.y})
 				.attr('y2',0)
-				.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; });
+				.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; });}
 		}
 	else{
 			d3.selectAll("line.dline").remove()
@@ -437,9 +438,19 @@ phyloElement.prototype.drawTipLabels = function () {
 				.on("click",function(d){PYCON.send('treeNodeClick',{node:d.name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d,true)})
 				.text(function(d) { return d.name.replace(/_/g, ' '); });
 
+			var dline = element.layout.selectAll("line.dline")
+				.data(element.treeNodes.filter(function(d) { return d.x !== undefined && !d.children; }))
+				.enter().append("line")
+				.attr('class','dline')
+				.attr('x1',10)
+				.attr('y1',0)
+				.attr('x2',function (d) {return element.maxR-d.y})
+				.attr('y2',0)
+				.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; });
 		}
 		else
 		{
+			d3.selectAll("line.dline").remove()
 			var label = element.layout.selectAll("text")
 				.data(element.treeNodes.filter(function(d) { return d.x !== undefined && !d.children; }))
 				.enter().append("text")
@@ -453,6 +464,7 @@ phyloElement.prototype.drawTipLabels = function () {
 	}
 	else
 	{
+		d3.selectAll("line.dline").remove()
 //		element.clearSelection()
 		d3.selectAll('text.tip').remove()
 		d3.selectAll('text.selectednode').remove()
@@ -855,8 +867,14 @@ phyloElement.prototype.toogleTipLabels = function () {
 phyloElement.prototype.toogleNodeCircles = function () {
 	element.disableNodeCircles = !element.disableNodeCircles;
 
-	if (element.disableNodeCircles){ d3.selectAll('g.node').attr('visibility','hidden')}
-	else{ d3.selectAll('g.node').attr('visibility','visible')}
+	if (element.disableNodeCircles){ 
+		d3.selectAll('circle.node').attr('visibility','hidden')
+		d3.selectAll('circle.selectednode').attr('visibility','hidden')
+		}
+	else{ 
+		d3.selectAll('circle.node').attr('visibility','visible')
+		d3.selectAll('circle.selectednode').attr('visibility','visible')
+		}
 }
 
 
