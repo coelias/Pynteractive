@@ -318,6 +318,9 @@ mapElement.prototype.refreshSelection = function() {
 }
 
 mapElement.prototype.rectangleSelection = function(e){
+	
+	element.clearSelection();
+
 	for(var node in element.markers) {
 		if (e.boxZoomBounds.contains(element.markers[node]._latlng)) {
 			element.selectNode(node,false,true);
