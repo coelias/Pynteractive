@@ -236,6 +236,10 @@ mapElement.prototype.clickNode = function (node){
 	}
 
 	mapElement.prototype.selectNode(node.target.options.id);
+
+	var keys = [];
+	element.selectionList.forEach(function(v){keys.push(v)});
+	PYCON.send("selectionSet",{"nodes":keys});
 }
 
 /**
@@ -262,8 +266,6 @@ mapElement.prototype.action = function (e){
 	element.selectionList.forEach(
 		function(v){keys.push(v)}
 	);
-	console.log(keys)
-
 	PYCON.send('performAction',{n:id,selectedNodes:keys});
 };
 
@@ -277,6 +279,9 @@ mapElement.prototype.clearSelection = function() {
 	element.selectionList.forEach(
 		function(v){element.clearNodeSelection(v)}
 	);
+	var keys = [];
+	element.selectionList.forEach(function(v){keys.push(v)});
+	PYCON.send("selectionSet",{"nodes":keys});
 }
 
 mapElement.prototype.clearNodeSelection = function (id){
@@ -304,14 +309,6 @@ mapElement.prototype.selectNode = function(id,refresh,rectangle) {
 		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2),fillOpacity:0.85});
 		element.selectionList.add(id);
 	}
-
-	var els=[];
-	element.selectionList.forEach(function(v){els.push(v)});
-
-	if(!rectangle){
-		PYCON.send("selectionSet",{"nodes":els});
-	}
-
 }
 
 mapElement.prototype.refreshSelection = function() {
@@ -326,9 +323,9 @@ mapElement.prototype.rectangleSelection = function(e){
 			element.selectNode(node,false,true);
 		}
 	}
-	var els=[];
-	element.selectionList.forEach(function(v){els.push(v)});
-	PYCON.send("selectionSet",{"nodes":els});
+	var keys = [];
+	element.selectionList.forEach(function(v){keys.push(v)});
+	PYCON.send("selectionSet",{"nodes":keys});
 }
 
 mapElement.prototype.exportSVG = function (err, canvas) {	
