@@ -297,11 +297,11 @@ mapElement.prototype.selectNode = function(id,refresh,rectangle) {
 
 	if(paint){
 		//get nodemark and change radius 
-		element.markers[id].setStyle({radius:(element.markers[id].options.radius*0.5).toFixed(1),fillOpacity:0.5});
+		element.markers[id].setStyle({radius:(element.markers[id].options.radius*0.5),fillOpacity:0.5});
 		element.selectionList.delete(id);
 	}else{
 		//get nodemark and change radius 30% bigger
-		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2).toFixed(1),fillOpacity:0.85});
+		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2),fillOpacity:0.85});
 		element.selectionList.add(id);
 	}
 
