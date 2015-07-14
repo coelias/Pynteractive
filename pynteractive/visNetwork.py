@@ -27,7 +27,7 @@ class VisNetwork(Network):
 
 	def updateNode(self,node_id,label=None,title=None,group=None,shape=None,color=None,radius=None,image=None):
 		'''Updates a node in the network'''
-		Network.updateNode(self,node_id,abel=label,title=title,group=group,shape=shape,color=color,radius=radius,image=image)
+		Network.updateNode(self,node_id,label=label,title=title,group=group,shape=shape,color=color,radius=radius,image=image)
 		i=self.vertices[node_id]
 		self._update("updateNode",i["_id"],i["_label"],i["_title"],i["_group"],i["_shape"],i["_color"],i["_radius"],i["_image"])
 
@@ -74,7 +74,8 @@ class VisNetwork(Network):
 
 	def clear(self):
 		'''Clears the GUI by removing every node and edge in the network'''
-		v,e=self.getEdgesAndNodes()
+		v=self.getEdges()
+		n=self.getNodes()
 		for i in e:
 			self.delEdge(i)
 		for i in v:

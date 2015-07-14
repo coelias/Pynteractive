@@ -29,6 +29,12 @@ class Map(Network):
 		for i,j in self.edges.items():
 			self._update("addEdge",i,j["_n1"],j["_n2"],'','','','','',j["_color"],j["_width"])
 
+	def updateNode(self,node_id,radius=None,color=None,lng=None,lat=None,place=None,country=None):
+		'''Updates a node in the Map'''
+		Network.updateNode(self,node_id,radius=radius,color=color,lng=lng,lat=lat,place=place,country=country)
+		i=self.vertices[node_id]
+		self._update("updateNode",i["_id"],i["_label"],'','','',i["_color"],i["_radius"],'',i["_lng"],i["_lat"])
+
 	def addNode(self,*args,**kwargs):
 		th=threading.Thread(target=self._addNode,args=args,kwargs=kwargs)
 		th.start()
@@ -109,7 +115,8 @@ class Map(Network):
 
 	def clear(self):
 		'''Deletes all the information plotted in the map'''
-		v,e=self.getEdgesAndNodes()
+		e=self.getEdges()
+		v=self.getNodes()
 		for i in e:
 			self.delEdge(i)
 		for i in v:

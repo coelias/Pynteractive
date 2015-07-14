@@ -164,7 +164,7 @@ mapElement.prototype.addNode = function (node){
 		    color: 'black',
 		    weight: 1,
 		    opacity: 1,
-		    fillOpacity: 0.5,
+		    fillOpacity: 0.7,
 		});
 
 	markerAux.options.id = node.id;
@@ -305,11 +305,11 @@ mapElement.prototype.selectNode = function(id,refresh,rectangle) {
 
 	if(paint){
 		//get nodemark and change radius 
-		element.markers[id].setStyle({radius:(element.markers[id].options.radius*0.5),fillOpacity:0.5});
+		element.markers[id].setStyle({radius:(element.markers[id].options.radius*0.5),fillOpacity:0.7});
 		element.selectionList.delete(id);
 	}else{
 		//get nodemark and change radius 30% bigger
-		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2),fillOpacity:0.8});
+		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2),fillOpacity:0.85});
 		element.selectionList.add(id);
 
 	}
