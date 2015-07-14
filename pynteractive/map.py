@@ -11,7 +11,7 @@ class Map(Network):
 
 	MAXTHREADS=15
 
-	try: CACHE=pickle.load(os.path.join(os.path.expanduser("~"),".pynteractive"))
+	try: CACHE=pickle.load(open(os.path.join(os.path.expanduser("~"),".pynteractive")))
 	except: CACHE={}
 
 	RUNNINGTHREADS=threading.Semaphore(MAXTHREADS)
@@ -30,16 +30,12 @@ class Map(Network):
 			self._update("addEdge",i,j["_n1"],j["_n2"],'','','','','',j["_color"],j["_width"])
 
 	def addNode(self,*args,**kwargs):
-		Map.RUNNINGTHREADS.acquire()
-		try:
-			th=threading.Thread(target=self._addNode,args=args,kwargs=kwargs)
-			th.start()
-			with Map.LOCK:
-				Map.THREADS.append(th)
+		th=threading.Thread(target=self._addNode,args=args,kwargs=kwargs)
+		th.start()
+		with Map.LOCK:
+			Map.THREADS.append(th)
 
-		except: 
-			print "Error adding node",args,kwargs
-		Map.RUNNINGTHREADS.release()
+
 		with Map.LOCK:
 			done=[]
 			for i in Map.THREADS:
@@ -58,14 +54,20 @@ class Map(Network):
 
 		assert (lat==None and lng==None and place) or (not place and lat!=None and lng!=None)
 
-		if place:
-			lng,lat=self._getLocation(place,country)
-			if lng==None:
-				print "Error getting coordinates for loading",place,country
-				return None,None
-		
-		_id,label=Network.addNode(self,node_id,node_id,radius=radius,color=color,lng=lng,lat=lat)
-		self._update("addNode",node_id,node_id,'','','',color,radius,'',lng,lat)
+		Map.RUNNINGTHREADS.acquire()
+		try:
+			if place:
+				lng,lat=self._getLocation(place,country)
+				if lng==None:
+					print "Error getting coordinates for loading",place,country
+					Map.RUNNINGTHREADS.release()
+					return None,None
+			
+			_id,label=Network.addNode(self,node_id,node_id,radius=radius,color=color,lng=lng,lat=lat)
+			self._update("addNode",node_id,node_id,'','','',color,radius,'',lng,lat)
+		except: pass
+
+		Map.RUNNINGTHREADS.release()
 		return _id,label
 
 	def addEdge(self,n1,n2,color='red',width=2):
@@ -82,8 +84,12 @@ class Map(Network):
 	def _getLocation(self,place,country=None):
 		url="http://open.mapquestapi.com/nominatim/v1/search.php?format=json&limit=1&addressdetails=0&q={0}".format(place)
 		if country: url+="&countrycodes={0}".format(country)
+		if (place,country) in Map.CACHE: return Map.CACHE[(place,country)]
 		try:
-			data=json.loads(urllib.urlopen(url).read())[0]
+			a=urllib.urlopen(url)
+			data=json.loads(a.read())[0]
+			a.close()
+			Map.CACHE[(place,country)]=(data['lon'],data['lat'])
 			return data['lon'],data['lat']
 		except:
 			return None,None

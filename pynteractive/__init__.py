@@ -8,6 +8,8 @@ from pynteractive.chart import *
 from pynteractive.phylotree import *
 from pynteractive.graphd3 import *
 import atexit
+import os
+import pickle
 from webserver import *
 
 
@@ -27,6 +29,10 @@ class WebServices:
 
 	@staticmethod
 	def stopServers():
+		a=open(os.path.join(os.path.expanduser("~"),".pynteractive"),'w')
+		pickle.dump(Map.CACHE,a)
+		a.close()
+
 		if WebServices.SERVERS_ON:
 			ThreadingServer.force_stop()
 			WSOCKserver.close()
