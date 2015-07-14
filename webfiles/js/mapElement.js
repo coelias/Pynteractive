@@ -62,7 +62,8 @@ mapElement.prototype.load = function () {
 		zoom: 12,
 		maxZoom: 18,
 		minZoom: 3,
-		zoomControl: false,
+		zoomControl: false,	
+		maxBounds: false,
 		layers: [osmforest]
 	});
 
@@ -169,6 +170,7 @@ mapElement.prototype.addNode = function (node){
 	markerAux.options.id = node.id;
 	markerAux.options.radius = node.radius;
 	markerAux.options.fillcolor = node.color;
+	markerAux.options.color = 'black';
 	markerAux.on('click', element.clickNode);
 	markerAux.on('dblclick', element.dblClickNode);
 
@@ -202,6 +204,7 @@ mapElement.prototype.addEdge = function (edge){
  * remove Node
  */
 mapElement.prototype.removeNode = function (node){
+	element.clearNodeSelection(node.id);
 	element.layout.removeLayer(element.markers[node.id]);
 	delete element.markers[node.id]; 
 }
@@ -306,8 +309,9 @@ mapElement.prototype.selectNode = function(id,refresh,rectangle) {
 		element.selectionList.delete(id);
 	}else{
 		//get nodemark and change radius 30% bigger
-		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2),fillOpacity:0.85});
+		element.markers[id].setStyle({radius:(element.markers[id].options.radius*2),fillOpacity:0.8});
 		element.selectionList.add(id);
+
 	}
 }
 
@@ -333,4 +337,27 @@ mapElement.prototype.rectangleSelection = function(e){
 
 mapElement.prototype.exportSVG = function (err, canvas) {	
 	window.print(element.layout);
+}
+
+mapElement.prototype.updateNode = function (node) {	
+	var id = node.id;
+	var markerAux = new L.CircleMarker(new L.LatLng(element.markers[id]._latlng.lat,  element.markers[id]._latlng.lng), {
+			    radius: element.markers[id].options.radius,
+			    fillColor: node.color,
+			    color: element.markers[id].options.color,
+			    weight: 1,
+			    opacity: 1,
+			    fillOpacity: element.markers[id].options.fillOpacity,
+			});
+
+	markerAux.options.id = id;
+	markerAux.options.radius = element.markers[id].options.radius;
+	markerAux.options.fillcolor = node.color;
+	markerAux.options.color = element.markers[id].options.color;
+	markerAux.on('click', element.clickNode);
+	markerAux.on('dblclick', element.dblClickNode);
+
+	element.layout.removeLayer(element.markers[id]);
+	element.markers[id] = markerAux;
+	element.layout.addLayer(element.markers[id]);
 }
