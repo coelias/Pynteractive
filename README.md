@@ -14,7 +14,7 @@ Pynteractive is in constant development, all feedback/suggestions/bugreports are
 ## Demos
 
 [![De Bruijn Graph Gene assembly using Pynteractive](http://coelias.github.io/Pynteractive/imgs/debruijn.gif)](https://vimeo.com/128206058)
-[![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/128260245)
+[![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/133534670)
 
 ## Current features
 
@@ -204,8 +204,9 @@ Being able to debug graphically gene assembly while coding was very helpful. Thi
 [Mixing maps and phylogenetics](https://vimeo.com/128260245)
 
 In our work it's very important to relate samples geographically in order to detect potential outbreaks and study bacterial transmission. (Dataset shown is randomly generated)
+[Source code](https://github.com/coelias/Pynteractive/blob/master/demos/maptree.py)
 
-[![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/128260245)
+[![Mixing maps and phylogenetics](http://coelias.github.io/Pynteractive/imgs/phylomap.gif)](https://vimeo.com/133534670)
 
 ### Authors:
  - Carlos del Ojo
