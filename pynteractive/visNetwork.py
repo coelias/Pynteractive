@@ -76,7 +76,7 @@ class VisNetwork(Network):
 		'''Clears the GUI by removing every node and edge in the network'''
 		v=self.getEdges()
 		n=self.getNodes()
-		for i in e:
-			self.delEdge(i)
 		for i in v:
+			self.delEdge(i)
+		for i in n:
 			self.delNode(i)
