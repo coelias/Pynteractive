@@ -14,6 +14,7 @@ class PhyloTree(DataStruct):
 		self.newick=Newick()
 		self.tracks={}
 		self.gradientTracks={}
+		self.mcolorTracks={}
 		self.ntracks=0
 		self.trackBars={}
 		self.nbars=0
@@ -62,6 +63,10 @@ class PhyloTree(DataStruct):
 		for trackn,data in self.gradientTracks.items():
 			for tipname,[title,value] in data[4].items():
 				self._update('addTreeTrackFeature',trackn,tipname,self.__getHexColor(trackn,value),title,value)
+
+		for trackn,data in self.mcolorTracks.items():
+			for tipname,value in data[2].items():
+				self._update('addTreeTrackFeature',trackn,tipname,data[1][value],value,value)
 
 		for tipname,color in self.cladeMarks.items():
 			self._update("markClade",tipname,color)
@@ -137,6 +142,20 @@ class PhyloTree(DataStruct):
 		self._refreshBars()
 		return self.ntracks
 
+	def addMultiColorTrack(self,description,colordict):
+		'''A Multicolor track is a track that can have random colors given a color dictionary eg: {"uk":'red',"france":'green',"germany":"#a2a2a2"}
+- description: Text used for the legend
+- colordict: Dictionary mapping values to colors
+		
+		Returns the track ID that you will have to use to add data to it '''
+
+		self.ntracks+=1
+		self.mcolorTracks[self.ntracks]=[description,colordict,{}]
+		self._update('addTreeTrack')
+		self._update('deleteBars')
+		self._refreshBars()
+		return self.ntracks
+
 	def addGradientTrack(self,description,color,minval,maxval):
 		'''A gradient Track is a track where tips in the tree can have a continuous value, and the color will be shown as a gradient color. You must specify minval and maxval of the track so that the gradient can be calculated
 		
@@ -182,10 +201,16 @@ class PhyloTree(DataStruct):
 			if type(value)==bool: raise Exception("You must specify a value for a gradient track")
 			self.gradientTracks[trackn][4][tipname]=[title,value]
 			self._update('addTreeTrackFeature',trackn,tipname,self.__getHexColor(trackn,value),title,value)
-		else:
+		elif trackn in self.tracks:
 			if value!=False: raise Exception("This track does not accept values")
 			self.tracks[trackn][2][tipname]=title
 			self._update('addTreeTrackFeature',trackn,tipname,self.tracks[trackn][1],title,value)
+		elif trackn in self.mcolorTracks:
+			desc,colordict,feats=self.mcolorTracks[trackn]
+			if value not in colordict: raise Exception("Value not found in color dictionary")
+			feats[tipname]=value
+			self._update('addTreeTrackFeature',trackn,tipname,colordict[value],value,value)
+			
 
 	def delTrackFeature(self,trackn,tipname):
 		'''Deletes a feature present on a track'''
