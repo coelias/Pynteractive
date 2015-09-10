@@ -1010,12 +1010,13 @@ phyloElement.prototype.addTrackFeature=function (trackn,tipname,color,title,grad
 			.attr("stroke",'none')
 			.attr("class",'trackf')
 	if (title){nd.append("svg:title").text(title);}
-	if (typeof(gradient)!="boolean")
-		{
-			nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0],true)});}
-	else {// add code to select all nodes containig this fature
-		nd.on("click",function(d){element.selectTrackFeature(trackn)})
-		}
+//	if (typeof(gradient)!="boolean")
+//		{
+//			nd.on("click",function(d){PYCON.send('treeNodeClick',{node:d[0].name}); if (!d3.event.shiftKey){element.clearSelection();}; element.selectNode(d[0],true)});}
+//	else {// add code to select all nodes containig this feature
+		nd.on("click",function(d){element.selectTrackFeature(trackn,gradient)});
+//		}
+	nd.featVal=gradient;
 	oj.trackFeats[trackn]=nd;
 }
 
@@ -1232,13 +1233,15 @@ phyloElement.prototype.selectFeature = function (fid){
 	element.selectNodes(k)
 }
 
-phyloElement.prototype.selectTrackFeature = function (trackn){
+phyloElement.prototype.selectTrackFeature = function (trackn,val){
 	var k=[];
 	for (var oj in element.treeNodes)
 	{
 		oj=element.treeNodes[oj];
-		if (oj.trackFeats!=undefined && trackn in oj.trackFeats)
-			{ k.push(oj.name)}
+		if (oj.trackFeats!=undefined && trackn in oj.trackFeats && oj.trackFeats[trackn].featVal==val)
+		{ 
+			k.push(oj.name)
+		}
 	}
 	element.clearSelection()
 	element.selectNodes(k)

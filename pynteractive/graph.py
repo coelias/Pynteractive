@@ -61,6 +61,8 @@ class Graph(VisNetwork):
    "e",56,0,0,0,1,1	
    "f",0,0,0,0,3,1	
    '''
+		import pdb
+		pdb.set_trace()
 		csv=self.readCsv(fil)
 		if not matrix:
 			for i in csv:
