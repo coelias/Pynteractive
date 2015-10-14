@@ -102,14 +102,14 @@ phyloElement.prototype.loadHtml = function () {
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'labelLabel', text: 'Hide Labels'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'disableTipLabels', type: 'checkbox', checked: this.disableTipLabels, onclick: 'element.toogleTipLabels();'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'disableTipLabels', type: 'checkbox', checked: this.disableTipLabels, onclick: 'element.toggleTipLabels();'};
 	this.loadHtmlTag(tag);
 	tag = {tag:'br', to:'#optionsNetwork'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'label', to:'#optionsNetwork', id: 'disableNodeCirclesLabel', text: 'Hide Node Circles'};
 	this.loadHtmlTag(tag);
-	tag = {tag:'input', to:'#optionsNetwork', id: 'disableNodeCirclesLabel', type: 'checkbox', checked: this.disableNodeCirclesLabel, onclick: 'element.toogleNodeCircles();'};
+	tag = {tag:'input', to:'#optionsNetwork', id: 'disableNodeCirclesLabel', type: 'checkbox', checked: this.disableNodeCirclesLabel, onclick: 'element.toggleNodeCircles();'};
 	this.loadHtmlTag(tag);
 
 	tag = {tag:'br', to:'#optionsNetwork'};
@@ -416,11 +416,19 @@ phyloElement.prototype.drawData = function () {
 	element.maxR=maxR.y;
 
 
-	element.drawNodeCircles()
+	if (!element.disableNodeCircles){
+		element.drawNodeCircles()
+	}
 	element.drawTipLabels()
 
 	this.ntracks=0;
-	element.trackRadius=maxR.y+25+maxR.label.getBBox().width*1.2;
+	if (this.disableTipLabels){
+		element.trackRadius=maxR.y+25;
+	}
+	else
+	{
+		element.trackRadius=maxR.y+25+maxR.label.getBBox().width*1.2;
+	}
 	element.paintAllFeatures()
 }
 
@@ -858,13 +866,13 @@ phyloElement.prototype.changeCircularLabel = function () {
 	element.reLayoutTips();
 }
 
-phyloElement.prototype.toogleTipLabels = function () {
+phyloElement.prototype.toggleTipLabels = function () {
 	element.disableTipLabels = !element.disableTipLabels;
 	element.drawTipLabels()
 
 }
 
-phyloElement.prototype.toogleNodeCircles = function () {
+phyloElement.prototype.toggleNodeCircles = function () {
 	element.disableNodeCircles = !element.disableNodeCircles;
 
 	if (element.disableNodeCircles){ 
