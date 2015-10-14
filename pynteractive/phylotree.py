@@ -70,7 +70,6 @@ class PhyloTree(DataStruct):
 
 		for tipname,color in self.cladeMarks.items():
 			self._update("markClade",tipname,color)
-			print "ALLA"
 
 		for tipname,color in self.cladeColors.items():
 			self._update("setCladeColor",tipname,color)
