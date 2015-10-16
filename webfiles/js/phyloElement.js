@@ -895,6 +895,11 @@ phyloElement.prototype.changeResolution = function (value) {
 	element.maxrange = 2.7+((value-960)*0.0043);
 
 	element.initParams();
+	d3.selectAll('br.pyAction').remove();
+	d3.selectAll('label.pyAction').remove();
+	d3.selectAll('button.pyAction').remove();
+
+
 	PYCON.send("refresh",{"name": DATAID});
 }
 
@@ -998,9 +1003,9 @@ phyloElement.prototype.addTrack=function ()
 	if (element.trackRadius==0){ setTimeout(function() { element.addTrack(); }, 500); return }
 	if (element.ntracks==0)
 	{
-		var nd=element.layout.selectAll().data([element.trackRadius]).enter().append("g").append("path").attr("d", trackCircleStep).attr("fill","none").attr("stroke","gray")
+		var nd=element.layout.selectAll().data([element.trackRadius]).enter().append("g").append("path").attr("d", trackCircleStep).attr("fill","none").attr("stroke","gray").attr("class","track")
 	}
-	var nd=element.layout.selectAll().data([element.trackRadius+(element.ntracks+1)*element.trackWidth]).enter().append("g").append("path").attr("d", trackCircleStep).attr("fill","none").attr("stroke","gray")
+	var nd=element.layout.selectAll().data([element.trackRadius+(element.ntracks+1)*element.trackWidth]).enter().append("g").append("path").attr("d", trackCircleStep).attr("fill","none").attr("stroke","gray").attr("class","track")
 	element.ntracks++;
 }
 
@@ -1047,7 +1052,8 @@ phyloElement.prototype.clearTracks=function ()
 
 phyloElement.prototype.deleteTracks=function ()
 {
-	d3.selectAll('g.track').remove()
+	d3.selectAll('path.track').remove()
+	d3.selectAll('path.trackf').remove()
 	element.ntracks=0
 }
 

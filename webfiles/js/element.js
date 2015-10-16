@@ -315,11 +315,11 @@ element.prototype.action = function (e){
  * execute action
  */
 element.prototype.addAction  = function (id, name){
-	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction'+id, text: name};
+	tag = {tag:'br', to:'#optionsNetwork',class:"pyAction"};
 	this.loadHtmlTag(tag);
-	tag = {tag:'button', to:'#optionsNetwork', id: 'Action'+id, type: 'button', idAction: id, onclick: 'element.action(this);'};
+	tag = {tag:'label', to:'#optionsNetwork', id: 'labelAction'+id, text: name,class:"pyAction"};
 	this.loadHtmlTag(tag);
-	tag = {tag:'br', to:'#optionsNetwork'};
+	tag = {tag:'button', to:'#optionsNetwork', id: 'Action'+id, type: 'button', idAction: id, onclick: 'element.action(this);',class:"pyAction"};
 	this.loadHtmlTag(tag);
 };
 
