@@ -3,13 +3,14 @@ import re
 import random
 
 class Newick:
-	releaf=re.compile("([^:]+)?(:[0-9.]+)?")
+	releaf=re.compile("([^:]+)?(:[0-9.e-]+)?")
 
 	class Node:
 		RANDOMNAMES=set()
 		def __init__(self,name=None,lgth=None):
 			self.name=name
 			self.length=lgth
+			if self.length==None: self.length=0.001
 			self.children=[]
 			if not self.name:
 				self.name=Newick.Node.randomName()
