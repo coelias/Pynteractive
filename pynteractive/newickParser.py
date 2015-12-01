@@ -14,9 +14,21 @@ class Newick:
 			self.children=[]
 			if not self.name:
 				self.name=Newick.Node.randomName()
+			self.dad=None
+
+		def dadsToRoot(self):
+			dads=[]
+			x=self
+			while x.dad:
+				dads.append(x.dad)
+				x=x.dad
+			return dads[::-1]
 	
 		def append(self,x):
 			self.children.append(x)
+
+		def setParent(self,dad):
+			self.dad=dad
 
 		def __str__(self):
 			cad=""
@@ -40,6 +52,7 @@ class Newick:
 		self.root=None
 		self.nodenames=set()
 		self.internalNodes=set()
+		self.leafs={}
 
 	def readNewick(self,newick):
 		self.nodenames=set()
@@ -83,10 +96,14 @@ class Newick:
 	
 			if cad[pos+1]!='(': 
 				name,lgth,pos=self._parseLeaf(cad,pos+1)
-				n.append(Newick.Node(name,lgth))
+				nn=Newick.Node(name,lgth)
+				self.leafs[name]=nn
+				nn.setParent(n)
+				n.append(nn)
 			else:
 				nn,pos=self._parseTree(cad,pos+1)
 				n.append(nn)
+				nn.setParent(n)
 		return n,pos+1
 	
 	def _parseLeaf(self,cad,pos):
@@ -103,11 +120,26 @@ class Newick:
 		return name,length,i
 
 	def getMonophyletics(self,nodes):
+		assert type(nodes)==list
 		found,clades=self._recur_getMonoPhyletics(nodes,self.root)
 		clades.update([i for i in nodes if i in self.internalNodes])
 		return clades
 
+	def getCommonParent(self,nodes):
+		assert type(nodes)==list
+		parentslists=[]
+		for i in nodes:
+			parentslists.append(self.leafs[i].dadsToRoot())
+
+		last=None
+		for i in zip(*parentslists):
+			if len(set(i))==1:
+				last=i[0]
+		return last
+
+
 	def _recur_getMonoPhyletics(self,nodes,curNode):
+		assert type(nodes)==list
 		childres=[]
 		res=set()
 		found=False

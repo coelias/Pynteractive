@@ -89,7 +89,7 @@ class PhyloTree(DataStruct):
 
 	def getTips(self):
 		'''Returns a set containing all the tip names found in the tree'''
-		return self.newick.nodenames
+		return [i.name for i in self.newick.leafs.values()]
 			
 	def nodeClick(self,nid):
 		'''Method called when a node is clicked'''
@@ -98,6 +98,12 @@ class PhyloTree(DataStruct):
 	def selectTips(self,tips):
 		'''Method usd to select nodes in the view (tree tips), you must provide tip labels'''
 		self._update('selectNewickNodes',tips)
+
+
+	def selectClade(self,tips):
+		'''Select the clade containing a set of given tips'''
+		dad=self.newick.getCommonParent(tips)
+		self._update('selectNewickNodes',[dad.name])
 
 	def clearSelection(self):
 		'''Method to clear the current selection in the tree'''
