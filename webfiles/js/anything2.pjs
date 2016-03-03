@@ -1,0 +1,797 @@
+float scaleUp = 0.5;
+float wheel = 1.0;
+float wheelMult =0.10;
+float x;
+float y;
+float xOffset;
+float yOffset;
+float xold;
+float yold;
+float xpiv;
+float xpivOld;
+float ypiv;
+float ypivOld;
+
+
+PImage img1 = createImage(1000, 10, RGB);
+for(int x=0; x < 1000; x++) {
+	var c=color(Math.floor(Math.random()*255+1),0,0);
+	for(int y=0; y < 10; y++) {
+	  img1.pixels[y*1000+x] = c; 
+	  }
+}
+
+FEATURETIMER=null;
+HEATMAPTIMER=null;
+
+SELECTIONMARGIN=2;
+ELLIPSES=true;
+TREE=null;
+TREEWIDTH=300
+TREEDEGREES=0;
+TIPS=true;
+LASTCLICK=0;
+SCALING=true;
+DOUBLECLICK = 200;
+HELP=true;
+TIPSALIGN=true;
+BRANCHLABELS=false;
+DRAWFEATURES=true;
+DRAWHEATMAPS=true;
+PRESSEDKEY=null;
+SELECTABLE=[];
+SELECTED=[];
+LETTERWIDTH=7;
+TEXTYPOS=4;
+TREELAYOUT=0; // 0:square, 1: radial
+FONT=createFont("courier");
+HELPMESSAGES=[
+"[shift+mouseWheel] - set tree width",
+"[alt+mouseWheel or r] - Rotate tree",
+"[mouseWheel] - Zoom",
+"[Mouse Drag] - pan",
+"[click] - Selection",
+"[DoubleClick] - Collapse branch",
+"[RightClick] - Rotate branch",
+"[s] - Enable/disable scaling",
+"[a] - Align tip labels",
+"[b] - Hide/show branch labels",
+"[e] - Hide/show node circles",
+"[f] - Hide/show features",
+"[m] - Hide/show heatmaps",
+"[h] - Hide/show help",
+"[t] - Hide/show tips",
+"[o] - Change tree layout",
+];
+
+STROKE=1;
+SELSTROKE=3;
+ARCSTEP=2*Math.PI/400;
+
+FEATURES={};
+HEATMAPS={};
+
+
+void setup() {
+	jProcessingJS(this, {fullscreen:true});
+	noLoop();
+}
+
+
+void drawTree(t)
+{
+	if (TIPS){ LABELEDTREEWIDTH=TREEWIDTH+TREE.maxlabel*LETTERWIDTH;}
+	else {LABELEDTREEWIDTH=TREEWIDTH;}
+	// Clearing everything than can be selected
+	SELECTABLE=[];
+	for (var key in FEATURES) { 
+		FEATURES[key].selectionAreas=[]; 
+		}
+
+	if (TREELAYOUT==0)
+	{ _drawRectTree(t.rt,0,0,0);}
+	else if (TREELAYOUT==1)
+	{ _drawCircTree(t.rt,TREEWIDTH/TREE.maxDistance);}
+
+	for (var key in FEATURES) { SELECTABLE.push(FEATURES[key]); }
+}
+
+void drawShape (points)
+{
+	beginShape();
+	for (var i=0;i<points.length;i++)
+	{
+		vertex(points[i][0],points[i][1]);
+	}
+	endShape();
+
+}
+
+void _drawCircTree(t,factor)
+{
+    SELECTABLE.push(t);
+    t.selectionAreas=[];
+
+    stroke(0);
+    noFill();
+    if (t.selected) { strokeWeight(SELSTROKE);}
+    else {strokeWeight(STROKE);}
+
+    for (var s=0;s<t.shapes.length;s++)
+    {
+        drawShape(t.shapes[s]);
+    }
+
+	if (BRANCHLABELS)
+	{
+		fill(0);
+		var val=t.len.toString();
+		pushMatrix();
+		rotate(radians(t.angle));
+		text(val,factor*t.acumlen+t.len*factor/2-(val.length+1)*LETTERWIDTH/2,-5);//+(factor*t.len-factor*(val.length+1)*LETTERWIDTH/2),-5);
+		popMatrix();
+	}
+
+	if (t.collapsed)
+	{
+	}
+	else
+	{
+		SELECTABLE.push(t);
+    	for (var i=0;i<t.children.length;i++)
+    	{
+    	    _drawCircTree(t.children[i],factor);
+    	}
+	}
+
+	stroke(t.strokecolor[0],t.strokecolor[1],t.strokecolor[2]);
+	strokeWeight(.3/wheel);
+	if (t.selected){fill(t.strokecolor[0],t.strokecolor[1],t.strokecolor[2]); }
+	else{ fill(255); }
+	if (ELLIPSES)
+	{ 
+		if (t.shapes)
+		{
+			pos=t.shapes[t.shapes.length-1];
+			pos=pos[pos.length-1]
+				ellipse(pos[0],pos[1],5/wheel,5/wheel);
+		}
+	}
+
+	if (TIPS && t.children.length==0)
+	{
+		if (TIPSALIGN)
+		{
+			pushMatrix();
+			fill(0);
+			rotate(radians(t.angle));
+			text(t.name,10+TREEWIDTH,4/wheel);
+			popMatrix();
+		}
+		else
+		{
+			pushMatrix();
+			fill(0);
+			rotate(radians(t.angle));
+			text(t.name,10+factor*(t.acumlen+t.len),4/wheel);
+			popMatrix();
+		}
+	}
+}
+
+void _drawRectTree(t,xo,px,py)
+{
+	var ny=py+t.position;
+	var nx=px+t.widthpixels;
+
+	SELECTABLE.push(t);
+	t.selectionAreas=[];
+
+	stroke(0);
+	if (t.selected) { strokeWeight(SELSTROKE);}
+	else {strokeWeight(STROKE);}
+
+	t.selectionAreas.push([px-SELECTIONMARGIN,ny-SELECTIONMARGIN,nx+SELECTIONMARGIN,ny+SELECTIONMARGIN]);
+
+	if (t.marked!=null)
+	{
+		noStroke();
+		fill(t.marked[0],t.marked[1],t.marked[2]);
+		rect(px,t.totminim-5,TREEWIDTH-px,t.totmaxim-t.totminim+10);
+	}
+
+	stroke(t.strokecolor[0],t.strokecolor[1],t.strokecolor[2]);
+	line(px,ny,nx,ny);
+	if (t.dad)
+	{
+		line(px,py+t.dad.position,px,ny);
+	}
+
+	if (BRANCHLABELS)
+	{
+		fill(0);
+		var val=t.len.toString();
+		text(val,((px+nx)-((val.length)+1)*LETTERWIDTH)/2,ny-2);
+	}
+
+	if (t.children.length)
+	{
+
+		if (t.collapsed)
+		{
+			fill(0);
+			stroke(0);
+			rect(nx-5,ny-5,10,10);
+			t.selectionAreas.push([nx-5,ny-5,nx+5,ny+5]);
+			return;
+		}
+
+		fill(255);
+		stroke(0);
+		strokeWeight(.3/wheel);
+
+		for (var i=0;i<t.children.length;i++)
+		{
+			_drawRectTree(t.children[i],xo,nx,py);
+		}
+
+
+		if (t.children.length==2)
+		{
+			t.children[0].selectionAreas.push([nx-SELECTIONMARGIN,py+t.minim-SELECTIONMARGIN,nx+SELECTIONMARGIN,py+(t.minim+t.maxim)/2+SELECTIONMARGIN]);
+			t.children[1].selectionAreas.push([nx-SELECTIONMARGIN,py+(t.minim+t.maxim)/2-SELECTIONMARGIN,nx+SELECTIONMARGIN,py+t.maxim+SELECTIONMARGIN]);
+		}
+	}
+	else
+	{
+		stroke(t.strokecolor[0],t.strokecolor[1],t.strokecolor[2]);
+		strokeWeight(.3/wheel);
+		if (t.selected){fill(t.strokecolor[0],t.strokecolor[1],t.strokecolor[2]); }
+		else{ fill(255); }
+		if (ELLIPSES){ ellipse(nx,ny,5/wheel,5/wheel);}
+
+		if (DRAWFEATURES==true) { 
+			for (var featn in t.features)
+			{
+				feat=FEATURES[featn];
+				feat.paint(xo+LABELEDTREEWIDTH+20+feat.position*10,ny-4,10,t.features[featn]);
+			}
+		}
+
+		if (TIPS==true)
+		{
+			noStroke();
+			if (TIPSALIGN) 
+			{
+				fill(255);
+				if (t.selected){fill(200,200,255);rect(xo+TREEWIDTH+10,ny-4,(t.name.length+1)*LETTERWIDTH,10);fill(0);}
+				fill(0);
+				text(t.name,xo+TREEWIDTH+10,ny+TEXTYPOS);
+				t.selectionAreas.push([xo+TREEWIDTH+10,ny-4,xo+TREEWIDTH+10+(t.name.length+1)*LETTERWIDTH,ny-4+10]);
+			}
+			else
+			{ 
+				
+				if (t.selected){fill(200,200,255);rect(nx+10,ny-4,(t.name.length+1)*LETTERWIDTH,10);}
+				fill(0);
+				text(t.name,nx+10,ny+TEXTYPOS);
+				t.selectionAreas.push([nx+10,ny-4,nx+10+(t.name.length+1)*LETTERWIDTH,ny-4+10]);
+			}
+		}
+		if (DRAWHEATMAPS)
+		{
+			for (var hn in t.heatmaps)
+			{
+				pos=HEATMAPS[hn].position;
+				img=t.heatmaps[hn];
+				image(img,pos+xo+LABELEDTREEWIDTH+35+Object.keys(FEATURES).length*10,ny-4);
+			}
+		}
+	}
+
+
+}
+
+void draw() {
+	scaleUp = wheel;
+
+	if (SCALING){
+		textFont(FONT,constrain(12/wheel,0.1,12));
+		LETTERWIDTH=constrain(7/wheel,0.1,7);
+		TEXTYPOS=constrain(4/wheel,0.1,4);
+		STROKE=1/scaleUp;SELSTROKE=3/scaleUp;
+	}
+	else{
+		textFont(FONT,12);
+		LETTERWIDTH=7;
+		TEXTYPOS=4;
+		STROKE=1;SELSTROKE=3;
+
+	}
+	SELECTIONMARGIN=2/wheel;
+
+	background(255);
+	pushMatrix();
+	transScale(mouseX, mouseY, scaleUp);
+	rotate(radians(TREEDEGREES));
+	drawTree(TREE);
+	popMatrix();
+	textFont(FONT,12);
+	if (HELP)
+	{
+		fill(0);
+		text(HELPMESSAGES.join('\n'),5,10);
+	}
+}
+
+// Zoom in and out when the key is pressed
+void keyPressed() {
+	redraw();
+}
+
+void transScale(float x, float y, float sca) {
+	if (mousePressed == true) {
+		xOffset = x-xold;
+		yOffset = y-yold;
+		xpiv = (xpivOld-xOffset/scaleUp);
+		ypiv = (ypivOld-yOffset/scaleUp);
+		xpiv = xpiv + (xOffset/scaleUp);
+		ypiv = ypiv + (yOffset/scaleUp);
+		xpivOld = xpiv;
+		ypivOld = ypiv;
+		xold = x;
+		yold = y;
+	}
+	else{
+		xOffset = x-xold;
+		yOffset = y-yold;
+		xpiv = (xpivOld-xOffset/scaleUp);
+		ypiv = (ypivOld-yOffset/scaleUp);
+		xpivOld = xpiv;
+		ypivOld = ypiv;
+		xold = x;
+		yold = y;
+	}
+	// blue grid position
+	translate(x, y);
+	scale(sca);
+	translate(xpiv, ypiv);
+}
+
+function centerView()
+{
+	wheel=1.0;
+	if (TREELAYOUT==0)
+	{
+		x= y= xOffset= yOffset= xold= yold= xpiv= xpivOld= ypiv= ypivOld=0; xold=width/2-TREEWIDTH/2*wheel,yold=height/2-TREE.rt.height/2;
+	}
+	else
+	{
+		x= y= xOffset= yOffset= xold= yold= xpiv= xpivOld= ypiv= ypivOld=0; xold=width/2-TREEWIDTH/2*wheel,yold=height/2;
+	}
+}
+
+void keyPressed() {
+  PRESSEDKEY=keyCode;
+  if (key=='c' || key=='C'){ centerView();}
+
+  else if (key=='t' || key=='T'){TIPS=!TIPS;}
+  else if (key=='a' || key=='A'){TIPSALIGN=!TIPSALIGN;}
+  else if (key=='b' || key=='B'){BRANCHLABELS=!BRANCHLABELS;}
+  else if (key=='h' || key=='H'){HELP=!HELP;}
+  else if (key=='f' || key=='F'){DRAWFEATURES=!DRAWFEATURES;}
+  else if (key=='m' || key=='M'){DRAWHEATMAPS=!DRAWHEATMAPS;}
+  else if (key=='s' || key=='S'){SCALING=!SCALING;}
+  else if (key=='e' || key=='E'){ELLIPSES=!ELLIPSES;}
+  else if (key=='o' || key=='O'){TREELAYOUT+=1; TREELAYOUT%=2; TREEDEGREES=0;}
+  else if (key=='r' || key=='R')
+  {
+	if (!TREELAYOUT){ TREEDEGREES+=90;}
+	else{TREEDEGREES+=3;}
+	TREEDEGREES=TREEDEGREES%360;
+  }
+  else{
+	  return;
+  }
+  redraw();
+}
+
+void keyReleased()
+{
+	PRESSEDKEY=null;
+}
+
+// Store the mouse and the previous offset
+void mouseClicked() {
+	var CANVASX=canvas.getBoundingClientRect().left;
+	var CANVASY=canvas.getBoundingClientRect().top;
+	var mx=-xpiv-CANVASX/wheel;
+	var my=-ypiv-CANVASY/wheel;
+	var s=Math.sin(radians(-TREEDEGREES));
+	var c=Math.cos(radians(-TREEDEGREES));
+	var mmx=mx * c - my * s;
+	var mmy=mx * s + my * c;
+
+	if (PRESSEDKEY!=16)
+	{
+		clearSelection();
+	}
+
+	var hit=false;
+
+	if (TREELAYOUT==0)
+	{
+		// SQUARETREE
+		for (var i=0;i<SELECTABLE.length && !hit;i++)
+		{
+			for (var j=0;j<SELECTABLE[i].selectionAreas.length && !hit;j++)
+			{
+				sa=SELECTABLE[i].selectionAreas[j];
+				if (sa[0]<mmx && mmx<sa[2] && sa[1]<mmy && mmy<sa[3])
+				{ hit=SELECTABLE[i]; }
+			}
+		}
+	}
+	else if (TREELAYOUT==1)
+	{
+		angle=abs(degrees(Math.atan(mmy/mmx)));
+		if (mmx>=0 && mmy<0){angle=360-angle;}
+		else if (mmx<0)
+		{
+			if (mmy>=0){angle=180-angle;}
+			else{angle=180+angle;}
+		}
+		dist=Math.sqrt(Math.pow(mmx,2)+Math.pow(mmy,2));
+		var factor=TREEWIDTH/TREE.maxDistance;
+		for (var i=0;i<SELECTABLE.length && !hit;i++)
+		{
+			var obj=SELECTABLE[i];
+
+			if (dist>=obj.acumlen*factor && dist <= (obj.acumlen+obj.len)*factor && angle<obj.angle+1 && angle>obj.angle-1)
+			{hit=obj;}
+			else if (obj.dad)
+			{
+				a1=obj.dad.angle;
+				a2=obj.angle;
+				if (a1>a2){a1 = [a2, a2 = a1][0];}
+				if (a1<=angle && angle<=a2 && dist > (obj.acumlen*factor)-1 && dist < (obj.acumlen*factor)+1)
+				{ hit=obj; }
+			}
+		}
+	}
+
+	if (hit)
+	{
+		// WE CLICKED SOMETHING SELECTABLE!
+
+		if (mouseButton==RIGHT)
+		{
+			if (hit.children)
+			{
+				hit.children.push(hit.children.shift())
+					TREE.calcTreeCoordinates(10,TREEWIDTH);
+				redraw();
+				return;
+			}
+		}
+
+		if (hit.name){ PYCON.send('treeNodeClick',{node:hit.name});}
+
+		if ((millis()-LASTCLICK)<DOUBLECLICK) 
+		{
+			// process double click
+			if (hit.children)
+			{
+				hit.collapsed=!hit.collapsed;
+				TREE.calcTreeCoordinates(10,TREEWIDTH);
+				redraw();
+				return;
+			}
+		}
+		else    
+		{
+			// process single click
+			SELECTED.push(hit); 
+			if (!hit.selected){ hit.setSelected()}
+			else{hit.clearSelected()}
+			LASTCLICK = millis();
+			redraw();
+			return;
+		}
+	}
+	LASTCLICK = millis();
+	redraw();
+}
+
+
+void mouseMoved()
+{
+	pushMatrix();
+	transScale(mouseX, mouseY, scaleUp);
+	popMatrix();
+}
+
+// Calculate the new offset based on change in mouse vs. previous offsey
+void mouseDragged() {
+	redraw();
+}
+
+void mouseScrolled(){
+	if (PRESSEDKEY==16)  // SHIFT
+	{
+		TREEWIDTH+=10*mouseScroll;
+		if (TREEWIDTH<30){TREEWIDTH=30;}
+		TREE.calcTreeCoordinates(10,TREEWIDTH);
+
+		redraw();
+	}
+	else if (PRESSEDKEY==18)   // ALT
+	{
+		if (!TREELAYOUT){var angle=90;}
+		else{var angle=3;}
+
+		if (mouseScroll>0) {TREEDEGREES+=angle;}
+		else if (mouseScroll<0) {TREEDEGREES-=angle;}
+
+
+		TREEDEGREES=TREEDEGREES%360;
+		if (TREEDEGREES<0){ TREEDEGREES+=360;}
+		redraw();
+	}
+	else
+	{
+		wheel=constrain(wheel+(-mouseScroll)*wheelMult*-1,0.1,50);
+		redraw();
+	}
+}
+
+
+loadTree=function(newick){
+	TREE=new NewickParser(newick);
+	TREE.calcTreeCoordinates(10,TREEWIDTH);
+	centerView();
+	redraw();
+}
+
+clearSelection=function()
+{
+	for (var i =0; i<SELECTED.length;i++)
+	{
+		SELECTED[i].clearSelected();
+	}
+	SELECTED=[];
+	redraw();
+}
+
+selectTips=function(l)
+{
+	clearSelection();
+	for (var i=0;i<l.length;i++)
+	{
+		SELECTED.push(TREE.leafs[l[i]]);
+		TREE.leafs[l[i]].setSelected();
+	}
+	redraw();
+}
+
+recalculateFeaturePositions=function()
+{
+	j=0;
+	keys=Object.keys(FEATURES).sort();
+	for (var pos in keys)
+	{
+		FEATURES[keys[pos]].position=j;
+		j+=1;
+	}
+}
+
+recalculateHeatMapPositions=function()
+{
+	j=0;
+	keys=Object.keys(HEATMAPS).sort();
+	for (var pos in keys)
+	{
+		HEATMAPS[keys[pos]].position=j;
+		j+=HEATMAPS[keys[pos]].size+10;
+	}
+}
+
+newFeature=function(number,description,color)
+{
+	if (number in FEATURES) { deleteFeature(number); }
+	FEATURES[number]=new Feature(description,color,number);
+	recalculateFeaturePositions();
+	redraw();
+}
+
+newGradFeature=function(number,description,color,min,max)
+{
+	if (number in FEATURES) { deleteFeature(number); }
+	FEATURES[number]=new Feature(description,color,number,[min,max]);
+	recalculateFeaturePositions();
+	redraw();
+}
+
+deleteFeature=function(number)
+{
+	if  (!(number in FEATURES)){return;}
+	FEATURES[number].nodes.forEach(function(x){delete x.features[number]})
+	delete FEATURES[number];
+	recalculateFeaturePositions();
+	redraw();
+}
+
+addNodeFeature=function(leaf,featnumber,value)
+{
+	if  (!(featnumber in FEATURES) || !(leaf in TREE.leafs)){return;}
+	TREE.leafs[leaf].features[featnumber]=value;
+	FEATURES[featnumber].nodes.add(TREE.leafs[leaf]);
+	clearTimeout(FEATURETIMER);
+	FEATURETIMER=setTimeout(function(){redraw();},500);
+}
+
+deleteNodeFeature=function(leaf,featnumber)
+{
+	if  (!(featnumber in FEATURES) || !(leaf in TREE.leafs)){return;}
+	delete TREE.leafs[leaf].features[featnumber];
+	FEATURES[featnumber].nodes.delete(TREE.leafs[leaf]);
+	redraw();
+}
+
+selectNodes=function(names)
+{
+	clearSelection();
+
+	names=new Set(names);
+	for (var i=0;i<SELECTABLE.length;i++)
+	{
+		if (names.has(SELECTABLE[i].name))
+		{
+			SELECTABLE[i].setSelected();
+			SELECTED.push(SELECTABLE[i]);
+		}
+	}
+	redraw();
+}
+
+function Feature(description,color,number,gradient)
+{
+	this.description=description;
+	if (typeof(color)=='number'){this.r=this.g=this.b=color;}
+	else{this.r=color[0],this.g=color[1],this.b=color[2];}
+	this.nodes=new Set();
+	this.number=number
+	this.position=0;
+	this.selectionAreas=[];
+	if (gradient)
+	{
+		this.gradient=true;
+		this.min=gradient[0];
+		this.max=gradient[1];
+		this.gfactor=255/this.max;
+	}
+
+	this.paint=function(x,y,side,value)
+	{
+		if (this.gradient) {
+			value=Math.ceil((constrain(value,this.min,this.max)-this.min)*this.gfactor);
+			fill(this.r,this.g,this.b,value);}
+		else{fill(this.r,this.g,this.b);}
+		rect(x,y,side,side);
+		if (!this.gradient){ this.selectionAreas.push([x,y,x+side,y+side]);}
+	}
+
+	this.setSelected=function()
+	{
+		this.nodes.forEach(function(x){x.setSelected();})
+	}
+
+	this.clearSelected=function()
+	{
+		this.nodes.forEach(function(x){x.clearSelected();})
+	}
+}
+
+newHeatMap=function(description,number,size,color)
+{
+	if (number in HEATMAPS)
+	{(number);}
+	HEATMAPS[number]=new HeatMap(description,number,size,color);
+	recalculateHeatMapPositions();
+	redraw();
+}
+
+deleteHeatMap=function(number)
+{
+	delete HEATMAPS[number];
+	for (var name in TREE.leafs) { delete TREE.leafs[name].heatmaps[number]; }
+	recalculateHeatMapPositions();
+	redraw();
+}
+
+addNodeHeatmap=function(leaf,heatnum,values)
+{
+	TREE.leafs[leaf].heatmaps[heatnum]=HEATMAPS[heatnum].generateHeatMap(values);
+	redraw();
+}
+deleteNodeHeatmap=function(leaf,heatnum)
+{
+	delete TREE.leafs[leaf].heatmaps[heatnum];
+	clearTimeout(HEATMAPTIMER);
+	HEATMAPTIMER=setTimeout(function(){redraw();},500);
+}
+
+deleteTreeNode=function(leaf)
+{
+	TREE.deleteNode(leaf);
+	TREE.leafs[leaf].clearSelected();
+	TREE.calcTreeCoordinates(10,TREEWIDTH);
+	redraw();
+}
+
+function HeatMap(description,number,size,col)
+{
+	this.description=description;
+	if (typeof(col)=='number'){this.r=this.g=this.b=col;}
+	else{this.r=col[0],this.g=col[1],this.b=col[2];}
+	this.number=number
+	this.position=0;
+	this.selectionAreas=[];
+	this.size=size;
+
+	this.generateHeatMap=function(values)
+	{
+		PImage img1 = createImage(this.size, 10, RGB);
+		for(int x=0; x < this.size; x++) {
+			var val=values[x];
+			var c=color(this.r*val,this.g*val,this.b*val);
+			for(int y=0; y < 10; y++) {
+			  img1.pixels[y*this.size+x] = c; 
+			  }
+		}
+		return img1;
+	}
+}
+
+setCladeColor=function (node,c)
+{
+	if (node in TREE.nodes)
+	{
+		TREE.nodes[node].setColor(c);
+	}
+	redraw();
+}
+
+clearCladeColor=function (node)
+{
+	if (node in TREE.nodes)
+	{
+		TREE.nodes[node].strokecolor=[0,0,0];
+	}
+	redraw();
+}
+
+markClade=function (node,c)
+{
+	if (node in TREE.nodes)
+	{
+		TREE.nodes[node].setMark(c);
+	}
+	redraw();
+}
+
+unMarkClade=function(node)
+{
+	if (node in TREE.nodes)
+	{
+		TREE.nodes[node].marked=null;
+	}
+	redraw();
+}
+///////////////////////////////// START CODE ///////////////////////////////////////////
+///////////////////////////////// START CODE ///////////////////////////////////////////
+///////////////////////////////// START CODE ///////////////////////////////////////////
+
+//loadTree('(no:10,(tree:10,loaded:10):10):10;');
+//loadTree('(Bovine:0.69395,(Gibbon:0.36079,(Orang:0.33636,(Gorilla:0.17147,(Chimp:0.19268,Human:0.11927):0.08386):0.06124):0.15057):0.54939,Mouse:1.21460);')
+//loadTree('(c2ae677b-0f9c-41be-8265-8cc3cef73560:0.05585,((((06b2f2b0-8a58-4f3c-9889-cfce5fb2b254:0.00862,(107e09ab-4f50-4447-9d76-05a28da167d0:0.00517,4c8e856d-3c71-4f8b-a6d5-97911f50eb82:0.00517):0.00345):0.03162,(c4f4c995-3767-4c94-bf1b-d4bf39cfac1f:0.02948,(7d17f41c-973c-40cb-b66b-71a48d79a200:0.00000,a584ab9b-722f-408e-8505-4bcb3c8d7c46:0.00000):0.02948):0.01076):0.00799,((((((f8433952-f159-45e1-a4f6-95944563f222:0.00145,(69ea4249-c98a-47ae-8ffc-8552c176bd3c:0.00144,(((57dd5aaa-e527-42f6-8650-d9b89045693d:0.00036,(acff676a-1d0c-4db0-865e-179133f0639b:0.00001,(8248b005-5602-4d80-9198-e82535e5b4d3:0.00000,((e8a2a700-29f5-45e5-9c8a-41639aaec58e:0.00000,(dfb9e7d0-78d5-4164-8e9a-5449a97325bd:0.00000,(504e0470-4b77-44a7-848a-10bb29ec0f7b:0.00000,b025f3eb-9bf5-4367-b57b-1c41484f37fd:0.00000):0.00000):0.00000):0.00000,(a272c509-0791-4ccb-8890-6d94e9be1f78:0.00000,(cf181ca2-3bba-4f60-830a-0756d965ba94:0.00000,e2beb16e-4047-458a-b8de-925194fc2e2a:0.00000):0.00000):0.00000):0.00000):0.00001):0.00035):0.00025,(7b5762c7-2f9a-4a6e-9e69-19552450a894:0.00056,(a0fa353d-0906-4e9e-bd22-b13af524d670:0.00012,((4a014562-5c20-474f-a1a6-16df26f80121:0.00000,bb6ba600-f550-42e0-8a02-cc175260104f:0.00000):0.00001,(bca319ac-9102-40e9-b530-ab48c58ffb22:0.00000,(23b30f9c-f9c7-4bd3-ba02-aea69d6d080e:0.00000,(959477d3-7a3f-48b0-a595-913ed27eab9d:0.00000,(c54a9ba9-e81b-44b1-ae4b-db5dbca764a5:0.00000,(48a8c3fe-b503-4a98-9228-bd4a30374cbb:0.00000,edb4b06f-6358-46cb-98cd-fbbcd1ce6447:0.00000):0.00000):0.00000):0.00000):0.00000):0.00001):0.00011):0.00043):0.00005):0.00052,(((0accc789-fa00-45ee-a5e8-1eda1b49cd10:0.00000,4d13f9e9-4bf7-48a6-bb6a-4c6023c866ed:0.00000):0.00050,((fa915d0c-b5a9-4ad6-aa9d-2295b50d8b07:0.00000,(4cd5974f-96ff-464c-be80-be72f50daaba:0.00000,f6f23c63-4155-4777-8596-03923d3f43f0:0.00000):0.00000):0.00001,(aceba324-7c9e-419e-b15f-7d82679417a9:0.00001,(3b583643-4096-404d-9621-ebc6698c8eea:0.00000,823ab82c-8e61-4ff3-a499-cd77ba08eab9:0.00000):0.00000):0.00000):0.00049):0.00054,((d8c1f349-d497-4c69-b887-bf73c8317734:0.00004,(a7e2fc67-50d2-4a5c-a08f-804760969528:0.00001,(44a61628-2b86-4eca-b9c4-a2e5d06b6237:0.00001,(2f160dd0-ac41-4236-90bb-f633b03756dc:0.00000,36b0d601-701e-4849-9f68-5e05477b3e75:0.00000):0.00000):0.00000):0.00003):0.00084,((44f18cf7-3dc3-48bd-a8e9-13caeb62dff7:0.00000,94709e4c-a467-4bd3-bcc4-199f06abd559:0.00000):0.00083,(((c1b6c9e9-8b54-4ff3-ac24-4f5afd7a96fe:0.00001,(fae9ed91-8a27-4124-9a78-7cbf5dd28fb7:0.00001,(f28b8ac2-daab-4f6c-974a-09d26e814ce7:0.00000,((75348211-cbd7-4d91-97d6-8378b50ebecb:0.00000,8066ce1a-37a0-4d2c-9dd4-3a4622197b5f:0.00000):0.00000,((61e98996-77e1-440a-a0e1-3be4883fdb83:0.00000,(0ed1d65f-1442-4dc2-8c7f-e7952e13d13d:0.00000,6926a636-353b-41b7-a849-1974e06c7f2f:0.00000):0.00000):0.00000,(6d222131-dac1-4a76-a85c-b2956b53bfb4:0.00000,(97e523f0-9512-4877-8c49-fa16724e808e:0.00000,(14d75998-035b-4da8-9fdf-96a9047cffce:0.00000,d8edfc32-6a08-4041-81a3-53affff9e5e8:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00001):0.00000):0.00032,(c0025b0c-54da-418e-8087-df48ba573dc8:0.00022,(837b506c-37e1-415b-bdff-52b6f44c8922:0.00008,(2c29d617-25a4-4dac-aec3-37dc899e5f58:0.00000,(9c8519aa-fddb-4709-abaa-7958e03fdd50:0.00000,ec69fdb0-4cfa-4eac-91b0-94fda4cffb09:0.00000):0.00000):0.00008):0.00014):0.00012):0.00047,((6e757769-72d8-4cb8-877a-1e5e986d506e:0.00000,a74c2bc1-2e67-46ee-87e7-db63875a9a66:0.00000):0.00067,((1705cefa-3d52-4970-ac86-a1820f6e2a6b:0.00000,357e77d0-6080-4352-bcb9-493b0bf56186:0.00000):0.00055,(32b1aa74-656b-45bc-a3e4-d18374092a55:0.00034,(2f1faea0-5fb6-458e-ad23-578f9f28f762:0.00012,((3d7bb107-74df-4554-a1cd-dc9454b4d499:0.00000,a1499616-7e8e-4732-ba98-f6ac0c725884:0.00000):0.00002,(73febedf-89da-45d4-8fa2-5e610bb388ae:0.00001,((e4cc2460-4fcb-420d-bb43-e83cfccd9412:0.00000,(0a61992a-9196-4f28-962b-ed3454e070d8:0.00000,ac2e1693-72fe-4e00-bcfe-36f15efc8b3e:0.00000):0.00000):0.00001,(9c5229b7-0cc9-4d17-a2df-afd1384a30da:0.00000,(3c4a3204-7d15-482d-9251-e8ffc4a93f7c:0.00000,(d8862aca-a779-461a-b87e-a926f5a6a90a:0.00000,(2fda82bc-1c2f-4142-832f-b4b6248b6fe4:0.00000,62c1934a-7ca1-4b5c-9103-b1a2cf3c4913:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00001):0.00010):0.00022):0.00021):0.00012):0.00013):0.00002):0.00005):0.00016):0.00008):0.00032):0.00002):0.00040,(5e46e80f-d2d5-4491-9154-719f78d9b7c6:0.00155,(9c682608-ff7c-4490-8e49-6d7c8bdf35ce:0.00119,e688519f-eb81-49f5-9f11-d20155b075fe:0.00119):0.00035):0.00030):0.00061,(((e2ab1cf7-f4ec-4628-b79f-5ff7fdd46c2b:0.00000,(((3fd26646-7098-481b-9217-5593cb99d970:0.00000,ea2f6bea-8026-498b-a6e1-68aec06814e8:0.00000):0.00000,((8917b341-ae3f-405d-bc64-496f9d04159c:0.00000,ba6d1b7a-7af8-4ed1-9010-d6881d77a1be:0.00000):0.00000,(8406c4cd-f077-4597-9e31-f2ef2fef6a16:0.00000,(25fd4e76-041e-4aa6-9317-e8043f907456:0.00000,(158bf7b0-093b-4ae3-8f9a-843a5462e646:0.00000,bcf9caa0-15e5-4522-a957-2d0f84e90082:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,((70f3d0e5-2247-4c1f-9584-6f37302f18e7:0.00000,c8533b58-c17a-441d-b9f4-221da81ee979:0.00000):0.00000,(c23dde3b-3aad-4b14-8b77-5b5e2ed453ac:0.00000,((2435d1ee-d37e-4b63-a6a8-688ae24f04ef:0.00000,d0394fd8-1d53-44d6-808c-7efac09f8c31:0.00000):0.00000,(fdbb8e80-ceb1-42dc-bae4-b650aa3d2df5:0.00000,(76d2b4e8-e79f-4b3d-af88-0a35e4a82289:0.00000,(59aa86cf-b00f-4a16-a488-accf4ce8a39f:0.00000,(067f79d2-09e5-4e7d-a9b0-498c739ae883:0.00000,((c40bd068-a0ce-43b1-b90d-9221c9b02432:0.00000,(3bfea833-5634-4ca1-b45c-864d319d919b:0.00000,b8d6e1a0-8fb4-4d6f-b2bf-edab83ef7133:0.00000):0.00000):0.00000,(4b2d0042-b2a0-4891-a076-3a0311e1d100:0.00000,(b64d565c-0137-4977-b43d-d18c45ef35fe:0.00000,(933bc4da-50cb-4c2a-bc8e-5ca6233295f2:0.00000,(029413c2-6435-4d6e-bf33-09876a9fb485:0.00000,(774e4245-f98f-420c-91a3-f6da2f0f04f1:0.00000,((1cd551c3-b211-4906-aaeb-221777880da5:0.00000,(7f3c3650-5f7f-4935-8e94-52c3d3f7a9a7:0.00000,(67680d6c-18cb-4a21-a259-f5625e47bae3:0.00000,98d08b85-63bf-42d6-a343-d958797ab639:0.00000):0.00000):0.00000):0.00000,(e1807059-9aaf-44b9-b29c-efeed6de0645:0.00000,(95c15939-a41f-4ccb-81ec-12ced54dac5d:0.00000,(301272ad-ffcf-4a68-b5d5-6925db984597:0.00000,((3aae343c-e379-46b5-bc18-5fc0422424c5:0.00000,873a5a0e-3591-45aa-bf15-667c1fac1342:0.00000):0.00000,((587f825a-e468-4cf1-929d-a105d22a4ade:0.00000,8223f043-5c53-44a3-9b5e-d02979eaa51f:0.00000):0.00000,(d0e1e74d-e6fc-4ec7-93d0-1ca7e03828e1:0.00000,(21d58ffc-5be1-4798-b6b2-380d9d14d6f1:0.00000,cdea4f60-03a1-4ce5-8110-d77101f50002:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(03ad526e-5944-435d-b746-b6f6c723cd31:0.00000,(18dad3cd-e71f-4c61-9f82-62c18b80cf62:0.00000,(1a40e3ee-f5c9-4a54-a5e5-53750bd142f4:0.00000,((9d265d24-93af-42a6-8e4c-a94f297fbbd9:0.00000,cb3d1f1b-5d6c-4bf4-8932-6e83491bd98c:0.00000):0.00000,(4b19eb17-88c7-4697-b3f1-a3ccbb19645f:0.00000,(6e6592b9-f440-446b-a47e-2c66a88e0ee0:0.00000,(b4f4406c-ed42-4f6b-82b1-0cc8001a93a3:0.00000,b73304a2-f7df-469c-a1f9-2d9ebcda3452:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00243,((6f9957ab-606c-4116-b587-971123335667:0.00001,((74ca0bc1-f2da-4d26-a9a7-5353021c2d29:0.00000,a10666c1-e792-475c-94b9-bbe625597456:0.00000):0.00000,(09747f6c-af81-4588-9d18-facf33417b26:0.00000,e8932fda-07a6-422d-a5e5-710d64c1388f:0.00000):0.00000):0.00001):0.00006,(2faef47b-e36d-42f5-8d47-03065520ebe1:0.00001,a4e69191-8c9b-48f7-b9f0-87f8187a746d:0.00001):0.00006):0.00236):0.00003):0.00033,(3aece578-3092-45ef-905e-c1bae24e38a2:0.00263,(((1d174613-2e13-4f29-9d0d-444e515f096c:0.00000,(361d7052-8553-4664-8415-ba65e64c32f2:0.00000,ea2fa5cb-7798-4df2-903a-69d3227e0cba:0.00000):0.00000):0.00138,(9994fa78-b378-4ea8-9fd4-29d571df3e92:0.00093,ac5cc81a-2990-418a-9c14-ba0ebaf0a4ea:0.00093):0.00046):0.00081,((febc4198-db42-44ea-b2db-e2e161622076:0.00167,((5c674e70-d83b-43bb-b2a5-28b93ff64fa0:0.00108,(3d9dfb08-a581-4443-af53-3c3a5ba05b49:0.00000,99f0a588-a07a-4090-8681-2dc614a4fe36:0.00000):0.00108):0.00036,((8d2bfc90-cc54-4eb9-bdb7-9429a23cf891:0.00031,(e161a3e7-bcd6-4dad-88c0-b8566c66fc12:0.00014,(7c6bd7a7-08b6-4f75-8841-cf623016f65e:0.00000,994cf13d-ba67-4bcf-81ed-8918467d3230:0.00000):0.00014):0.00017):0.00080,((7f3ede24-fdc6-406e-9d13-fcbd8d45fbcc:0.00033,(9cc17a40-f74d-4263-ba72-8c1711660222:0.00000,cf7d52be-1859-4d99-964d-847bf7142485:0.00000):0.00033):0.00057,(((0bf3e298-8c08-4411-a596-6f80d14dcebb:0.00000,2b985aa4-5e4a-48b8-937b-8eef88f1e44d:0.00000):0.00001,(43348ec6-0763-4255-945f-da18d9e5ee65:0.00000,(8f504b21-ddff-492b-bc0c-62828855b0df:0.00000,dadddb5c-8e82-4098-9474-2dca4bf34bde:0.00000):0.00000):0.00000):0.00077,(4235fc2c-a80f-4911-bdda-3e2da36915e7:0.00066,(6b4b39e4-05a1-4c9c-9c12-036e44e3831a:0.00000,(2823e5ad-a243-4ead-84e0-65116df9aa0a:0.00000,55498180-884d-4800-941d-0d79dd185277:0.00000):0.00000):0.00066):0.00012):0.00012):0.00021):0.00033):0.00023):0.00027,((4cdadfe0-82ca-4baa-8786-2003506f9c1e:0.00025,(3f8259ac-71cd-45d1-bd5b-f03588130d52:0.00000,b169e777-e9a7-485d-ae5c-9467bf397d74:0.00000):0.00024):0.00167,(((c3b34aed-4a15-4011-9c13-f1235a7fd868:0.00000,(03126774-c8f7-4def-9730-cbd8268979e6:0.00000,595bda4a-db78-4106-966d-d1018b34fa4d:0.00000):0.00000):0.00142,(ad81918a-dfab-489b-b791-43a4f56d6270:0.00113,((fe65e5c4-cecf-4dcd-821f-1de4d8e5c8fe:0.00082,(((b9107d3a-faa3-4b1d-a01d-b5c998910d0f:0.00000,d9aa5c12-df66-4215-a133-46fccf30b22e:0.00000):0.00032,(2f688bbc-ee0a-4562-ba15-f18f5e7e8b6a:0.00031,((9c061e8e-e4f2-4fc2-8da8-52293d7817e2:0.00000,(257c2a35-8208-4604-8803-23eb16436fb3:0.00000,98e4837a-f20e-44da-851e-2b6388416d72:0.00000):0.00000):0.00014,(0dab912f-1756-4fe3-95d7-a5a7f60afc38:0.00012,(4288cce5-421a-4fee-9b67-7b9163e4f3ec:0.00001,(dc98dd5a-c33b-46ea-9afc-677463b1a4bc:0.00000,(29d5f2f0-0a8c-4731-bab0-81152a283f88:0.00000,((3e676412-e0f9-4057-9e51-48c2600a92a0:0.00000,e69f5ed0-cf35-463a-a373-422a400114df:0.00000):0.00000,((2a234b25-e827-42d1-a23f-cfa26ca41e04:0.00000,4cf6d5cc-a3fd-4723-8581-63f0a25146e5:0.00000):0.00000,(1594be54-3e40-4605-91a4-108f053bb8f4:0.00000,(3a199530-c2e7-4c9f-945b-017ac22ef3c5:0.00000,e70d9966-df71-4aba-a944-3afed8f521f8:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00001):0.00011):0.00002):0.00016):0.00002):0.00042,(ff1f04d9-4552-45cd-9240-48ece9947bda:0.00065,(((858578fc-9c1e-4e26-9f4a-da8dd8925b20:0.00001,c72cdf3b-9475-471b-bbf5-769151c53ef1:0.00001):0.00037,(4806a0de-0936-478a-8451-b6fa361fbae4:0.00030,(76723f50-89a6-4a0c-8247-79ea0ff57c6d:0.00000,(1cef4f4d-8ee1-4e1a-876e-f0cb0ff12be1:0.00000,8f5c41c8-c1f3-4eca-b101-3968c948ad23:0.00000):0.00000):0.00030):0.00007):0.00011,(6fd7f215-1100-49aa-80d6-5575f025a52a:0.00040,a71cab71-f654-4cbb-a683-7c47c67841b0:0.00040):0.00007):0.00017):0.00010):0.00008):0.00011,((0a682823-5544-4e6e-920e-d3e20e8c3ff1:0.00000,(2216e9ad-6909-4982-a3ea-22e6ac7ca8c1:0.00000,(1dda78c6-ef95-445d-a95e-22f662baad05:0.00000,(5ba51ccc-c258-4ac0-b8e0-d11d59a72139:0.00000,(20453c0d-4bad-467e-bda4-633815fc51de:0.00000,9b0c113b-dff6-4644-aa8e-a530fc79ad53:0.00000):0.00000):0.00000):0.00000):0.00000):0.00084,((((f8abce01-5a3f-47a2-be43-55e0d517f49d:0.00000,(3afd5915-7d94-4a28-97e2-b2deaef9a6c5:0.00000,b0d71232-95da-4d8a-ae5a-961802262add:0.00000):0.00000):0.00007,(6712ae96-0745-44b9-9076-b538ebb946a4:0.00001,77a25205-314b-48d1-83c3-10b547d0a18b:0.00001):0.00006):0.00026,(22416745-2015-4255-9c92-2e7d1b8a15af:0.00023,((9efeb9c6-5006-47cf-bf1e-3ce6a8d0e495:0.00000,(6fa0169f-aaa2-4114-85ba-17ad68c0ef42:0.00000,d428dd28-ebfb-405b-be13-b45240bff740:0.00000):0.00000):0.00016,((2af1f0ba-b7c1-4d0c-8648-cdd8b4bb25a3:0.00000,6b62a48a-aa4e-4a91-8db5-ff72c1c2e2fc:0.00000):0.00007,(61ba2d55-0f8c-4bd2-b6cf-fee7c0f7359f:0.00005,87d8d2de-4459-4bad-bf6a-cf6e6eb6d8e0:0.00005):0.00002):0.00009):0.00007):0.00010):0.00038,((d793c4f3-fe55-4dc5-abf5-e3aba72a03c2:0.00015,(d5d9aed6-87bd-4af9-9202-71be54208c56:0.00000,(36ffa23c-cb48-4007-8f02-8eda6fb2ea0a:0.00000,4c5d7afb-74f3-40cf-b428-e08d1ebfcaf9:0.00000):0.00000):0.00015):0.00053,((cb2cdd08-bad8-4ac4-9165-79f8f76044c5:0.00009,(19fe553b-bc7c-4a47-a8f1-e9d92e7955a4:0.00005,(0273999d-b08f-4dc3-9d8b-4e1d260b6668:0.00000,96084241-3201-4431-8143-0e4f61748831:0.00000):0.00005):0.00004):0.00041,((bdb9a84f-e226-4325-9c01-61d11914a23c:0.00038,((272fa1e5-8288-4f3b-a2a3-9e49a22c3d34:0.00014,((66c67205-1d22-4314-8990-86d806d5d7bd:0.00000,c8cf6253-8668-4aa8-b475-43276817be2e:0.00000):0.00005,(248e16bc-13c3-404b-9c85-263ed3117d06:0.00000,(bf69e0f0-082f-4c78-b784-9f7847fd1329:0.00000,(7da89a9b-07f2-4db2-9fbe-dc6f6bfde276:0.00000,b9f8aaab-75ec-45bf-a277-d26eb0169149:0.00000):0.00000):0.00000):0.00005):0.00009):0.00013,(4e5487ee-62c9-4167-aee6-772ff14445f3:0.00020,(2f4387df-aabe-417f-8ea7-550d224dce7d:0.00013,((74e4fd17-1a8e-41a9-9ebd-398c56ede8d6:0.00000,(3714002e-17a8-415f-8b06-9d3d95291f50:0.00000,592b6fa6-358d-4481-bef8-92e3c6783045:0.00000):0.00000):0.00001,(a9660653-3959-4fb4-9312-52fbd2356164:0.00001,(c9be43a7-2504-44dc-b56a-1b31ed175ce0:0.00000,f12fa81b-d4f8-47d1-9ebe-94ae3783b8e0:0.00000):0.00001):0.00001):0.00011):0.00008):0.00007):0.00010):0.00007,((03b29871-743a-4969-b167-b75557baa120:0.00000,(6387b5c0-b67d-4476-8d8c-73d428e4d15a:0.00000,b7cda3f3-3303-44a9-aab5-9ee08fe99562:0.00000):0.00000):0.00043,(((1c7525a9-2083-46ab-a949-f35a72b37e16:0.00000,50fec457-2963-48a2-98eb-d75f7192c686:0.00000):0.00026,(2364f72f-435b-4575-8c4b-576f5acfa63a:0.00003,668a92ab-e080-4904-bd2f-64bad803d077:0.00003):0.00023):0.00016,((5f4b1b6f-3474-4fc9-94bd-951c0ebae628:0.00028,(0c42df2d-4b6e-4b48-bf76-e74369610799:0.00000,e645ff03-1d08-4c61-b4b1-f9bf772bcb8d:0.00000):0.00028):0.00011,((8fa1b25b-3cf9-4b5c-a9b8-59f66917ba0c:0.00015,(58080724-3253-4498-a699-8b8357d4b39b:0.00000,c00be74a-6153-452a-9227-63c296dcf154:0.00000):0.00015):0.00022,((((6dfc943f-bf5b-403c-9e0f-a49e42591d9d:0.00000,9bf4b31e-8345-4f36-8053-6967c30315c7:0.00000):0.00000,(48b6e7a7-e202-48a6-9da8-3e571b1980dd:0.00000,fb43752c-3f7f-4402-be54-5a3546c927e7:0.00000):0.00000):0.00011,(((fc015b97-813f-4e16-b416-d059696b8e23:0.00000,(9bbb4b05-e201-463b-9e55-8e387e71ec2f:0.00000,d18cdec6-6efb-4e94-80c1-b0846b5a2fa9:0.00000):0.00000):0.00000,(06592d06-ecd0-4ff6-b31b-451e75e288fd:0.00000,(((04c3b235-cef2-4218-a0cb-8f8e9014a238:0.00000,259c209d-8386-4af0-9c06-3b274792ff86:0.00000):0.00000,(d29d76cd-ece2-4697-bfb2-3683264fecb2:0.00000,(1e290bb1-707a-4f1f-8584-591a6969cc30:0.00000,(8b77db8e-95e6-46df-aa91-d85e0b79f345:0.00000,(5737283f-36d2-41e3-85e9-c00062715868:0.00000,7ec4c5d9-14d1-484f-9231-f2bf33b7cd6a:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(db414ae1-4607-43fb-8019-9fd4532ba547:0.00000,(ebad5fdb-2cd2-48d2-b868-c4006d543ab0:0.00000,(9b316256-1791-407b-958a-d25ba5fd7ce6:0.00000,(4b60488b-9eb6-4c0b-b2a5-ee3bcf4c044a:0.00000,907ac51e-caeb-4644-aa6a-5e37da89f4cc:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00007,(a4f342f1-dfad-4fa8-8040-e85c07cb74a3:0.00003,(57db4db3-67cd-4336-811d-2966cf490a44:0.00003,(5dfe15a1-13b3-4069-87ff-be14b80adcf6:0.00001,(((6485533e-fd2a-450b-b5a6-ad21e9a5ef6f:0.00000,da36508a-c93f-46da-a895-723118e40153:0.00000):0.00000,(cc305d94-f296-4873-8aa4-6678ce44cdae:0.00000,(9a67714e-b7d4-42ee-99dc-4897f319962e:0.00000,(f2cfde33-6c37-425c-8f72-ef770476a8fe:0.00000,(ae54e815-7c3d-48d8-be81-2aa567ad564c:0.00000,(4e5f1eda-0611-48a6-8e8a-29f8e095ff33:0.00000,873d32e9-6f6e-4b8d-b536-dfeaf8c1044c:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00001,((d1b038a7-1580-4a2a-b5d0-45a6049630a7:0.00000,(ffaa0402-805c-46a5-8f10-2c52f74493d5:0.00000,(931ef7e9-f3ac-4171-b9a3-2d8c66cfa898:0.00000,(40c9f270-ab54-4652-b823-cb690746213f:0.00000,(11ba1004-ed23-468c-875b-179f778b5bf7:0.00000,f2ebffaf-71b6-49fd-a141-68eee6943bda:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(((1dae945a-79ce-48c4-95a5-4ad6015748b4:0.00000,f6ddfd56-8166-4275-ac51-cc6fc1dd3093:0.00000):0.00000,(223578d2-6670-4828-940e-0b2e314207d0:0.00000,e60f4ea9-c95c-40d3-b5b0-05667c0538c4:0.00000):0.00000):0.00000,(14093f2e-a19b-410c-81b9-2627e9a8f3d2:0.00000,(1e0c515d-e0bb-41cb-9771-df719a66a32c:0.00000,5a90f9af-2501-42f4-9651-cd001d048722:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00001):0.00000):0.00004):0.00004):0.00016,(489fa85d-b0dc-47b9-a5b2-e0dadf435b73:0.00025,(af7c2b9d-13d7-4371-bd8e-f27f6540d8d3:0.00020,((b77c17e6-3b91-4de8-81ce-ff25949688af:0.00001,f154e10d-bf9a-48ee-8e0c-24bc6bebac9d:0.00001):0.00012,(a03f5730-083c-402c-9075-53502e642631:0.00010,(7798afcc-caa4-4af1-a080-0bb3bc2ebdf3:0.00002,94980d72-0c9a-4ada-8001-1d1fe8b4f446:0.00002):0.00009):0.00002):0.00008):0.00005):0.00003):0.00010):0.00001):0.00003):0.00001):0.00002):0.00005):0.00018):0.00002):0.00014):0.00009):0.00020):0.00029):0.00043,(2e5c5818-c168-48e2-a90c-3b4059563602:0.00173,((69f40b3a-5650-4962-b2f1-52ebef7b0bb4:0.00045,6c9d9e65-49b8-4332-b8d6-97656ca5e5e4:0.00045):0.00088,(e0978f11-64b1-4be6-970e-70e9cba1ded0:0.00120,(9a352632-e48d-4881-a46f-cbe579ccbbca:0.00094,fac98487-81be-4c09-a80e-2dca9e7febb7:0.00094):0.00027):0.00013):0.00040):0.00012):0.00006):0.00003):0.00025):0.00043):0.00017):0.00050,(1ea7638b-6898-4be2-be91-415c065583a4:0.00286,(859fd195-bfec-4ac6-bd65-a82a078df3c3:0.00212,(25af072a-25f5-4495-a947-b24fd2ba1014:0.00192,(52d793b0-e9ff-43fb-97cf-3e62a96d27d7:0.00156,(fd448503-c9ae-466f-bd5e-08d4fb9f36bf:0.00135,((a13222e9-22e1-4ba2-a85b-deecee869a87:0.00099,(3a5489f1-f01a-432b-8c7f-4096325626d7:0.00052,645a20f9-0bbc-4294-aa0e-6b41bbb1f7b1:0.00052):0.00047):0.00018,((38ce9f5d-92c4-4631-8e1a-bee2eb1207d5:0.00000,d2ae4d24-c37a-4887-9ea1-30122a6cb7a0:0.00000):0.00113,(6f493728-3179-4ef2-8a1d-59b190159857:0.00100,((d95058e4-055b-48fe-b11f-679eb59b3afa:0.00000,f28fe4a6-beae-4a9b-8aba-e793116e1c46:0.00000):0.00095,((99e04016-dcb8-4b25-a93c-a4ba65889b18:0.00055,e41a5b0b-fa25-4b43-9d57-74ad9c694004:0.00055):0.00031,((8103c1d8-0c46-45e3-bef1-25d36bee1a3e:0.00000,f85c5d8a-2dbe-4014-9005-5318dcb0c11a:0.00000):0.00074,(((33e800a6-2b11-4820-b809-23b17f338db5:0.00000,e3125058-7c18-442b-934c-e12b332afd1e:0.00000):0.00000,(1dfbe8b6-abf3-41b0-bd86-d8fe3e47f595:0.00000,(0a2eb5d6-dc6c-4699-8ec2-bc1938bda99b:0.00000,4b7e4e5e-e78c-48b5-bf80-57ae080fad25:0.00000):0.00000):0.00000):0.00067,(4535e567-6167-404c-8e2a-0224971e7935:0.00048,(7e84ee17-8e1f-47d1-9d64-066a4b3fee90:0.00000,adbf96ad-1fc2-4194-bdf7-d48cde4222b0:0.00000):0.00048):0.00019):0.00006):0.00013):0.00008):0.00006):0.00013):0.00004):0.00018):0.00021):0.00037):0.00020):0.00074):0.00044):0.04232,(3a12a0be-5676-492e-a48e-245ebc07f1f0:0.04158,(13f6dead-3049-419b-8472-50d0cff57c7e:0.03226,(((b76c1855-a34f-42c6-93c8-ac79981a12b6:0.00000,ec87c910-0c6f-4070-8f14-b43dae2b9859:0.00000):0.01761,(cbcc7ee9-1a3b-49e8-8a01-22a03406b27a:0.00248,e5112204-75d2-48c3-a4d0-34b2b6946e22:0.00248):0.01513):0.01310,(((5d1631e4-cad0-4755-9980-f3e45be8d5e9:0.00342,(825c6c53-222e-4cc0-8676-c6c62281b5a9:0.00000,e8310586-48c0-4466-95c1-ba8d7bd71c53:0.00000):0.00342):0.00276,(133c1ddd-b5cd-4b3e-9c85-64c9635ae131:0.00483,((79155e82-33a6-4d03-b920-b139b26f7629:0.00000,a9fa7f12-34ee-4d20-819e-26453525e324:0.00000):0.00185,(ebaee943-1faf-4fff-9b06-db4796571226:0.00001,((((d3e20eb7-0cb5-461b-9cc4-30fd0aa28635:0.00000,(57b1e96f-f92a-400f-a27c-7694f44bb21a:0.00000,(ef04daa6-8453-455e-8b19-91c3ed2e482a:0.00000,(17f68371-1d12-40e1-bbeb-be2f45a3f4e9:0.00000,428c9488-8416-4531-8698-8e72a638a2bd:0.00000):0.00000):0.00000):0.00000):0.00000,(411dee4b-fdb2-4b34-9821-960bac8c67e4:0.00000,5bc8cace-4395-485d-ac4f-9fe6d2457283:0.00000):0.00000):0.00000,(292401b5-3632-4014-a1fc-fca0c5f14cc2:0.00000,((364b4cc1-0066-4b5f-844e-0632a1e8d6a0:0.00000,((5d83d840-2d20-4161-b303-fd880b8eb8bb:0.00000,6a62abff-8125-403f-84c7-de30091c5cd3:0.00000):0.00000,(816d72c5-bc10-4d09-91c7-0a9783ddbac7:0.00000,((3d961621-76e9-4930-944f-da36bf1d68b1:0.00000,c9001558-9e55-49f6-b887-d115e88f8de8:0.00000):0.00000,(5df453ee-d2d6-40c8-a6c1-70013c95c248:0.00000,(1c2ac5e1-c6a1-44d7-9621-63540844aa4b:0.00000,9648fa78-0810-4d66-8612-7c76fbbbaab8:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(7249bf7e-0370-4bbe-8c19-176f6900faa8:0.00000,(02ec2e32-25e6-4381-8e90-bd1e55fe9bcf:0.00000,(0e480824-c729-4f0e-964c-67e895dec091:0.00000,(08bd4c41-a73d-423a-9be8-3ef907d10925:0.00000,c2c77606-5a45-42b7-a759-1c9fea356b5e:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,((1eaad762-64e1-4839-ad6b-139a59ffd492:0.00000,d026ddba-007e-4a37-8cdb-e8f9cb5cd5c3:0.00000):0.00000,(56925ee1-2027-4621-880e-441d22f291c4:0.00000,(910fb3e8-6d69-4342-8baa-6529cd93d2de:0.00000,(853bb39a-3915-4f87-8cda-4f1d8a44132f:0.00000,(d37d8fe1-c9f8-4bc1-ad4a-fa2257579bde:0.00000,(1f106a1c-e095-480a-afa0-a18a54372502:0.00000,(1885bb64-33e6-4e13-be09-23d23de764cf:0.00000,9aadee81-1cda-4266-a7ad-8a4883e711dc:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00184):0.00298):0.00136):0.02145,((((faa87f7c-9382-4f4f-aa55-6971da38ebfa:0.00000,(6b09f485-ff9d-4a94-9154-40c90c88313d:0.00000,cc4b3f80-efee-4458-9a78-16a2976c6010:0.00000):0.00000):0.00617,(dc18acbc-b5f3-43fd-953c-98163306f392:0.00576,(f53baebf-cfdf-4dca-819b-d67e7b6b287b:0.00490,((509684d6-946d-4d73-b48e-69376ecae196:0.00060,b8f8c8f8-acfd-466b-b896-596b08e5d36d:0.00060):0.00088,(9ddf4164-87d6-4c4a-a435-cb4c343bd275:0.00130,(14207560-9762-4c23-b93e-d5d46870bc4a:0.00068,de026326-81d9-4913-ab35-e80cf2b6e7a3:0.00068):0.00062):0.00017):0.00342):0.00086):0.00042):0.00050,(((8879a01f-fbb3-4b35-b65c-09f7bace6a91:0.00441,(a92c6bc9-02e9-45f8-9ff1-5a11c3874d45:0.00187,((b8a0f2b3-1530-43e5-ae1f-80b8c8b8903d:0.00001,(1d0d6edd-a2b0-488d-a162-a87a5feb1580:0.00000,a662e771-ac69-4c82-829c-bf36afcc3550:0.00000):0.00001):0.00085,(f925e313-b672-4de5-9b0a-d20eec944439:0.00016,(d81455c8-52fc-42b2-8db7-868021454e86:0.00000,((bf6f8733-deff-4259-976b-60d5a635fc81:0.00000,eccc3b2b-0f83-4e50-88dc-c803c9ef1dcf:0.00000):0.00000,(1a8a247e-e3b0-4333-9391-939be94b9c66:0.00000,(bd832216-c973-4683-8c68-c585e45fe75c:0.00000,(798854e1-b542-4ff8-849f-d246ab7157dd:0.00000,f5e94d43-a656-4e54-a417-e2cabfdb2565:0.00000):0.00000):0.00000):0.00000):0.00000):0.00016):0.00070):0.00101):0.00254):0.00128,((e59a10ed-0658-4eb1-9650-a037fc5346ce:0.00055,(f080526c-408f-496b-b826-c8c9e7d31215:0.00006,((7079b9f7-be0c-493c-8af1-7d755ae21c35:0.00000,c63687df-ee44-4566-b574-1839dd25f654:0.00000):0.00005,((2eb35ac6-b07e-4915-973a-93780f1b8452:0.00000,6daaf28f-a080-44e7-9f5b-de5b475cdcd7:0.00000):0.00000,(61049a1c-e2da-4061-9c7c-8166c7d0196b:0.00000,((e17b94d1-81d3-48dd-8a30-0dff16a97f61:0.00000,f7511c10-8b53-4b94-aa32-9d6cd6fff5b9:0.00000):0.00000,(0300a692-a2ae-48d2-b1a3-4d6d5b05f22e:0.00000,(c1c24865-bd6a-444e-ab56-01bb7d09587a:0.00000,(7bef4cde-469c-456b-9ac1-0a15e9221132:0.00000,c1814d7a-1df9-4d11-aaf3-a604725f5e53:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00004):0.00001):0.00049):0.00460,(697d22c3-39d3-43b1-acdd-157c58aca609:0.00481,(7e2ce30a-7c0e-49c2-a022-d0d3384fabbc:0.00334,(91b640aa-020c-4c83-bd3b-7e8500b24e6a:0.00000,f703d738-05f6-4de5-8f42-188d92b1d288:0.00000):0.00334):0.00147):0.00034):0.00054):0.00079,(((cf4474c8-997d-476b-8570-f62caebe7d32:0.00146,(480e8206-ddef-4d43-b79d-fc15dd08c59f:0.00134,((24c5f793-0a52-4c7f-b198-47a5de901823:0.00000,c86f982c-245c-45e7-8b50-e34dbeaae517:0.00000):0.00084,(((18d64f28-32ef-4c5a-91b5-ae4f81e060cc:0.00000,829724fc-ab88-446e-8996-53a2fe866f42:0.00000):0.00001,(2d7fd0f4-4e53-4401-ad6c-31b0aec4ce3d:0.00000,8135bb88-d1b3-4fab-a965-da4846eaf92e:0.00000):0.00000):0.00073,(((56f5317d-de32-404b-8ee6-7f94e1a040d2:0.00000,(b3aebba1-3818-4ac8-97a8-9ec338d10e35:0.00000,(7b550013-4ff9-406f-ac85-98a78821b1a3:0.00000,e976f9a7-f4bf-45f9-bf47-ccc59fc594a7:0.00000):0.00000):0.00000):0.00035,(b0e33925-2b46-46cf-abd4-401b0b758eed:0.00002,(5309c23a-d3a7-4257-8d94-150a389d259c:0.00000,9779fd45-8e7a-409a-9df8-5f1da105df9d:0.00000):0.00001):0.00033):0.00035,(2287884a-773c-4aea-8b28-cf27227c1cb3:0.00068,((781ca08f-c1b9-48aa-ac38-cf9ea9f8b3ec:0.00000,8a1af69c-b172-496c-80e6-9f7873927656:0.00000):0.00066,(a453f27f-66bf-49ea-981e-eb05efb909e6:0.00063,((7c824294-db8e-48a5-ad53-ac6bf48297ed:0.00002,(aec57d45-23ca-4f4f-8f6c-b9d5f43cb690:0.00001,((18feff34-8b0f-4ed6-afa0-95643b467ac0:0.00000,95ebb4a7-3527-471b-b49c-1153526f679a:0.00000):0.00000,(f5a44bf7-11e0-4e46-aa9f-39814a1b2f40:0.00000,(6084ccba-ea75-49a0-8ddc-6c3f3ae06463:0.00000,(d87e8cb7-1fdc-4e67-a149-8664b1984e11:0.00000,(14c34287-0c40-4d89-9c8d-eff49dbf393f:0.00000,a55c2c3b-3dce-46a6-b284-6689d2705818:0.00000):0.00000):0.00000):0.00000):0.00000):0.00001):0.00001):0.00050,((9d60aa19-60b0-44a9-813b-10a576ed177f:0.00027,((0e49866a-933a-4b7a-88c7-e7e530f31178:0.00000,(4720e7df-a193-47d9-9774-5de951868692:0.00000,(45b6865a-14e1-4459-91b3-d123dd310c96:0.00000,(97abc42b-0352-487a-bb78-05c89a70b24f:0.00000,c8580bc6-6f90-401e-bc54-431982b70cef:0.00000):0.00000):0.00000):0.00000):0.00021,((512e2f81-bce5-4458-b46a-8f685c82d6b5:0.00000,(7fb40aa5-7189-47e2-a60f-d05383244ad5:0.00000,ae95a597-1410-4534-bd70-6bd86e7a13d0:0.00000):0.00000):0.00013,(((e6db369b-fd8e-4353-81bb-74e14a2f002e:0.00002,(9798ef38-f29d-45a2-b529-6e68cdb9b9c0:0.00000,(de0c9561-1f11-41c4-8fd1-9ebf0095d794:0.00000,fa4714ac-1e0b-4845-b1c0-69ee4507b65a:0.00000):0.00000):0.00002):0.00002,(((4d77d35f-8db7-4448-b568-ec5f9cef45e7:0.00000,(10b6cc0a-02a9-41c4-a73d-0abc732ed988:0.00000,46727573-2706-485a-8e7a-8199f0db3f2a:0.00000):0.00000):0.00001,(3ee6124c-a8e5-4f36-83a3-0639cae8adb9:0.00000,4970915d-77f3-4ace-a1f7-919e1e4df3c7:0.00000):0.00001):0.00002,(((b0598f34-5159-44a1-a265-55b0d0d471d3:0.00000,c2ff99a5-78c9-4a9a-9f35-f19e6579e240:0.00000):0.00001,(((0dcb7d9f-a363-4247-842c-8b53c9ec5765:0.00000,14dba28a-5759-4408-9d92-0af8221f5ced:0.00000):0.00000,((83f2e066-be89-43ea-92de-3b1036f8708e:0.00000,ae1a3c6a-1f63-40b0-8a66-c9eba9214e8a:0.00000):0.00000,(7a03753b-6b7e-47b7-9406-fbd8f112d244:0.00000,(afcbb395-26ec-45c6-bd15-a424a17469f9:0.00000,(e983e0d9-34f8-433e-8b9e-754c9f6621d6:0.00000,(16ede5ec-7522-4c28-ba36-d6d4759ef074:0.00000,bbb0fe2d-ed26-493f-8707-8f29e2fda843:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00001,(((5139dd9c-6b30-428d-ab67-0ce233332da3:0.00000,75ae50a4-199a-4538-83eb-95002af2f5a4:0.00000):0.00000,(47aa4427-ddb0-4742-84e7-02552841303e:0.00000,((cfe52ed5-f268-462c-800d-fa0c050fba14:0.00000,(a4f671bc-1472-485f-971f-1c38fc534bf7:0.00000,(d40a455c-7660-4aac-9a92-2c0ef9009119:0.00000,(1246e2ab-b06c-400c-997e-492a1f28951f:0.00000,(0d5326fa-521f-405d-af00-5852f9d0d4c3:0.00000,(eb7831a5-9337-4587-ae6b-abc449d8353e:0.00000,(0fc005f8-bd85-4a56-8236-8038182f6960:0.00000,(3f3e329b-e90e-4860-bd24-8951e1d88ec4:0.00000,(2d859050-69eb-491d-90fc-b3edf0b479eb:0.00000,(621a0a55-0aab-476d-a0f4-98c1495c9830:0.00000,(7ca5e918-fe9e-458b-9862-677f92dbb1d8:0.00000,(4d7e9788-a551-40c7-81d3-31ef8ba6d9ea:0.00000,(2251395d-6210-4057-9700-d6934fa752ca:0.00000,((ca2888c0-ec6e-4af4-a394-114dc5504281:0.00000,efc5dc22-60b9-4a65-8799-01d50154c418:0.00000):0.00000,(ed87ac5d-7084-4276-b6a4-7ff8441e780f:0.00000,(55de7384-b78c-43df-bd97-fcb94751f9ac:0.00000,eaf40ec2-17e8-4b91-9a34-520c670d26e9:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(6614faba-1c4d-40f3-b2ce-2bb8799ff26c:0.00000,(8ea6b58a-5197-4312-b5d7-df721f0a20e1:0.00000,(88b95dd5-11f2-4522-a8c0-95e8c64e08af:0.00000,cd5b5775-85f5-4c91-b899-4fe73a7356de:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,((0871a065-76aa-451a-9564-2a7bdd9ca013:0.00000,(698ac2c6-950c-4ad9-a7a0-3b57a91d882c:0.00000,(20ab91fb-dc03-4f40-ad0e-57817003f432:0.00000,7aa700f3-9ec8-416d-a39f-160200ad30e9:0.00000):0.00000):0.00000):0.00000,((f33af28a-a264-4e73-9f1f-4f0f5651b7c3:0.00000,(a8fef34e-5a38-4ae6-867e-478753fc58ed:0.00000,(3fbeb42a-b9a0-4bb4-8e1a-d52a56d5b13c:0.00000,8fff83d6-439a-45ef-b394-2aee4c4282c7:0.00000):0.00000):0.00000):0.00000,(8fe5c605-61f1-42ba-8c16-424cdecb212e:0.00000,(78307be5-0bc0-4300-8dee-a1cbc44f6457:0.00000,(0f81a1da-a59b-47a1-a77d-66d7307d4a9b:0.00000,(f808b523-b336-4a93-bc39-293f49884a18:0.00000,(57e419e5-88f2-4753-a02f-69a3a84e4f6f:0.00000,(8f21e6d7-9adb-4d24-972b-2f9076eeb367:0.00000,(878ccdf7-cd07-450e-b011-72f02d7312bf:0.00000,(d64140dd-5b30-4660-a8ef-4507ef62f082:0.00000,((3fb4febf-dd01-47d7-9ac4-c5148fdb0f99:0.00000,(0f1becc0-a8dc-4fb9-99b8-1377fd47471a:0.00000,(0838ca70-6d22-443a-a7ef-d22bf0dc16a8:0.00000,(027931d5-28b2-4242-a532-dbca368e2b07:0.00000,93d1043e-0485-40c8-8289-822ddd61be0b:0.00000):0.00000):0.00000):0.00000):0.00000,(a704983c-f194-4c0f-b4fd-0eb3bd2545ed:0.00000,dccf3192-cded-43b1-b9d6-b87207615d6e:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00002,((be2d4013-7aed-4d38-8972-d1819fd477b4:0.00000,(019f5c10-59df-4815-97ac-5da43b9bf099:0.00000,87d291a2-c0c3-4369-95f2-57c858b87d5b:0.00000):0.00000):0.00001,(f7ce2dbc-a734-4bba-aee6-8dc288a8d5db:0.00001,(a49c9b8e-0ca3-4c85-a058-926c8946d8c1:0.00000,(6323940b-e3ad-482e-9099-bfdde23179dc:0.00000,8464fba7-2f5c-4f96-8181-1091a83e4670:0.00000):0.00000):0.00000):0.00001):0.00001):0.00000):0.00001):0.00004,((2ea02634-33b4-4c6a-966a-cd180cee212e:0.00001,b5cd0c21-5080-40db-8a1b-ef9558c15e72:0.00001):0.00004,((4d9c7004-b4a7-4688-b5b6-23fb1cedeb6c:0.00001,(0b4515c7-f63a-4278-b3b0-5cfa8f00358a:0.00000,(7051c30b-a0c3-44ef-b99f-0a21d6bbe017:0.00000,b052a415-146c-49d6-a564-580973ca04c6:0.00000):0.00000):0.00000):0.00003,(94017a06-a98c-4995-90bb-895c35083e4e:0.00003,((ab33e135-681b-41cf-b8ab-f8f13104bb41:0.00002,((0d00094f-ef0d-470c-b1eb-0bb8853a2176:0.00000,(4f3e5fb4-727a-4c74-bba1-cd50a1a4efcd:0.00000,(1e8dcd95-9578-4685-b342-b53a303847cf:0.00000,3d7665b2-f3a6-47d7-b74d-2291e188bd4c:0.00000):0.00000):0.00000):0.00001,((3cba977d-3484-4ff9-9884-4dc3221f213f:0.00000,(92c146be-8ce7-424a-92a2-2d47cd320e1f:0.00000,(047790d8-57e5-4429-b8e9-b251fa253d15:0.00000,0aa873c7-9e74-4075-a26d-c8a4ba92dda4:0.00000):0.00000):0.00000):0.00000,(((((8c1ec9b3-a927-43c1-91c1-b0c410b72bd8:0.00000,a2cac275-121c-4fce-8f1c-90ad8b6b5321:0.00000):0.00000,((d97cd2e2-c1ec-4fa6-afcd-37afa5c17fd2:0.00000,f626ab69-c1f0-4830-91de-b8c3fc7a9405:0.00000):0.00000,((07815881-4063-4d6b-a88d-f48665309cce:0.00000,19598607-52ec-4818-b1ea-7fcfd50c2713:0.00000):0.00000,(a930eab3-2e66-4aae-96f4-be6254607520:0.00000,d62a93bb-b3e9-4792-a069-37c717a231ce:0.00000):0.00000):0.00000):0.00000):0.00000,(352dfecf-8914-4ac4-92a1-36c83fed764a:0.00000,((1b1677c9-6c94-4491-acc1-58dab6ec3028:0.00000,(a33486c5-ab81-49b8-8803-ffa51bbb1877:0.00000,e46046c2-5450-4d4d-ba0b-a148c0cd35c8:0.00000):0.00000):0.00000,(aedd47c4-cfd1-4df5-8ff3-86ef57911c08:0.00000,(13da2863-5304-4400-9830-a90a51de5f79:0.00000,((9a137f02-c586-40d4-8210-fc0a5165f48e:0.00000,afce00d4-5313-4d21-a7be-e86a953126c6:0.00000):0.00000,((0782d2ff-18d7-4837-b861-fd29b4f16136:0.00000,250384de-fdeb-4b60-a5d7-2b2f73aa2d3f:0.00000):0.00000,((3396d12a-7949-438e-8a78-f083515b253c:0.00000,6c8a7ace-f378-4354-b9d1-d44e617bc233:0.00000):0.00000,((443ca824-81b7-479f-aaa8-d359d682bb6d:0.00000,88d9e941-14e2-4c99-8115-b398504ad8d5:0.00000):0.00000,(cb89b4f7-6881-422c-bd6e-4ca2761d63ec:0.00000,(9033ff74-c34d-4a93-8fcc-0fccfba7d434:0.00000,((bdf9b78d-43d2-4e98-b9f3-904d8d8f4a31:0.00000,(266dfc5d-6e8c-456b-a056-e9028991ea25:0.00000,3db4fb31-f7a1-4cba-9501-62f3d3d01948:0.00000):0.00000):0.00000,(fe7a3dff-8634-41a2-85d4-a028ec398353:0.00000,(7f40e1fd-3435-4988-a4a5-a9ba1ad0475f:0.00000,(((860365c6-f5fe-4617-9f41-8afeef3e4b38:0.00000,(06a3601a-c2da-4c54-943a-d8c4d3424ca1:0.00000,6d674ce5-5b8e-4ace-a321-77aa534dc6f6:0.00000):0.00000):0.00000,(77fc98ad-0b82-4bbe-9181-1b9b273205cb:0.00000,bc22d0fa-297a-40b3-b085-86e7a66ad78c:0.00000):0.00000):0.00000,((b16778c2-4cae-4189-bc0e-6cf12c3370de:0.00000,c644e0d7-c2d7-46fb-89f3-63011cd1ae13:0.00000):0.00000,((38e7aa40-21ba-467d-be86-b43dcd520e71:0.00000,5dbcc48c-05ee-47b5-ba61-15396d585725:0.00000):0.00000,(((d56253e5-de40-4f5e-85e1-7287f47c6a67:0.00000,(95975ec3-3160-419d-b51f-6b61e81aa2ed:0.00000,bb2228d1-2ac8-405c-99da-397313854751:0.00000):0.00000):0.00000,(fed107cd-bdd7-43e5-a435-77ae31b2efe0:0.00000,(895fa448-fd8c-4d08-94f4-7cbc062a8f04:0.00000,(7795316e-706f-46ae-a191-900c1fd3e7a1:0.00000,(73f64b5e-9fff-4275-a8c7-bf467b735456:0.00000,(51cfe027-8caa-4c0c-8903-97ea72207113:0.00000,(2f9c3edf-3070-4df1-8d5d-4a0ff6c287a2:0.00000,(16f9728c-c127-4882-ae5d-4b8c8b71e927:0.00000,(0f2d64ca-d0bd-44b8-a301-dff27cd914f7:0.00000,164d6b16-c8f5-4cb6-98a7-1c20bc7db5df:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,((a2a4dac9-adde-4f74-9bb7-41f91f84e80d:0.00000,(a20df3f3-ca9c-4ed9-bd9f-d113d5fcfe52:0.00000,(a15c15fa-23a1-4341-bde6-f28bac02cb72:0.00000,(7395c17f-b911-41fe-87ef-0cbeb134a475:0.00000,(0ef29d38-df54-4eab-bdc4-d8204abc9232:0.00000,59418075-a731-46a3-8d83-845fec00bec1:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(c0468e64-3d15-4b70-8e14-3e67c21fcd6c:0.00000,fc5fe6b9-e156-49b6-9070-d15b03b8af61:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(2189d3e9-14a6-497d-980c-121ce96f0403:0.00000,(256196b4-701a-4579-8cd2-efdcd14dfd6a:0.00000,(d7aebb2a-9a95-4061-8e0b-9a822e76c99f:0.00000,(d60ee8df-0ec9-4d93-aa76-493cb44098e2:0.00000,(17df09e6-4dfe-438e-8028-22cb5e5a201d:0.00000,8d8ad2c8-b07c-4ace-b224-332c19ac51ad:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,((9f91804b-f15f-4f57-a7c3-045a68016a97:0.00000,(141d1443-7979-47c5-a338-cdf7fa080f06:0.00000,914f7ae3-3dfa-4560-8c49-49dba4b411e1:0.00000):0.00000):0.00000,(6e022944-f79a-4f53-81bf-c0d901d59a87:0.00000,(((131c4d48-784f-457b-b5b4-824704a6210f:0.00000,3ac37970-637e-430b-939a-dba2af655f7c:0.00000):0.00000,(7f84efd1-1705-4db7-8daf-88c60b2df2d7:0.00000,((1ab90925-c772-4c37-b5f3-b219b0f3cec1:0.00000,4c1af133-2bfd-43fe-97a1-4c99a4feee20:0.00000):0.00000,(b7bb3d17-ff16-4ab4-9142-13765e366a7a:0.00000,(77dbea51-4b6c-46fb-8cd5-a14daaa9f568:0.00000,(43f8a11c-36de-4ca3-98fd-ef21c75def10:0.00000,51221d1f-58a1-42bf-b382-f700ac8f79e6:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,((aa3c8cee-6e2e-4094-954b-e8f7c7af63ea:0.00000,(0294ebb4-c807-446c-9b85-272a180f20b3:0.00000,((8d889057-05f1-4396-acb9-d7e142b28332:0.00000,(d01eb283-10a0-49bf-909a-73b770e4e329:0.00000,(bfb373ae-b18a-421d-b938-248d8118a9b5:0.00000,ef0b6351-b291-4579-a221-2c9c7b972494:0.00000):0.00000):0.00000):0.00000,(9ede7d9c-5f2e-4120-bd86-b1acb27c497e:0.00000,f21f5ee1-41c3-4567-b8b9-afd50f534448:0.00000):0.00000):0.00000):0.00000):0.00000,((73979461-468e-48d5-827b-881cf15df4e0:0.00000,f92cc3b6-671a-4357-82ce-970f0c8954c5:0.00000):0.00000,(f7f8e759-61cf-4889-8b85-5542ac5bf653:0.00000,(4829261a-9a41-4ac8-b57f-f9f1c12a7ca4:0.00000,94ac6d06-f7fd-475b-959a-3bb79af8a27c:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00001):0.00000,(((8df433a6-c4d7-466d-a241-b606c2403072:0.00000,(2e78b6a9-e87b-4aef-aac9-0a4247c466b0:0.00000,a1c273ab-9f92-49b4-b0d9-bed9634777cb:0.00000):0.00000):0.00001,(66302af8-7774-480d-86bf-221e869170b8:0.00001,(1e354738-c69c-4dad-b535-3c572291f5f6:0.00001,(((5c70b9e4-d222-411e-a771-37e1832d6700:0.00000,(42a50435-c804-402c-9596-a8302fd0868d:0.00000,5823a7fe-c343-4d73-90c8-ffcb63bc0f56:0.00000):0.00000):0.00000,(aff55c9c-b3bf-4c62-b34b-4ede51780edb:0.00000,(d64ba16e-fe93-4d78-9b77-12fbaf35a21d:0.00000,(39b542a8-fb08-4aba-8e90-4ebe013edb94:0.00000,4c9c2f17-43b8-4b55-9562-d52eee9eb241:0.00000):0.00000):0.00000):0.00000):0.00000,(276255fd-4842-476f-a623-957d20b26e63:0.00000,31c3eba9-95f3-4104-b0e0-524b40bec321:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(87c9320c-7e19-428b-bb95-e2d67b9c7a9c:0.00001,(9013e80a-84cb-42a1-8062-f5b92028fb30:0.00001,((5f1ce3b3-730a-40d8-8f7a-510cc8d241bf:0.00000,(357f6ddb-a2c7-4573-ab60-b57d4ef0ff33:0.00000,(50b415b5-8796-4ab1-a70d-afa72b03f464:0.00000,a32c41be-69a6-4170-a3ce-a0885f00ce19:0.00000):0.00000):0.00000):0.00001,((ca771bab-4608-48f7-8f49-6d8cb8268351:0.00000,((696ca3eb-7069-45b3-8e52-38346a68d4c5:0.00000,76c918c9-6941-4b27-958c-5e1d0acc0f6e:0.00000):0.00000,(7a26b36a-96f2-4f10-aac6-93d6cf6c797e:0.00000,(b88771cd-664e-4eac-aa8f-ad37effb7a6d:0.00000,(((f206b3eb-cd93-45d8-9b02-c4536cbbcf5a:0.00000,fb74a1e4-b2e2-468c-9ee5-4dc61937f931:0.00000):0.00000,((df21d7a8-6263-496a-b20c-543f49a3c035:0.00000,(cb1251b9-a249-4348-a96e-4446bffedde3:0.00000,(c543e9cb-1baf-4a21-b420-9f94ac3e44e8:0.00000,(951cf22b-b1fd-4c7e-ae3e-0386b9bfe4de:0.00000,f15ecfbf-cc9b-4ac0-93ff-44de92102cfe:0.00000):0.00000):0.00000):0.00000):0.00000,(fe7a2db5-8bcf-478b-b8a6-aa42fcac5132:0.00000,(9ac3c95f-0fd7-40cc-9ebd-31ddc3f8ebd9:0.00000,(73829fea-d03a-45c9-869b-5b1262d11a1c:0.00000,(6495ae94-49b3-49ce-9407-5dabb57b9914:0.00000,(3a0b9d5b-45d0-4d77-beb8-53fbecba7dec:0.00000,(0c75cf89-db7f-48c3-b2ac-5b2ed6464a6a:0.00000,1317a730-6dff-48d4-b849-42740170c054:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(8b313104-bf8a-4a16-bef2-30e7d09ffa62:0.00000,((effb71ed-65b5-4599-a831-d6264b63f4b7:0.00000,f0c499b8-79aa-4af5-94d7-96c19796168d:0.00000):0.00000,(8e0ff0ca-b79c-4652-b7db-82212636d804:0.00000,(f961312a-4576-4f5a-a8a2-f279fd6e0678:0.00000,(a7eb25a1-b382-4a4c-b858-31fa5acc796d:0.00000,(509b8e64-e2c8-40bb-8e5e-034ee523ff4b:0.00000,b67c76f6-7494-4b29-a009-13deea5f9001:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,((((1c6de170-df9d-4348-92c1-a9565695f7f3:0.00000,fdba57e7-7f18-4e5c-be89-1029b11f01be:0.00000):0.00000,(32f7a8f1-dbf8-4f0e-80b3-e7f34ff60e43:0.00000,(3aed3a97-03eb-489f-abaf-f08766769c41:0.00000,b7eb960a-d4e5-42e8-9537-8b7e91ddc56a:0.00000):0.00000):0.00000):0.00000,(9d7d1a73-a120-46cc-a69a-5580fbd1890a:0.00000,(919b092c-ef66-4e86-98d1-80a1c6e1ff82:0.00000,(8b40f6b3-6c74-429f-b66c-dc86a11b78fd:0.00000,98c31a32-6d42-47f1-90f6-3e8aaaaa9630:0.00000):0.00000):0.00000):0.00000):0.00000,(((f0d24dcc-2f0d-4a45-984c-186366fcb919:0.00000,(4b235441-57a2-45bb-9e3a-c679ffde3890:0.00000,738394f0-8636-47cc-8051-1f3ae78a9502:0.00000):0.00000):0.00000,(0632e687-c998-4e05-a755-e7b624cc96d8:0.00000,(9bae6368-3020-44d8-9586-963c286b37c6:0.00000,((283a3bbc-21e0-499f-9d94-e2cfc1342bb6:0.00000,76ec15b8-d3fd-4e1e-8563-7ded6c8c7b62:0.00000):0.00000,(1b5bfa7a-8aac-46cb-b96b-8f1265248f5e:0.00000,(72ec1ee0-b893-47b4-9312-ae6eed86fbe8:0.00000,8ed992fd-99bf-415f-aa38-4769b341119e:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000,(4ce672a1-70bd-4d67-a705-b08136e0600a:0.00000,(66d89ff5-9382-4d79-9790-58fbd97236dd:0.00000,((4f8655c8-14b7-4dc6-aef6-2412f46a5fb5:0.00000,bb99620f-d18d-4c03-a566-1593695ee6bc:0.00000):0.00000,(1bda771e-4be7-4fd0-9011-021473ab8c4c:0.00000,(76c767a2-3590-4287-8381-4af1a42d12b0:0.00000,8ed93741-f619-420d-a406-020a63880e75:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00002):0.00000):0.00001):0.00003):0.00006):0.00007):0.00006):0.00020,(1672bc1a-4601-4043-9d89-3988b280faa8:0.00035,((29210a9a-3878-461b-b6e3-89817424104e:0.00000,4b1adba1-6eeb-467a-ba5f-7a671fadeeeb:0.00000):0.00027,((c2ff1777-5847-4c41-bade-97a4065d01aa:0.00000,(f95c95b3-9f75-4746-aaab-cbb1f73ece75:0.00000,(8c01cbe0-ed5d-42b3-a796-b498f0df1244:0.00000,(7d233270-1433-4a89-927c-c4d8aa5a95a4:0.00000,(267c32aa-5372-4bca-a036-7e5e0ffab5b0:0.00000,77bf9e5e-63ef-40b4-9e65-1127e450796a:0.00000):0.00000):0.00000):0.00000):0.00000):0.00016,(6711e0b0-eb4e-48ce-af95-3d78b211ac1b:0.00001,((2038f586-c9fd-4549-9667-973da0e6a93c:0.00000,9b34fdbc-494c-44c2-8146-2494a0135aee:0.00000):0.00000,((ec0723a1-9ebc-4c45-97c0-2e47fb71ca4f:0.00000,(e95cb8bf-1df8-414a-ace5-4d9cfa2b77bb:0.00000,(c1f4a5be-618d-4815-acc6-e91b15bd7ecb:0.00000,(6ecb408e-9218-4166-80f3-077e7a642994:0.00000,847581ee-f154-4d05-b602-d037ebb70b30:0.00000):0.00000):0.00000):0.00000):0.00000,(70f973de-3d36-4a21-a6f1-917511a41f3a:0.00000,cec4c29f-5ebf-4122-84d5-b1c26776119a:0.00000):0.00000):0.00000):0.00000):0.00015):0.00011):0.00008):0.00012):0.00005):0.00010):0.00003):0.00003):0.00001):0.00004):0.00010):0.00050):0.00011):0.00287,((((48ff1118-e859-4a6b-97de-0f3ea70ff612:0.00000,8b103836-7c11-4b33-9ce3-e210b3c1c4e9:0.00000):0.00000,((ba2fcb7c-d9b9-4a43-a645-db534295f1be:0.00000,(758eb99e-954e-4c83-8f4d-519a34ce2654:0.00000,(11801178-202f-4fef-b66d-c53bd86c33e6:0.00000,64202f5d-62aa-476c-a544-a2ffa88ff97f:0.00000):0.00000):0.00000):0.00000,((39453781-4019-4916-a1f1-bddb1e72d96c:0.00000,b5f84fa6-c247-4538-930e-e0029ec13dcf:0.00000):0.00000,(573ac542-ff2f-4f62-9c7f-334af29e48b4:0.00000,7251ee2f-ec58-4bc7-b45e-647f295f5235:0.00000):0.00000):0.00000):0.00000):0.00031,((9182aa5c-6809-4cdd-b8c8-6aae9f8cbe55:0.00000,a47ebc53-5bf9-45eb-a8b1-088342539ea2:0.00000):0.00022,(((474e6126-c6e5-4947-a463-c84f79fcb309:0.00000,8fc51792-34af-48a3-8850-5e9620d7fff6:0.00000):0.00000,(3ed2ec57-5705-402f-83c2-49eaeffdb9b0:0.00000,(15474785-3261-4c78-880c-628df9e8fb87:0.00000,eea7023a-77b3-4f0a-976c-8d04d48344b0:0.00000):0.00000):0.00000):0.00002,(a132b266-66b3-43ec-84aa-6a4b72fffa23:0.00001,(5b83f301-ce66-42f5-ad91-81ac5efb75f0:0.00000,82e64126-5b94-43c8-aa93-bd3537ffe62f:0.00000):0.00001):0.00001):0.00019):0.00010):0.00159,(262cb2cd-dac9-4470-be4c-83c2aba664ae:0.00073,((818de0f6-6e9f-4ed4-8c64-1da47fef58b4:0.00000,c7ecd226-f317-4032-84e7-76f6c9cc27a2:0.00000):0.00041,(17233522-2b9b-4112-b380-14930f5701ff:0.00032,(fe4b406d-1ff9-4919-b210-4d3281a6fc52:0.00030,((dd635576-2261-4a37-9e8d-126979d270e8:0.00001,dd9db654-28d4-412c-9a68-47029f42d582:0.00001):0.00013,((6af16a11-15f7-4537-9be5-1db9b501ec8b:0.00003,(26a26273-c220-4376-8d8d-b7e54c906f79:0.00002,(c928c193-c18d-4e12-b478-cf29ffab243d:0.00001,(68931f0c-7d9a-4aa3-a743-ac1d8c888225:0.00000,((09bf4dd8-d47d-47e8-a111-1ebb4839d6f4:0.00000,35dfcf7a-0f7d-428a-b536-1b52a360a312:0.00000):0.00000,(915d1f06-c839-4feb-add9-41accdde73f2:0.00000,(54451c52-e6b6-4bde-845a-49f0566e3654:0.00000,b8e4a37a-ccaa-4e50-b5da-edd1edcf2e98:0.00000):0.00000):0.00000):0.00000):0.00001):0.00000):0.00001):0.00008,((2a5c350a-6382-446a-b883-d94c45e150be:0.00000,(793a048c-2687-495c-b6b9-635e59405180:0.00000,(386b5e91-2f5e-4e6a-977f-05481e4f15a7:0.00000,fc05116f-13dc-4503-8823-b295290cffd0:0.00000):0.00000):0.00000):0.00004,((05aa9799-6884-401d-bc05-fd2e5a84fa20:0.00001,fa2581ab-caab-42d9-8e8e-3a3f2fa6aec5:0.00001):0.00001,(9f64dc11-bdf8-4933-ab3a-0b87e89f81f2:0.00001,(((d89a195c-f57b-4dab-bb98-aeb4c8e7b780:0.00000,(d7607adf-0eb7-4ec8-91a9-7d6a2702b6fc:0.00000,(034d9fc8-e526-445a-ab63-7bdc24dd42df:0.00000,c56b8d67-47bf-4278-8ef1-11815b700088:0.00000):0.00000):0.00000):0.00001,(a414c572-0424-493c-b46d-f30c84958cd4:0.00000,(055f1269-6cf8-4f44-8d59-2c839129656b:0.00000,(063097a1-f7d9-448b-8ee1-51e0d1c93738:0.00000,c8dcb92a-2774-4b2c-906c-a7ad60201435:0.00000):0.00000):0.00000):0.00000):0.00000,(38ab3808-9234-411e-b648-dffe488c5009:0.00001,(e87ecacc-fdbe-45fc-9980-54198421dcb8:0.00000,(246b34c9-4814-4b86-b068-2c248ac9c485:0.00000,37bd4b13-fbd3-4f90-902d-ad7c678e32ca:0.00000):0.00000):0.00000):0.00000):0.00000):0.00000):0.00003):0.00006):0.00003):0.00017):0.00002):0.00009):0.00032):0.00117):0.00243):0.00157,(3005599b-a764-4312-a36f-2e0a963fd260:0.00501,(e62fb20d-9fcf-44a2-91db-4a7c09c54c7a:0.00428,(f7e5d9d2-9e3c-4e8d-a7bb-df40e1ffea22:0.00000,(f34d088d-f806-49b2-b6cb-910566668057:0.00000,(66184f44-fa61-4f34-b84b-bc4570f699ea:0.00000,7abf9701-1a11-4869-9e4b-297c10cd4ef7:0.00000):0.00000):0.00000):0.00428):0.00072):0.00089):0.00059):0.00019):0.00213,((45de8b30-56d6-4ee2-aa8a-0297e8aca514:0.00000,ce3a5b8f-0107-4633-b6c6-2137a21ae3cf:0.00000):0.00695,((c23f1924-b332-4a9d-8e0f-3a979ef61123:0.00410,(e10585b1-a1b0-44fb-9eba-fd241d4a1c11:0.00373,(f48ebf04-0960-4a8e-b6f2-821a905aef00:0.00000,(27df1298-9d86-457d-92fb-bdfa9289f609:0.00000,953d25ea-fea2-4d58-ac53-07951e67014d:0.00000):0.00000):0.00373):0.00037):0.00177,((65524464-ed94-47a2-a392-761ceaad9a14:0.00000,b79f3bc1-898d-4e79-82ba-7ee0e3691b1c:0.00000):0.00484,(9c952ebd-439c-4fe1-8f2f-7386df45cc75:0.00413,(bc82a411-a7f9-45f7-af55-f26b73f94a08:0.00406,((180ab0ba-fd7a-4203-8c78-d37ef8f7310e:0.00264,72381785-4665-4047-8a94-47194f83f485:0.00264):0.00118,(ac7a430c-b0d8-42f9-987c-acc063c913db:0.00375,((6abaac1c-831a-4e50-9ee1-25caecf0e779:0.00274,(4d487e01-7dc3-4384-b162-5affaf9825f0:0.00000,(8732c66b-36b2-4efb-8655-387b61690d80:0.00000,96793256-9c48-4633-ae20-dd36be36161d:0.00000):0.00000):0.00274):0.00070,(287de864-88fb-4c15-b4b1-92428ee1d3e6:0.00279,((3335c4d1-1013-470d-a369-e3691e2ed35c:0.00000,94abee67-5820-40ce-91e8-532176c2896f:0.00000):0.00200,(((a6652ce1-1cd6-467c-b496-605649acbe04:0.00000,(4859e78d-14a0-47b3-b90d-5ab670113420:0.00000,(35f875db-06cf-44bf-b55e-bbcfca6b3db3:0.00000,a2f73cf2-ec39-4942-b6ed-0cefd97e02ec:0.00000):0.00000):0.00000):0.00043,(045d87ac-664c-44c1-81d3-031ae1d36b0a:0.00000,fb657d2c-f2cb-48df-bea1-f6076f4bdac2:0.00000):0.00043):0.00096,(31af4598-19b2-44a5-aca9-c4faa9126adb:0.00052,(4eadec3c-661a-44db-ae93-608220a5aa9d:0.00000,(4a4f6670-3811-4e66-8e97-7605d5cbdd66:0.00000,(01668302-9138-4e47-ae80-f167ed1de540:0.00000,64c949f5-1a1b-4991-828e-1bb8ce1700aa:0.00000):0.00000):0.00000):0.00052):0.00088):0.00061):0.00079):0.00064):0.00032):0.00008):0.00024):0.00006):0.00071):0.00103):0.00108):0.00185):0.01884):0.00307):0.00155):0.00932):0.00404):0.00261):0.00593,((6bb6d784-0628-42c8-b95d-3ad21868febb:0.03327,(dced7e4c-3ab0-46c4-b3e1-8e2e61ea4c77:0.02784,(6a660d78-4e0a-48c1-844d-800a08b99d4c:0.00043,b0f507ce-1fa3-4b37-876f-09e762b1d5b1:0.00043):0.02741):0.00543):0.01521,((f8fb0ade-b620-466f-ac44-5697b7b3fe9e:0.03454,(ae689ec8-ba57-4670-b26e-386b79324bc9:0.00215,((((bf119062-62e8-4640-a3dc-0e89f7b324e0:0.00004,d137ea68-4f85-4a32-95b1-e3fe8722e548:0.00004):0.00089,(99052e8e-3afb-4c13-a07d-962af61ba440:0.00035,ac2d3e7a-2619-4d66-aac3-17756f34a769:0.00035):0.00058):0.00052,((3ec9018e-16d9-4903-a8fd-36765fcb35b4:0.00062,(63fa0c20-9669-488d-a291-4a88f2107d4c:0.00035,(c38597d7-f504-4352-b555-ec35cf5e0aa8:0.00000,(493ccdb5-59af-4040-83ca-975a54e005d0:0.00000,(1b02c730-afc5-4e8c-854b-d84cccee97aa:0.00000,(1a4d5aeb-4be9-45dc-a535-b5031a202b7b:0.00000,79d260eb-03ef-4631-9144-dc614b73cca3:0.00000):0.00000):0.00000):0.00000):0.00035):0.00028):0.00050,(cca859d1-192f-4407-9398-5def3a62e007:0.00080,(6babcb3e-f407-43f4-9c96-0a150db4d5c6:0.00015,(cd6b7768-0bce-4268-8013-98b8ce303f50:0.00006,f1086a9c-c56b-41d6-a947-3cf305257613:0.00006):0.00009):0.00065):0.00033):0.00032):0.00043,(((796b8319-cb7b-43ab-803a-c8c1adb1fafa:0.00016,(d022b7a3-2cba-41bb-92ff-bdf63eccd6bd:0.00010,(c8b0ccc3-df94-484e-9aee-3e6bbf145df7:0.00008,(58df66c5-c53b-4a6d-8f8e-4645e3b2d158:0.00000,(a579672c-5992-4fc7-8dbb-bbab1c4003f2:0.00000,((2a4b3a73-fa96-40ab-acee-b97a65926e72:0.00000,6de6cfaf-755e-4dd4-8e8d-d069bb836be5:0.00000):0.00000,(db126b40-7018-4434-8ad9-49b1deb9a5f1:0.00000,(22ec036d-2565-412b-94e8-0b0fd43a27d6:0.00000,9f385a1c-88f3-4a04-ab86-6aa38d63f176:0.00000):0.00000):0.00000):0.00000):0.00000):0.00008):0.00002):0.00007):0.00097,(705d13df-6cfb-410a-b462-cd2d37c9d153:0.00103,(a345de10-379e-4c27-88f9-a40ba18bb357:0.00000,(1a5e158f-c33f-4c61-b126-79a2a6fbe6db:0.00000,b54e61ad-c8b0-4611-b0c8-4fcff0554ff7:0.00000):0.00000):0.00103):0.00010):0.00036,(ce00a8f9-2e83-44cc-964e-b83e73537dfa:0.00130,((50ddc832-c8ef-43f3-9695-f68e7a99863d:0.00000,cfe3ea99-113f-465e-97bb-65f9d486d8af:0.00000):0.00085,((58b20aab-1fad-4eb4-9860-845b77a53f13:0.00000,6faa560f-bbe7-4635-97c3-6445aa1cc9d9:0.00000):0.00059,(6b669c97-4d47-421f-9aae-8e7dbabd53df:0.00007,c9db2710-a861-48fd-8a21-02f03a0e5683:0.00007):0.00052):0.00026):0.00045):0.00019):0.00039):0.00028):0.03238):0.01333,(a87b9eed-f091-499e-b8b5-670f988f8e45:0.04748,(3555c189-9fca-4b94-8e76-787adadaedee:0.04465,9d605e48-fc71-4ba0-848e-4b573856b133:0.04465):0.00283):0.00038):0.00062):0.00568):0.00168);');
