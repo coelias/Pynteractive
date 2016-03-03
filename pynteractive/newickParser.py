@@ -10,25 +10,25 @@ class Newick:
 		def __init__(self,name=None,lgth=None):
 			self.name=name
 			self.length=lgth
-			if self.length==None: self.length=0.001
+			if self.length==None: self.length=0
 			self.children=[]
 			if not self.name:
 				self.name=Newick.Node.randomName()
-			self.dad=None
+			self.parent=None
 
 		def dadsToRoot(self):
 			dads=[]
 			x=self
-			while x.dad:
-				dads.append(x.dad)
-				x=x.dad
+			while x.parent:
+				dads.append(x.parent)
+				x=x.parent
 			return dads[::-1]
 	
 		def append(self,x):
 			self.children.append(x)
 
 		def setParent(self,dad):
-			self.dad=dad
+			self.parent=dad
 
 		def __str__(self):
 			cad=""
@@ -46,6 +46,18 @@ class Newick:
 				if name not in Newick.Node.RANDOMNAMES:
 					Newick.Node.RANDOMNAMES.add(name)
 					return name
+		def getMaxLength(self):
+			if not self.children:
+				return self.length
+			return self.length+max([i.getMaxLength() for i in self.children])
+
+		def reorient(self):
+			if not self.children: return self.length
+			else:
+				b=[(i.reorient()+self.length,i) for i in self.children]
+				b.sort()
+				self.children=[i[1] for i in b]
+				return b[-1][0]
 			
 
 	def __init__(self):
@@ -53,6 +65,29 @@ class Newick:
 		self.nodenames=set()
 		self.internalNodes=set()
 		self.leafs={}
+
+	def __delitem__(self,leaf):
+		if leaf not in self.leafs:
+			raise Exception ("leaf not found ! {0}".format(leaf))
+		leaf=self.leafs[leaf]
+		leaf.parent.children.remove(leaf)
+		if len(leaf.parent.children)==1 and leaf.parent.parent:
+			leaf.parent.children[0].length+=leaf.parent.length
+			leaf.parent.parent.children.remove(leaf.parent)
+			leaf.parent.parent.children.append(leaf.parent.children[0])
+			leaf.parent.children[0].parent=leaf.parent.parent
+		elif len(leaf.parent.children)==1:
+			leaf.parent.length+=leaf.parent.children[0].length
+			for i in leaf.parent.children[0].children:
+				i.parent=leaf.parent
+			leaf.parent.children=leaf.parent.children[0].children
+			
+
+	def reorient(self):
+		self.root.reorient()
+
+	def getMaxLength(self):
+		return self.root.getMaxLength()
 
 	def readNewick(self,newick):
 		self.nodenames=set()
@@ -64,7 +99,11 @@ class Newick:
 		except:
 			raise Exception('Invalid format for Newick')
 
+		if not self.root.length:
+			self.root.length=self.getMaxLength()/10
+
 		self.internalNodes=self.getInternalNodes(self.root)
+		self.reorient()
 
 	def getInternalNodes(self,root):
 		res=set()

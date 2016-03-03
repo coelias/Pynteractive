@@ -112,36 +112,45 @@ setChartType: function(type){
 setData: function(data){
 			 element.initParams();
 			 element.setData(data);
-			 element.repaint()
+			 element.repaint();
 		 },
 
-selectNewickNodes: function(data){
-					   element.selectNodes(data);
+selectTips: function(data){
+					   selectNodes(data);
 				   },
+delLeaf: function(name){
+			deleteTreeNode(name);
+},
 
 clearNewickSelection: function(data){
-						  element.clearSelection();
+						  clearSelection();
 					  },
 
-addPhyloFeat: function(fid,shape,color,desc){
-				  element.addFeature(fid,shape,color,desc);
-			  },
-
-addPhyloTipFeat: function(tid,fid){
-					 element.addSampleFeature(tid,fid);
-				 },
 delPhyloTipFeat: function(tid,fid){
 					 element.delSampleFeature(tid,fid);
 				 },
 
-addTreeTrack: function() {
-				  element.addTrack()
+newHeatMap:function(number,size,color,description){
+			   newHeatMap(description,number,size,color);
+		   },
+addTipHeatMap:function(tip,number,data){
+				  addNodeHeatmap(tip, number, data);
 			  },
-addTreeTrackFeature: function(trackn,tipname,color,title,gradient) {
-						 element.addTrackFeature(trackn,tipname,color,title,gradient)
+newFeature: function(desc,number,color) {
+				newFeature(number,desc,color);
+			},
+newGradientFeature: function(desc,number,color,min,max) {
+						newGradFeature(number,desc,color,min,max);
+				},
+delPhyloFeature: function(number) { 
+					deleteFeature(number);
+				},
+
+addTipFeature: function(trackn,tipname,value) {
+						 addNodeFeature(tipname,trackn,value);
 					 },
-delTreeTrackFeature: function(trackn,tipname) {
-						 element.delTrackFeature(trackn,tipname)
+delTipFeature: function(trackn,tipname) {
+						 deleteNodeFeature(tipname,trackn);
 					 },
 
 addTreeTrackBar: function(value,normValue,tipname,color,barn,totbar) {
@@ -162,21 +171,21 @@ deleteBars: function() {
 
 markClade: function(tipname,color)
 		   {
-			   element.markClade(tipname,color)
+			   markClade(tipname,color)
 		   },
 
 unMarkClade: function(tipname)
 			 {
-				 element.unMarkClade(tipname)
+				 unMarkClade(tipname);
 			 },
 
-setCladeColor: function(tipname,color)
+setCladeColor: function(node,color)
 			   {
-				   element.setCladeColor(tipname,color)
+				   setCladeColor(node,color)
 			   },
 clearCladeColor: function(tipname)
 				 {
-					 element.clearCladeColor(tipname)
+					 clearCladeColor(tipname)
 				 }
 
 
