@@ -45,15 +45,15 @@ mapElement.prototype.load = function () {
 	var maplink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 	var mmm = '<a href=https://github.com/coelias/Pynteractive>Pynteractive</a>'
 
-	var osmstamen = new L.tileLayer('http://{s}.tile.stamen.com/toner-lite//{z}/{x}/{y}.png', {
+	var osmstamen = new L.tileLayer('http://{s}.tile.stamen.com/toner-lite//{z}/{x}/{y}.png?apikey=43d7db8f85b44b699b58782267221988', {
 	    attribution: ' &copy; '+maplink+" | "+mmm,
 	});
 
-	var osmforest = new L.tileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', {
+	var osmforest = new L.tileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=43d7db8f85b44b699b58782267221988', {
 	    attribution: ' &copy; '+maplink+" | "+mmm,
 	});
 
-	var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png?apikey=43d7db8f85b44b699b58782267221988', {
 	    attribution: ' &copy; '+maplink+" | "+mmm,
 	});
 
