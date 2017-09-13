@@ -88,7 +88,8 @@ class Map(Network):
 		self._update("searchNode",node_id)
 
 	def _getLocation(self,place,country=None):
-		url="http://open.mapquestapi.com/nominatim/v1/search.php?format=json&limit=1&addressdetails=0&q={0}".format(place)
+		url="http://nominatim.openstreetmap.org/search?format=json&limit=1&q={0}".format(place.replace(", ","+").replace(",","+"))
+		#url="http://open.mapquestapi.com/nominatim/v1/search.php?format=json&limit=1&addressdetails=0&q={0}".format(place)
 		if country: url+="&countrycodes={0}".format(country)
 		if (place,country) in Map.CACHE: return Map.CACHE[(place,country)]
 		try:
