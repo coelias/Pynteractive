@@ -163,16 +163,22 @@ void _drawCircTree(t,factor)
 		if (TIPSALIGN)
 		{
 			pushMatrix();
-			fill(0);
 			rotate(radians(t.angle));
+			fill(255);
+			if (t.selected){fill(200,200,255);rect(TREEWIDTH+10,4/wheel,(t.name.length+1)*LETTERWIDTH,-10);}
+			fill(0);
 			text(t.name,10+TREEWIDTH,4/wheel);
+			t.selectionAreas.push([xo+TREEWIDTH+10,ny-4,xo+TREEWIDTH+10+(t.name.length+1)*LETTERWIDTH,ny-4+10]);
 			popMatrix();
 		}
 		else
 		{
 			pushMatrix();
-			fill(0);
 			rotate(radians(t.angle));
+			fill(255);
+			_h=10*(10+factor*(t.acumlen+t.len))/(TREEWIDTH+10);
+			if (t.selected){fill(200,200,255);rect(10+factor*(t.acumlen+t.len),4/wheel,(t.name.length+1)*LETTERWIDTH,-_h);}
+			fill(0);
 			text(t.name,10+factor*(t.acumlen+t.len),4/wheel);
 			popMatrix();
 		}
