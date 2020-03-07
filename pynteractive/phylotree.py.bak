@@ -1,7 +1,7 @@
 from pynteractive.datastruct import *
 import os
-from .newickParser import *
-from .htmlcolors import HTMLCOLORS
+from newickParser import *
+from htmlcolors import HTMLCOLORS
 import re
 
 class PhyloTree(DataStruct):
@@ -46,39 +46,39 @@ class PhyloTree(DataStruct):
 
 	def _refresh(self):
 		self._update('setData',str(self.newick))
-		for i,j in list(self.features.items()):
+		for i,j in self.features.items():
 			self._update('addPhyloFeat',i,*j)
 
-		for i,j in list(self.tipfeatures.items()):
+		for i,j in self.tipfeatures.items():
 			for k in j:
 				self._update('addPhyloTipFeat',i,k)
 
 		for i in range(self.ntracks):
 			self._update('addTreeTrack')
 
-		for trackn,data in list(self.tracks.items()):
-			for tipname,title in list(data[2].items()):
+		for trackn,data in self.tracks.items():
+			for tipname,title in data[2].items():
 				self._update('addTreeTrackFeature',trackn,tipname,data[1],title,False)
 
-		for trackn,data in list(self.gradientTracks.items()):
-			for tipname,[title,value] in list(data[4].items()):
+		for trackn,data in self.gradientTracks.items():
+			for tipname,[title,value] in data[4].items():
 				self._update('addTreeTrackFeature',trackn,tipname,self.__getHexColor(trackn,value),title,value)
 
-		for trackn,data in list(self.mcolorTracks.items()):
-			for tipname,value in list(data[2].items()):
+		for trackn,data in self.mcolorTracks.items():
+			for tipname,value in data[2].items():
 				self._update('addTreeTrackFeature',trackn,tipname,data[1][value],value,value)
 
-		for tipname,color in list(self.cladeMarks.items()):
+		for tipname,color in self.cladeMarks.items():
 			self._update("markClade",tipname,color)
 
-		for tipname,color in list(self.cladeColors.items()):
+		for tipname,color in self.cladeColors.items():
 			self._update("setCladeColor",tipname,color)
 
 		self._refreshBars()
 
 	def _refreshBars(self):
-		for nbar,(description,color,minval,maxval,bars) in  list(self.trackBars.items()):
-			for tipname,value in list(bars.items()):
+		for nbar,(description,color,minval,maxval,bars) in  self.trackBars.items():
+			for tipname,value in bars.items():
 				rng=maxval-minval
 				val=value-minval
 				val=rng-val
@@ -89,7 +89,7 @@ class PhyloTree(DataStruct):
 
 	def getTips(self):
 		'''Returns a set containing all the tip names found in the tree'''
-		return [i.name for i in list(self.newick.leafs.values())]
+		return [i.name for i in self.newick.leafs.values()]
 			
 	def nodeClick(self,nid):
 		'''Method called when a node is clicked'''
@@ -303,7 +303,7 @@ class PhyloTree(DataStruct):
 
 	def clearCladeMarks(self):
 		'''Removes all clade marks'''
-		for i in list(self.cladeMarks.keys()):
+		for i in self.cladeMarks.keys():
 			self.unMarkClade(i)
 
 	def setCladeColor(self,nodes,color):

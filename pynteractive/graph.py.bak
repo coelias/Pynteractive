@@ -10,17 +10,17 @@ class Graph(VisNetwork):
 
 	def _refresh(self):
 		'''DO NOT USE, is used for graphic representation, everytime a new window is opened'''
-		for i in list(self.vertices.values()):
+		for i in self.vertices.values():
 	#			addNode: function (   id,      label,      title,      group,     shape,      color,      radius,       image, lng, lat){
 			self._update("addNode",i["_id"],i["_label"],i["_title"],i["_group"],i["_shape"],i["_color"],i["_radius"],i["_image"])
-		for i,j in list(self.edges.items()):
+		for i,j in self.edges.items():
 			self._update("addEdge",i,j["_n1"],j["_n2"],j["_label"],j["_title"],j["_width"],j["_style"])
 
 	def random(self,nn,ne):
 		'''Creates a random Graph containing *nn* nodes and *ne* edges'''
-		list(map(self.addNode,range(nn)))
-		for i in range(ne):
-			self.addEdge(random.choice(range(nn)),random.choice(range(nn)))
+		map(self.addNode,xrange(nn))
+		for i in xrange(ne):
+			self.addEdge(random.choice(xrange(nn)),random.choice(xrange(nn)))
 
 	def fromCsv(self,fil,matrix=False,distances=False):
 		'''Draws a network given a csv file

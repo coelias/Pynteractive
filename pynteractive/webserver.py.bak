@@ -5,10 +5,10 @@ import os
 import sys
 import tarfile
 import threading
-import urllib.request, urllib.parse, urllib.error
+import urllib
 import traceback
 import base64
-import io
+import StringIO
 from pynteractive.SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 import pynteractive.globals as pyn_globals
 from pynteractive.datastruct import DataStruct
@@ -17,11 +17,11 @@ import re
 Pynteractive_ws_MUTEX=threading.Lock()
 
 if pyn_globals.VERSION<30:
-	from http.server import HTTPServer
-	from http.server import SimpleHTTPRequestHandler
-	from socketserver import ThreadingMixIn
-	from urllib.parse import urlparse,urlunparse 
-	from urllib.parse import unquote
+	from BaseHTTPServer import HTTPServer
+	from SimpleHTTPServer import SimpleHTTPRequestHandler
+	from SocketServer import ThreadingMixIn
+	from urlparse import urlparse,urlunparse 
+	from urllib import unquote
 else:
 	from http.server import HTTPServer,SimpleHTTPRequestHandler
 	from socketserver import ThreadingMixIn
@@ -39,13 +39,13 @@ class ThreadingServer(ThreadingMixIn, HTTPServer):
 	@staticmethod
 	def force_stop():
 		ThreadingServer.stopped = True
-		urllib.request.urlopen("http://localhost:{0}/".format(pyn_globals.PORT)).read()
+		urllib.urlopen("http://localhost:{0}/".format(pyn_globals.PORT)).read()
 
 class FileMgr:
 	def __init__(self,path=None,tarString=None):
 		assert (path and not tarString) or (tarString and not path)
 		if tarString:
-			self.contents=self.iniTar(io.StringIO(base64.b64decode(tarString)))
+			self.contents=self.iniTar(StringIO.StringIO(base64.b64decode(tarString)))
 			self.METHOD="tar"
 		else:
 			self.iniPath('.')
@@ -108,7 +108,7 @@ class JSCom(WebSocket):
 			self.dicFuncs[funcname](**args)
 		except:
 			traceback.print_exc()
-			print("Error processing","({0})".format(len(orig)),str(orig)[:30],"...",str(orig)[-30:])
+			print "Error processing","({0})".format(len(orig)),str(orig)[:30],"...",str(orig)[-30:]
 
 	def handleConnected(self):
 #		print self.address, 'connected'

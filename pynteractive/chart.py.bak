@@ -1,5 +1,5 @@
-from .datastruct import *
-
+from datastruct import *
+from itertools import izip
 
 class Chart(DataStruct):
 	TYPES={'bar':'Bar','scatter':'Scatter','line':'Line','stack':'Stack'}
@@ -12,7 +12,7 @@ class Chart(DataStruct):
 
 	def _refresh(self):
 		self._update("setChartType",self.chartype)
-		for seriesName,values in list(self.data.items()):
+		for seriesName,values in self.data.items():
 			dataset={"key":seriesName,"values":values}
 			self._update("addChartData",dataset)
 
@@ -23,7 +23,7 @@ class Chart(DataStruct):
 		if type(x)==str: x=int(x) if x.isdigit() else float(x.replace(',','.'))
 		if type(y)==str: y=int(y) if y.isdigit() else float(y.replace(',','.'))
 
-		data=dict(list({"x":x,"y":y}.items())+list(kwargs.items()))
+		data=dict({"x":x,"y":y}.items()+kwargs.items())
 		self.data[series].append(data)
 		return data
 
@@ -54,12 +54,12 @@ class Chart(DataStruct):
 
 		if sizes:
 			values=[]
-			for _x,_y,_sh,_sz in zip(x,y,shapes,sizes):
+			for _x,_y,_sh,_sz in izip(x,y,shapes,sizes):
 				if _sh not in Chart.SHAPES:
 					raise Exception('shape must be a valid id!')
 				self._addValue(_x,_y,shape=_sh,size=_sz)
 		elif x:
-			for _x,_y in zip(x,y):
+			for _x,_y in izip(x,y):
 				self._addValue(seriesName,_x,_y)
 		else:
 			if csv:
