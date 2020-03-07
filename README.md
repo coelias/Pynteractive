@@ -66,7 +66,7 @@ $ pip install pynteractive
 
 ## Examples
 
-####Graph example (click to watch video)
+#### Graph example (click to watch video)
 
 [![Graph example](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
 
