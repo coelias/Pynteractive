@@ -18,7 +18,7 @@ class DataStruct:
 			name=self.__class__.__name__+"-"+"".join([random.choice("ABCDEF0123456789") for i in range(4)])
 		ID=name
 		if ID in DataStruct._OBJECTS:
-			raise ("Object {0} already exists!".format(ID))
+			raise "Object {0} already exists!"
 		DataStruct._OBJECTS[ID]=self
 		self._ID=name
 		self.actions={}
@@ -45,13 +45,13 @@ class DataStruct:
 	def _performAction(self,fid,params):
 		fid=int(fid)
 		if fid not in self.actions:
-			print "Function not found!!!"
+			print("Function not found!!!")
 		else:	
 			try:
 				return self.actions[fid][1](params)
 			except:
-				print "Error calling method",fid
-				print traceback.format_exc()
+				print(("Error calling method",fid))
+				print((traceback.format_exc()))
 
 
 	def _update(self,func,*pars):
@@ -60,7 +60,7 @@ class DataStruct:
 			DataStruct._JSConnector(self._ID,func,*pars)
 
 	def _refreshActions(self):
-		for fid,(name,func) in self.actions.items():
+		for fid,(name,func) in list(self.actions.items()):
 			self._update('addAction',fid,name)
 
 	@staticmethod
@@ -113,7 +113,7 @@ class DataStruct:
 
 		a=Graph()
 		def myfunc(nodes):
-		     print 'these are the selected nodes',nodes
+		     print('these are the selected nodes',nodes)
 
 		a.addAction('Print selected nodes',myfunc)
 		a.view()

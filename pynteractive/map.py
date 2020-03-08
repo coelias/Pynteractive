@@ -1,5 +1,5 @@
 from pynteractive.Network import *
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import json
 import pickle
 import os
@@ -24,9 +24,9 @@ class Map(Network):
 
 	def _refresh(self):
 		'''DO NOT USE, is used for graphic representation, everytime a new window is opened'''
-		for i in self.vertices.values():
+		for i in list(self.vertices.values()):
 			self._update("addNode",i["_id"],i["_label"],'','','',i["_color"],i["_radius"],'',i["_lng"],i["_lat"])
-		for i,j in self.edges.items():
+		for i,j in list(self.edges.items()):
 			self._update("addEdge",i,j["_n1"],j["_n2"],'','','','','',j["_color"],j["_width"])
 
 	def updateNode(self,node_id,radius=None,color=None,lng=None,lat=None,place=None,country=None):
@@ -65,7 +65,7 @@ class Map(Network):
 			if place:
 				lng,lat=self._getLocation(place,country)
 				if lng==None:
-					print "Error getting coordinates for loading",place,country
+					print("Error getting coordinates for loading",place,country)
 					Map.RUNNINGTHREADS.release()
 					return None,None
 			
@@ -94,7 +94,7 @@ class Map(Network):
 		if country: url+="&countrycodes={0}".format(country)
 		if (place,country) in Map.CACHE: return Map.CACHE[(place,country)]
 		try:
-			a=urllib.urlopen(url)
+			a=urllib.request.urlopen(url)
 			data=json.loads(a.read())[0]
 			a.close()
 			Map.CACHE[(place,country)]=(data['lon'],data['lat'])

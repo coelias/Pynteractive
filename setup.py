@@ -2,7 +2,7 @@ from setuptools import setup, find_packages  # Always prefer setuptools over dis
 from codecs import open  # To use a consistent encoding
 import os
 import tarfile
-import StringIO
+from io import StringIO
 import sys
 import base64
 
@@ -40,7 +40,7 @@ setup(
 	# Versions should comply with PEP440.  For a discussion on single-sourcing
 	# the version across setup.py and the project code, see
 	# https://packaging.python.org/en/latest/single_source_version.html
-	version='1.1.1',
+	version='1.2.0.2',
 
 	description='Pynteractive, a suite to generate interactive Javascript graphics',
 	long_description=long_description,
@@ -75,6 +75,8 @@ setup(
 		'Programming Language :: Python :: 2',
 		'Programming Language :: Python :: 2.6',
 		'Programming Language :: Python :: 2.7',
+		'Programming Language :: Python :: 3',
+		'Programming Language :: Python :: 3.7',
 	],
 
 	# What does your project relate to?

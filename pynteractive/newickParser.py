@@ -1,6 +1,7 @@
 import os
 import re
 import random
+from functools import reduce
 
 class Newick:
 	releaf=re.compile("([^:]+)?(:[0-9.e-]+)?")

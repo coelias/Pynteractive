@@ -33,7 +33,7 @@ class Network(DataStruct):
 		else: label=str(label)
 
 		data={"_id":node_id,"_label":label}
-		data.update(dict([["_"+i,j] for i,j in kwargs.items()]))
+		data.update(dict([["_"+i,j] for i,j in list(kwargs.items())]))
 
 		self.vertices[node_id]=data
 		return node_id,label
@@ -42,7 +42,7 @@ class Network(DataStruct):
 		'''Updates parameters related to node *node_id* updating those parameters specified via \\*\\*kwargs'''
 		assert node_id in self.vertices
 		data=self.vertices[node_id]
-		data.update(dict([["_"+i,j] for i,j in kwargs.items() if j]))
+		data.update(dict([["_"+i,j] for i,j in list(kwargs.items()) if j]))
 
 
 	def addEdge(self,n1,n2,label,**kwargs):
@@ -56,7 +56,7 @@ class Network(DataStruct):
 		_id="~".join([n1,n2,label])
 
 		data={"_n1":n1,"_n2":n2,"_label":label}
-		data.update(dict([["_"+i,j] for i,j in kwargs.items()]))
+		data.update(dict([["_"+i,j] for i,j in list(kwargs.items())]))
 		self.edges[_id]=data
 		return _id,label
 
@@ -64,7 +64,7 @@ class Network(DataStruct):
 		'''Deletes a node from the network as well as the edges'''
 		node_id=str(node_id)
 		assert node_id in self.vertices 
-		edges=[name for name,i in self.edges.items() if node_id in [i['_n1'],i['_n2']]]
+		edges=[name for name,i in list(self.edges.items()) if node_id in [i['_n1'],i['_n2']]]
 		for i in edges:
 			del self.edges[i]
 		del self.vertices[node_id]
@@ -78,8 +78,8 @@ class Network(DataStruct):
 
 	def getEdges(self):
 		'''Returns the edges of the Network --> ([edge_ids])'''
-		return self.edges.keys()
+		return list(self.edges.keys())
 
 	def getNodes(self):
 		'''Returns the nodes of the Network --> ([node_ids])'''
-		return self.vertices.keys()
+		return list(self.vertices.keys())

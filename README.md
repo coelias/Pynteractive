@@ -24,7 +24,7 @@ Pynteractive is in constant development, all feedback/suggestions/bugreports are
 * Phylogenetic trees + Annotation
 * Charts: using NVD3.js
 
-## TODO
+## TODO
 
 * More phylogenetic tree layouts
 * Integrating Circos and making it interactive
@@ -66,7 +66,7 @@ $ pip install pynteractive
 
 ## Examples
 
-####Graph example (click to watch video)
+#### Graph example (click to watch video)
 
 [![Graph example](http://coelias.github.io/Pynteractive/imgs/GraphGif.gif)](https://vimeo.com/128141946)
 
@@ -123,7 +123,7 @@ def sumall(nodes):
 a.addAction('Add node values',sumall)
 ```
 
-####Chart example (click to watch video)
+#### Chart example (click to watch video)
 
 [![Chart example](http://coelias.github.io/Pynteractive/imgs/ChartGif.gif)](https://vimeo.com/128177043)
 
@@ -142,7 +142,7 @@ b.addSeries('Sharks killed by squirrels',
     [10,20,25,40,12,33,22,47,90,70,80,46,30,6,18,25])
 ```
 
-####Map example
+#### Map example
 [![Map example](http://coelias.github.io/Pynteractive/imgs/map.png)](http://coelias.github.io/Pynteractive/imgs/map.png)
 
 
@@ -158,7 +158,7 @@ m.addNode('ID4',place='paris',radius=30,color='blue')
 m.addEdge('ID3','ID4',width=5,color='green')
 ```
 
-####Phylogenetic tree example
+#### Phylogenetic tree example
 [![Phylo example](http://coelias.github.io/Pynteractive/imgs/phylo.svg)](http://coelias.github.io/Pynteractive/imgs/phylo.svg)
 
 
@@ -193,6 +193,7 @@ a.markClade(['39','72','164',],'green')
 raw_input()
 
 ```
+
 ## Real World Examples
 
 [De Bruijn Graph Gene assembly using Pynteractive](https://vimeo.com/128206058)

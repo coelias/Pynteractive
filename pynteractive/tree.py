@@ -93,20 +93,20 @@ class Tree(Network):
 
 
 if __name__=='__main__':
-	print "1"
+	print("1")
 	_parseTree("(,,(,));",0)
-	print "3"
+	print("3")
 	_parseTree("(A,B,(C,D));",0)
-	print "4"
+	print("4")
 	_parseTree("(A,B,(C,D)E)F;",0)
-	print "5"
+	print("5")
 	_parseTree("(:0.1,:0.2,(:0.3,:0.4):0.5);",0)
-	print "6"
+	print("6")
 	_parseTree("(:0.1,:0.2,(:0.3,:0.4):0.5):0.0;",0)
-	print "7"
+	print("7")
 	_parseTree("(A:0.1,B:0.2,(C:0.3,D:0.4):0.5);",0)
-	print "8"
+	print("8")
 	_parseTree("(A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F;",0)
-	print "9"
+	print("9")
 	_parseTree("((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A;",0)
 
