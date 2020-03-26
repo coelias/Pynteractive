@@ -1,6 +1,10 @@
 import os
 import re
 import random
+import sys
+VER = sys.version_info[0]
+if VER >= 3:
+    from functools import reduce
 
 class Newick:
 	releaf=re.compile("([^:]+)?(:[0-9.e-]+)?")
