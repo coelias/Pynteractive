@@ -65,7 +65,7 @@ class Map(Network):
 			if place:
 				lng,lat=self._getLocation(place,country)
 				if lng==None:
-					print "Error getting coordinates for loading",place,country
+					print ("Error getting coordinates for loading",place,country)
 					Map.RUNNINGTHREADS.release()
 					return None,None
 			

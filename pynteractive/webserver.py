@@ -8,11 +8,17 @@ import threading
 import urllib
 import traceback
 import base64
-import StringIO
 from pynteractive.SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 import pynteractive.globals as pyn_globals
 from pynteractive.datastruct import DataStruct
 import re
+
+import sys
+VER = sys.version_info[0]
+if VER >= 3:
+     from io import BytesIO as StringIO
+else:
+     from StringIO import StringIO
 
 Pynteractive_ws_MUTEX=threading.Lock()
 
@@ -45,7 +51,7 @@ class FileMgr:
 	def __init__(self,path=None,tarString=None):
 		assert (path and not tarString) or (tarString and not path)
 		if tarString:
-			self.contents=self.iniTar(StringIO.StringIO(base64.b64decode(tarString)))
+			self.contents=self.iniTar(StringIO(base64.b64decode(tarString)))
 			self.METHOD="tar"
 		else:
 			self.iniPath('.')
@@ -77,7 +83,7 @@ class FileMgr:
 		if self.METHOD=="tar":
 			return self.contents[item]
 		else:
-			with open(os.path.join(self.path,item)) as q:
+			with open(os.path.join(self.path,item),"rb") as q:
 				res=q.read()
 			return res
 
@@ -108,10 +114,10 @@ class JSCom(WebSocket):
 			self.dicFuncs[funcname](**args)
 		except:
 			traceback.print_exc()
-			print "Error processing","({0})".format(len(orig)),str(orig)[:30],"...",str(orig)[-30:]
+			print ("Error processing","({0})".format(len(orig)),str(orig)[:30],"...",str(orig)[-30:])
 
 	def handleConnected(self):
-#		print self.address, 'connected'
+#		print (self.address, 'connected')
 		pass
 
 	def handleClose(self):

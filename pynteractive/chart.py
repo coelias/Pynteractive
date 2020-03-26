@@ -1,5 +1,10 @@
-from datastruct import *
-from itertools import izip
+from pynteractive.datastruct import *
+import sys
+VER = sys.version_info[0]
+if VER >= 3:
+    izip=zip
+else:
+    from itertools import izip
 
 class Chart(DataStruct):
 	TYPES={'bar':'Bar','scatter':'Scatter','line':'Line','stack':'Stack'}

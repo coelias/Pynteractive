@@ -10,8 +10,7 @@ from pynteractive.graphd3 import *
 import atexit
 import os
 import pickle
-from webserver import *
-
+from pynteractive.webserver import *
 
 class WebServices:
 	SERVERS_ON=False
