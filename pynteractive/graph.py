@@ -1,6 +1,11 @@
 from pynteractive.visNetwork import *
 import random
 
+import sys
+VER = sys.version_info[0]
+if VER >= 3:
+    xrange=range
+
 class Graph(VisNetwork):
     def __init__(self,name=None,directed=False):
         '''Creates a graph, It can be directed or not, if a name is not given it is created randomly'''
@@ -18,7 +23,10 @@ class Graph(VisNetwork):
 
     def random(self,nn,ne):
         '''Creates a random Graph containing *nn* nodes and *ne* edges'''
-        map(self.addNode,xrange(nn))
+
+        for i in xrange(nn):
+            self.addNode(i)
+
         for i in xrange(ne):
             self.addEdge(random.choice(xrange(nn)),random.choice(xrange(nn)))
 

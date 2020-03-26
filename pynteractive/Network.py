@@ -78,8 +78,8 @@ class Network(DataStruct):
 
     def getEdges(self):
         '''Returns the edges of the Network --> ([edge_ids])'''
-        return self.edges.keys()
+        return list(self.edges.keys())
 
     def getNodes(self):
         '''Returns the nodes of the Network --> ([node_ids])'''
-        return self.vertices.keys()
+        return list(self.vertices.keys())
