@@ -183,9 +183,19 @@ setCladeColor: function(node,color)
 			   {
 				   setCladeColor(node,color)
 			   },
+collapseBranch: function(node)
+			   {
+				   collapseBranch(node);
+			   },
+
+expandBranch: function(node)
+			   {
+				   expandBranch(node);
+			   },
+
 clearCladeColor: function(tipname)
 				 {
-					 clearCladeColor(tipname)
+					 clearCladeColor(tipname);
 				 }
 
 

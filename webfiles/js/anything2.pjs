@@ -61,7 +61,7 @@ HELPMESSAGES=[
 "[m] - Hide/show heatmaps",
 "[h] - Hide/show help",
 "[t] - Hide/show tips",
-"[o] - Change tree layout",
+// "[o] - Change tree layout",
 ];
 
 STROKE=1;
@@ -389,7 +389,7 @@ void keyPressed() {
   else if (key=='m' || key=='M'){DRAWHEATMAPS=!DRAWHEATMAPS;}
   else if (key=='s' || key=='S'){SCALING=!SCALING;}
   else if (key=='e' || key=='E'){ELLIPSES=!ELLIPSES;}
-  else if (key=='o' || key=='O'){TREELAYOUT+=1; TREELAYOUT%=2; TREEDEGREES=0;}
+//  else if (key=='o' || key=='O'){TREELAYOUT+=1; TREELAYOUT%=2; TREEDEGREES=0;}
   else if (key=='r' || key=='R')
   {
 	if (!TREELAYOUT){ TREEDEGREES+=90;}
@@ -764,6 +764,34 @@ setCladeColor=function (node,c)
 	if (node in TREE.nodes)
 	{
 		TREE.nodes[node].setColor(c);
+	}
+	redraw();
+}
+
+collapseBranch=function(nodes)
+{
+	for (i=0;i<nodes.length;i++)
+	{
+		node=nodes[i];
+		if (node in TREE.nodes)
+		{
+			TREE.nodes[node].collapsed=true;
+			TREE.calcTreeCoordinates(10,TREEWIDTH);
+		}
+	}
+	redraw();
+}
+
+expandBranch=function(node)
+{
+	for (i=0;i<nodes.length;i++)
+	{
+		node=nodes[i];
+		if (node in TREE.nodes)
+		{
+			TREE.nodes[node].collapsed=false;
+			TREE.calcTreeCoordinates(10,TREEWIDTH);
+		}
 	}
 	redraw();
 }
