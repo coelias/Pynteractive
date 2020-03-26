@@ -1,7 +1,7 @@
 from pynteractive.datastruct import *
 import os
-from newickParser import *
-from htmlcolors import *
+from pynteractive.newickParser import *
+from pynteractive.htmlcolors import HTMLCOLORS
 import re
 
 

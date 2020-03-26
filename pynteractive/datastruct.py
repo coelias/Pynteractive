@@ -45,13 +45,13 @@ class DataStruct:
 	def _performAction(self,fid,params):
 		fid=int(fid)
 		if fid not in self.actions:
-			print "Function not found!!!"
+			print ("Function not found!!!")
 		else:	
 			try:
 				return self.actions[fid][1](params)
 			except:
-				print "Error calling method",fid
-				print traceback.format_exc()
+				print ("Error calling method",fid)
+				print (traceback.format_exc())
 
 
 	def _update(self,func,*pars):
@@ -113,7 +113,7 @@ class DataStruct:
 
 		a=Graph()
 		def myfunc(nodes):
-		     print 'these are the selected nodes',nodes
+		     print ('these are the selected nodes',nodes)
 
 		a.addAction('Print selected nodes',myfunc)
 		a.view()
