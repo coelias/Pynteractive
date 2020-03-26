@@ -73,7 +73,7 @@ function loadChartVisualization(){
 
 function loadPhyloVisualization(){
 	//load specific  element
-	jQuery('head').append('<script src="js/phyloElement.js"></script>');
+	jQuery('head').append('<script src="js/phyloProElement.js"></script>');
 
 	element = new phyloElement();
 	element.loadInstance();
