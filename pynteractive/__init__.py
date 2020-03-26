@@ -28,7 +28,7 @@ class WebServices:
 
 	@staticmethod
 	def stopServers():
-		a=open(os.path.join(os.path.expanduser("~"),".pynteractive"),'w')
+		a=open(os.path.join(os.path.expanduser("~"),".pynteractive"),'wb')
 		pickle.dump(Map.CACHE,a)
 		a.close()
 

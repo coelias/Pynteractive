@@ -1,9 +1,17 @@
 from pynteractive.Network import *
-import urllib
 import json
 import pickle
 import os
 import threading
+import time
+
+import sys
+VER = sys.version_info[0]
+if VER >= 3:
+    import urllib.request
+    urlopen = urllib.request.urlopen
+else:
+    from urllib import urlopen
 
 class Map(Network):
 	'''The Map class allows to plot data in an OpenStreet Map. The user can plot points of different sizes and colors
@@ -41,7 +49,9 @@ class Map(Network):
 		with Map.LOCK:
 			Map.THREADS.append(th)
 
+		self.cleanThreads()
 
+	def cleanThreads(self):
 		with Map.LOCK:
 			done=[]
 			for i in Map.THREADS:
@@ -78,6 +88,9 @@ class Map(Network):
 
 	def addEdge(self,n1,n2,color='red',width=2):
 		'''Ads and edge between two points given a color tag'''
+		while Map.THREADS:
+			self.cleanThreads()
+			time.sleep(0.1)
 		_id,label=Network.addEdge(self,n1,n2,'',color=color,width=width)
 		self._update("addEdge",_id,n1,n2,'','','','','',color,width)
 		return _id
@@ -92,8 +105,8 @@ class Map(Network):
 		if country: url+="&countrycodes={0}".format(country)
 		if (place,country) in Map.CACHE: return Map.CACHE[(place,country)]
 		try:
-			a=urllib.urlopen(url)
-			data=json.loads(a.read())[0]
+			a=urlopen(url)
+			data=json.loads(str(a.read()))[0]
 			a.close()
 			Map.CACHE[(place,country)]=(data['lon'],data['lat'])
 			return data['lon'],data['lat']

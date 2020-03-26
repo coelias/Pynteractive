@@ -98,7 +98,6 @@ class PhyloTree(DataStruct):
     def selectClade(self, tips):
         '''Select the clade containing a set of given tips'''
         dad = self.newick.getCommonParent(tips)
-        print dad.name
         self._update('selectTips', [dad.name])
 
     def clearSelection(self):
